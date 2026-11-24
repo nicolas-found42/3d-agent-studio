@@ -1,6 +1,6 @@
 ---
 name: 3d-agent-studio
-description: Create, review, revise, or export vertical and horizontal Blender animations with 3D Agent Studio. Use for portrait or landscape loops, editable scenes, angle/section proofs, and final video.
+description: Render and review Blender videos, vertical or horizontal.
 ---
 
 # 3D Agent Studio
