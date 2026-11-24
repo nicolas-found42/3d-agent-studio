@@ -1,6 +1,6 @@
 # Connect an agent
 
-Install and run `3d-agent-studio doctor` first (see the [README](../README.md)). Then choose one connection method. All hosts use the same local stdio server; neither this server nor the CLI requires a model account. Agent-host accounts and policies are separate.
+For a tagged release installed as a plugin, start with the [marketplace guide](marketplace.md). For an editable checkout or a host without marketplace imports, install and run `3d-agent-studio doctor` first (see the [README](../README.md)). Choose one connection method. All hosts use the same local stdio server; neither this server nor the CLI requires a model account. Agent-host accounts and policies are separate.
 
 ## Choose paths once
 
@@ -61,6 +61,26 @@ args = ["--output-root", "/absolute/jobs"]
 ```
 
 Restart Codex or start a fresh session and use `/mcp` to check the tools. See [Codex MCP configuration](https://developers.openai.com/codex/mcp).
+
+## Hermes Agent and OpenCode
+
+In the intended Hermes profile, confirm `hermes config path`, then run:
+
+```sh
+hermes mcp add 3d-agent-studio --command "$STUDIO_MCP" --args --output-root "$STUDIO_JOBS"
+hermes mcp test 3d-agent-studio
+```
+
+Confirm the discovered tools when prompted. Start a new session or use `/reload-mcp`. Use `$HERMES_HOME/skills` for the live skill link.
+
+For current OpenCode releases that support non-interactive `mcp add`:
+
+```sh
+opencode mcp add 3d-agent-studio --global -- "$STUDIO_MCP" --output-root "$STUDIO_JOBS"
+opencode mcp list
+```
+
+Check `opencode mcp add --help` for older releases. OpenCode can read the skill from `~/.config/opencode/skills` or a compatible global root such as `~/.agents/skills` ([discovery order](https://opencode.ai/docs/skills/)).
 
 ## Other agents
 

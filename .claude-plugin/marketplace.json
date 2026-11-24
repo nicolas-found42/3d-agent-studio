@@ -1,0 +1,14 @@
+{
+  "name": "found42-studio",
+  "owner": {"name": "Nicolas Alexander"},
+  "metadata": {"description": "Local Blender production tools for AI agents."},
+  "plugins": [
+    {
+      "name": "3d-agent-studio",
+      "source": "./",
+      "description": "Render and review editable Blender animation in portrait or landscape.",
+      "version": "0.2.0",
+      "category": "design"
+    }
+  ]
+}

@@ -14,6 +14,16 @@ Both presets support a title, two colors, a seed, and a 2–8 second loop. Choos
 
 Landscape uses its own camera and title layout, not a crop or rotated portrait. Exports are 30 fps, H.264/BT.709. Each stage includes a cover, a two-cycle clip, timeline and seam frames, front/side/reverse angles, and two orthogonal clip sections. This is procedural motion graphics, not arbitrary scene generation or social publishing.
 
+## Marketplace install
+
+Add the **[Found42 Studio marketplace](docs/marketplace.md)** for Claude Code, Codex, or Oh My Pi, or install the portable GitHub package in Hermes Agent. The guide also covers Cursor team imports, direct MCP setup for personal Cursor and OpenCode, and live development from one checkout.
+
+Claude Code also supports a single command in an agent session:
+
+```text
+/plugin install 3d-agent-studio --marketplace nicolas-found42/3d-agent-studio
+```
+
 ## Quick start
 
 Install Python 3.11+, [uv](https://docs.astral.sh/uv/), Blender (tested with 5.2), and FFmpeg with `libx264` and `ffprobe`.
