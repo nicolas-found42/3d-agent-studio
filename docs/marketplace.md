@@ -27,11 +27,15 @@ omp plugin marketplace add nicolas-found42/3d-agent-studio
 omp plugin install 3d-agent-studio@found42-studio --scope user
 ```
 
+In OMP 19.1.1 the catalog install succeeded, but the released server did not appear in `/mcp list` in the clean test profile. If that happens, merge the `3d-agent-studio` entry from [the release's `mcp.json`](../mcp.json) into your OMP `mcpServers` in `~/.omp/agent/mcp.json`. Copy the entry, not the `$schema` or the entire config. That fallback was tested with `studio_doctor` and `studio_brief`. If the skill is also missing, point OMP to the [skill directory](../skills/3d-agent-studio/) from a local checkout.
+
 **Hermes Agent** — install the same portable package directly from GitHub and consent to enable it:
 
 ```sh
 hermes plugins install nicolas-found42/3d-agent-studio
 ```
+
+Approve the dependency and enable prompts after reviewing the package. Noninteractive installers that already have consent can pass `--yes-deps --enable`. Start a new session and call `studio_doctor`: `hermes mcp test` checks manually configured servers, not portable plugin registrations on Hermes v0.23.3.
 
 **Cursor** — a team admin can import the repo under **Dashboard → Plugins & MCPs → Team Marketplaces** on eligible plans. This repo is not a listing in Cursor's curated public marketplace. Personal users can use the local MCP and skill setup below without a team marketplace.
 
