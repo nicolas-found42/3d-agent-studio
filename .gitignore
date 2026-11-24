@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+/dist/
+/build/
+/jobs/
+/.cursor/mcp.json
+/.omp/mcp.json
+/.mcp.json
+/.codex/config.toml
+/.env
+*.blend
+*.blend[0-9]

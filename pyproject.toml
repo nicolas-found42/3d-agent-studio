@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "3d-agent-studio"
+version = "0.1.0"
+description = "Agent-independent Blender and FFmpeg studio for vertical and horizontal animation"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+
+[project.urls]
+Repository = "https://github.com/nicolas-found42/3d-agent-studio"
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.26,<2"]
+
+[project.scripts]
+3d-agent-studio = "agent_studio.cli:main"
+3d-agent-studio-mcp = "agent_studio.mcp_server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_studio"]

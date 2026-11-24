@@ -1,0 +1,15 @@
+---
+name: 3d-agent-studio
+description: Create, review, revise, or export vertical and horizontal Blender animations with 3D Agent Studio. Use for portrait or landscape loops, editable scenes, angle/section proofs, and final video.
+---
+
+# 3D Agent Studio
+
+Use this workflow for silent Blender loops. Use `studio_*` via MCP, or `3d-agent-studio` from the render machine. For exact arguments, commands, artifact order, and failure cases, read [Operations](references/operations.md). If no transport is reachable, follow the checkout's `docs/agents.md`.
+
+1. **Preflight.** Run `studio_doctor` (`doctor` in the CLI). Capture the job root and confirm Blender, FFmpeg/libx264, and FFprobe. Use the same root throughout the session. Choose `orientation`: `vertical` (9:16, default) or `horizontal` (16:9). Set a title, template, duration, two hex colors, and seed. Choose `gravity-conveyor` for ceramic pods and `orbit-bloom` for radial petals. Validate with `studio_brief`; the normalized brief is the render input. If the user wants both orientations, make separate drafts and review each framing.
+2. **Draft.** Call `studio_draft` once per candidate. Poll `studio_status` until `preview.state` is `ready`, `failed`, or `stalled`. A queued job ID is not a finished render. For problems, inspect the indicated run log before starting a fresh job. Preserve the original job and any valid previews.
+3. **Review.** Open every board with `studio_view` or a local vision tool. Check the six timeline frames at the intended display size, all front/side/reverse views, both clip sections, and the last-two/first-two seam. Play `two-cycles.mp4` through the join. Write down visible observations: framing and legibility, attachment and collisions, readability of the technical views, and any motion or brightness jump. A machine QC pass, a hash, or a path does not establish visual review. If you cannot inspect the evidence or playback, ask the user to review it and leave the master unrendered.
+4. **Revise.** State the defect and what the next draft should fix. Queue a new candidate; retain the old job. Use `studio_compare` on drafts with identical template, orientation, and duration: old on top, new below. Inspect the matched images rather than assuming a changed palette or renderer is an improvement. Recheck every affected view and the join. If changing the template, orientation, or timing, review the new boards separately.
+5. **Promote.** When visual checks pass and the user wants a master, pass the exact four `preview.review_hashes` from `studio_status` plus your actual review notes to `studio_finalize`. Never invent observations or substitute a new hash for an edited file. A request for a draft only is not a request to render a master.
+6. **Deliver.** Poll `master.state`, verify `master.qc.passed`, and open the encoded master, cover and all four fresh master boards. Return the master MP4, editable scene, and relevant review images; mention any remaining visual limitation. Keep a phone/app acceptance check separate from local review. Nothing is posted automatically.
