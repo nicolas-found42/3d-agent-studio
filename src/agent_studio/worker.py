@@ -101,27 +101,35 @@ def frame_paths(stage, count, size):
 
 
 THUMB = "scale='if(gte(iw,ih),400,-2)':'if(gte(iw,ih),-2,400)'"
+# Boards stay within 280-1568 px per side so vision judges (e.g. Jev) accept them as they are.
+FIT = "scale='min(iw,1560)':'min(ih,1560)':force_original_aspect_ratio=decrease,pad='max(iw,280)':'max(ih,280)':(ow-iw)/2:(oh-ih)/2:color=" + BG
 
 
 def strip(bins, paths, target, height=360):
     """Side-by-side images scaled to one height."""
     flags = [token for path in paths for token in ('-i', path)]
     chain = ''.join(f'[{i}:v]scale=-2:{height},setsar=1[t{i}];' for i in range(len(paths)))
-    chain += ''.join(f'[t{i}]' for i in range(len(paths))) + f'hstack=inputs={len(paths)}' if len(paths) > 1 else \
-        f'[0:v]scale=-2:{height},setsar=1'
+    chain += ''.join(f'[t{i}]' for i in range(len(paths))) + f'hstack=inputs={len(paths)},{FIT}' if len(paths) > 1 else \
+        f'[0:v]scale=-2:{height},setsar=1,{FIT}'
     ff(bins, *flags, '-filter_complex_threads', '1', '-filter_complex', chain, '-frames:v', '1', '-update', '1', target)
 
 
-def reference_board(bins, pairs, target, rows=16):
-    """Each reference (left) beside the render frame that looks most like it (right)."""
-    if len(pairs) > rows:
-        pairs = [pairs[round(i * (len(pairs) - 1) / (rows - 1))] for i in range(rows)]
+def reference_board(bins, pairs, target, rows=8):
+    """Each reference (left) beside the render frame that looks most like it (right), two pairs per row."""
+    limit = rows * 2
+    if len(pairs) > limit:
+        pairs = [pairs[round(i * (len(pairs) - 1) / (limit - 1))] for i in range(limit)]
     flags, chain = [], ''
-    box = 'scale=440:248:force_original_aspect_ratio=decrease,pad=440:248:(ow-iw)/2:(oh-ih)/2:color=' + BG + ',setsar=1'
+    box = 'scale=300:168:force_original_aspect_ratio=decrease,pad=300:168:(ow-iw)/2:(oh-ih)/2:color=' + BG + ',setsar=1'
     for i, pair in enumerate(pairs):
         flags += ['-i', pair['reference_path'], '-i', pair['frame_path']]
-        chain += f'[{2 * i}:v]{box}[r{i}];[{2 * i + 1}:v]{box}[f{i}];[r{i}][f{i}]hstack=inputs=2,pad=iw+24:ih+12:12:6:color={BG}[row{i}];'
-    chain += ''.join(f'[row{i}]' for i in range(len(pairs))) + (f'vstack=inputs={len(pairs)}' if len(pairs) > 1 else 'null')
+        chain += f'[{2 * i}:v]{box}[r{i}];[{2 * i + 1}:v]{box}[f{i}];[r{i}][f{i}]hstack=inputs=2,pad=iw+24:ih+12:12:6:color={BG}[p{i}];'
+    cols = 1 if len(pairs) == 1 else 2
+    if len(pairs) == 1:
+        chain += f'[p0]{FIT}'
+    else:
+        layout = '|'.join(f'{(i % cols) * 624}_{(i // cols) * 180}' for i in range(len(pairs)))
+        chain += ''.join(f'[p{i}]' for i in range(len(pairs))) + f'xstack=inputs={len(pairs)}:layout={layout}:fill={BG},{FIT}'
     ff(bins, *flags, '-filter_complex_threads', '1', '-filter_complex', chain, '-frames:v', '1', '-update', '1', target)
 
 
@@ -157,12 +165,12 @@ def export(bins, stage, brief, kind):
         qc['two_cycles'] = verify_video(bins, repeat, 2 * count, size, fps)
         if hashes(bins, repeat) != single * 2:
             raise ValueError('Two-cycle file pixels differ from two copies of the sequence')
-        ff(bins, '-i', repeat, '-vf', f'select=between(n\\,{count - 2}\\,{count + 1}),{THUMB},tile=4x1:padding=8:margin=8:color={BG}',
+        ff(bins, '-i', repeat, '-vf', f'select=between(n\\,{count - 2}\\,{count + 1}),{THUMB},tile=4x1:padding=8:margin=8:color={BG},{FIT}',
            '-frames:v', '1', '-update', '1', stage / 'seam.jpg')
         qc['seam_frames'] = [count - 1, count, 1, 2]
     ids = [0, count // 5, 2 * count // 5, 3 * count // 5, 4 * count // 5, count - 1]
     selected = '+'.join(f'eq(n\\,{n})' for n in ids)
-    ff(bins, '-i', clip, '-vf', f'select={selected},{THUMB},tile=3x2:padding=8:margin=8:color={BG}',
+    ff(bins, '-i', clip, '-vf', f'select={selected},{THUMB},tile=3x2:padding=8:margin=8:color={BG},{FIT}',
        '-frames:v', '1', '-update', '1', stage / 'timeline.jpg')
     cover_idx = count // 3
     ff(bins, '-i', clip, '-vf', f'select=eq(n\\,{cover_idx})', '-frames:v', '1', '-update', '1', stage / 'cover.png')
