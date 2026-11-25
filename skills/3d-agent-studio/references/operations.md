@@ -1,33 +1,84 @@
 # Studio operations
 
-Use one local job root across all calls. In the CLI examples, `3d-agent-studio` is on PATH (for a checkout, prefix with `uv run --locked`). Place `--output-root /absolute/jobs` before the subcommand, or set `STUDIO_OUTPUT_ROOT` in the terminal. MCP selects its root at startup and never accepts it from a tool call.
+Use one local job root across all calls. In the CLI examples `3d-agent-studio` is on PATH (in a checkout, prefix with `uv run --locked`). Put `--output-root /absolute/jobs` before the subcommand, or set `STUDIO_OUTPUT_ROOT`. MCP fixes its root at startup and never takes one from a tool call. JSON arguments in the CLI may be inline or `@file.json`.
 
-| MCP tool | Arguments | CLI equivalent | Result |
+| MCP tool | Arguments | CLI | Result |
 |---|---|---|---|
-| `studio_doctor` | none | `doctor` | Runtime paths/versions, libx264, root, dimensions per orientation and brief schema/defaults |
-| `studio_brief` | `brief`: object | `brief 'JSON'` | Normalized brief; no Blender process or writes |
-| `studio_draft` | `brief`: object | `draft 'JSON' [--wait]` | Queued job ID and preview directory; outputs a new `.blend` and native preview media |
-| `studio_status` | `job_id`: returned ID | `status JOB_ID` | Brief, preview and master states, ready artifacts and QC; `editable_blend` once preview is ready |
-| `studio_view` | `job_id`, `stage`: `preview` or `master`, `board`: one of the four JPEG names below | `status JOB_ID`, then open the corresponding file | One validated JPEG as MCP image content plus local path |
-| `studio_compare` | `before`, `after`: distinct ready preview IDs | `compare BEFORE AFTER` | Four matched stacked JPEGs (before above after) and a comparison manifest; same template, orientation and duration required |
-| `studio_finalize` | `job_id`, `hashes`: object, `notes`: string | `finalize JOB_ID 'REVIEW_JSON' [--wait]` | Queued full-HD master, using the same saved scene and orientation |
+| `studio_doctor` | — | `doctor` | Runtime versions (Blender 5.2+), orientations and sizes, fps, brief schema and defaults, reference kinds and roles, asset sources, example count |
+| `studio_brief` | `brief` | `brief JSON` | Normalized brief; no writes |
+| `studio_ingest` | `path` (absolute), `role`, `max_frames` | `ingest PATH [--role R] [--max-frames N]` | Reference ID (`ref-…`), kind, role, paths; videos list their extracted frames |
+| `studio_examples` | `query`, `tags`, `limit` ≤ 12, `include_script` | `examples [QUERY] [--tag T] [--script]` | Matching examples with prompt, tags, poster, clip and script |
+| — | — | `check SCRIPT` | Static script check only |
+| `studio_probe` | `brief`, `script` (source text) | `probe JSON SCRIPT.py [--wait]` | New job; resolves assets, runs the script, saves `scene.blend`, renders 3 timed stills |
+| `studio_draft` | `job_id` of a probed job, or `brief` + `script` | `draft --job ID` or `draft JSON SCRIPT.py` `[--wait]` | Full preview sequence and review boards |
+| `studio_status` | `job_id` | `status ID` | Brief, script path, references, assets, credits, `.blend`, and per-stage state, artifacts, estimates, QC, review hashes |
+| `studio_view` | `job_id`, `stage`, `board` | open the path from `status` | One board as an image plus its path |
+| `studio_compare` | `before`, `after` | `compare A B` | Matching boards stacked, before on top |
+| `studio_finalize` | `job_id`, `hashes`, `notes`, optional `budget_minutes`, `quality`, `samples` | `finalize ID REVIEW_JSON [--budget-minutes N] [--quality fast] [--samples N] [--wait]` | Queued master and its render plan |
 
 ## Brief
 
-All fields are optional. `orientation` accepts `vertical` (360×640 preview, 1080×1920 master, default) or `horizontal` (640×360 preview, 1920×1080 master). `title` is 1–24 printable ASCII characters, not only spaces. `template` is `gravity-conveyor` or `orbit-bloom`; `seconds` is an integer 2–8; `primary`/`accent` are `#RRGGBB`; `seed` is an integer 0–999999. Use `doctor` for defaults. Other keys, paths, scripts and asset files are unsupported.
+Only `prompt` is required.
 
-```json
-{"title":"ORBIT BLOOM","template":"orbit-bloom","orientation":"horizontal","seconds":2,"primary":"#BBC6F2","accent":"#FF9A62","seed":11}
-```
+| Field | Values | Default |
+|---|---|---|
+| `prompt` | 1–8000 characters: subject, setting, mood, motion, camera | required |
+| `references` | ingest IDs, or `{id, role, note}` to override the role or explain intent | `[]` |
+| `assets` | open asset IDs (below) | `[]` |
+| `orientation` | `vertical` 9:16 (360×640 / 1080×1920), `horizontal` 16:9 (640×360 / 1920×1080), `square` (360×360 / 1080×1080), `portrait` 4:5 (360×450 / 1080×1350), `ultrawide` 21:9 (840×360 / 2520×1080) | `vertical` |
+| `seconds` | 2–30 | 6 |
+| `fps` | 24, 30, 60, 120 | 24 |
+| `loop` | seamless loop: frame `frames + 1` must equal frame 1 | `false` |
+| `seed` | 0–999999 (`kit.rng`, Cycles seed) | 11 |
+| `title`, `show_title` | ≤ 48 printable ASCII; drawn in-camera only when `show_title` | `''`, `false` |
+| `quality` | `standard` refuses an over-budget master; `fast` lowers master samples (floor 16) to fit | `standard` |
+| `budget_minutes` | `{probe, draft, master}`, each 1–1440 | 5, 10, 10 |
+| `samples` | `{preview, master}` Cycles samples | 16, 128 |
+| `extras` | `prores` (ProRes 4444 `master.mov`), `png` (keep master frames) | `[]` |
+| `parent` | job ID this revises | `null` |
+| `max_references` | image references per job (video frames count) | 40 |
 
-## Job states and review evidence
+## References
 
-- Queued/running: poll every few seconds; `step`, `rendered_frames` and `log` indicate progress. `master: null` means it has not started.
-- Ready: `artifacts` gives absolute file paths. `qc.json` names the frames and ordering. `timeline.jpg` is six decoded checkpoints, left-to-right then top-to-bottom. `angles.jpg` is front, side, reverse; `sections.jpg` is x=0 then y=0. Both use the same inspection frame. Sections use a camera clip plane and proof-only shading; a flat cut appearance does not imply a watertight cap or a geometry edit. `seam.jpg` is the last two and first two encoded frames, left-to-right then top-to-bottom (one row for vertical, two for horizontal). `reel.mp4` has one cycle, `two-cycles.mp4` has two verified identical decoded sequences, and `cover.png` is a selected decoded frame. Files are silent.
-- Failed/stalled: read `error` and the stage `run.log`. Stalled means there has been no stage update for 30 minutes. The studio does not overwrite, rerun or resume stages. Correct the underlying issue and start a new job; keep earlier valid previews for comparison.
+`studio_ingest` copies a file into `<root>/inputs/ref-…` once (content-addressed) and the brief attaches it to a job.
 
-## Finalize
+| Kind | Extensions | Roles (first is default) | In the script |
+|---|---|---|---|
+| image | png jpg webp tif bmp gif heic exr hdr | subject, style, composition, palette, storyboard | `kit.image`, `kit.image_plane`, `kit.image_material` |
+| video | mp4 mov m4v webm mkv avi | as image, plus motion | each frame is an image: `ref.paths[i]`, `ref.times[i]` |
+| model | glb gltf (self-contained) obj fbx usd usda usdc usdz blend stl ply | asset | `kit.import_model(ref_id, size=…)` |
+| data | csv tsv json | data | `kit.data(ref_id)` |
+| vector | svg | logo, asset | `kit.svg(ref_id)` |
+| font | ttf otf | font | `kit.text(..., font=ref_id)` |
+| text | txt md | shotlist, notes | `kit.read_text(ref_id)` |
 
-Use only after reviewing the actual current images and loop, and when a master is wanted. Copy the exact `preview.review_hashes` object from `status`; include observations in `notes` (12–1800 characters after trimming). The CLI's JSON argument is `{"hashes":{...},"notes":"your concrete review"}`. For MCP, pass `hashes` and `notes` as separate fields alongside `job_id`. The hash object must contain exactly `timeline.jpg`, `angles.jpg`, `sections.jpg` and `seam.jpg`.
+## Assets
 
-File hashes bind your notes to the current evidence; the studio cannot tell whether a human or agent actually looked at it. An edited scene, changed evidence, changed render code or incompatible runtime change requires another draft. A valid earlier draft can still be opened or compared. Open the fresh master boards and play the actual encoded file before handing it off.
+Asset IDs are resolved before Blender runs, cached under `<root>/assets-cache`, hash-pinned, and credited in the job's `CREDITS.txt`. Allowed licenses: CC0, public domain, CC-BY (attributed), OFL/Apache/MIT for fonts. NC, ND, SA, custom or missing licenses are refused.
+
+| Source | ID form | Contents |
+|---|---|---|
+| Poly Haven | `polyhaven:<slug>[@1k\|2k\|4k]` | HDRIs, PBR textures, models |
+| ambientCG | `ambientcg:<AssetId>[@1K\|2K\|4K]` | PBR materials, HDRIs |
+| Fontsource | `fontsource:<id>[@weight][:italic]` | Fonts |
+| Khronos glTF samples | `khronos:<ModelName>` | CC0/CC-BY sample models only |
+| Wikimedia Commons | `wikimedia:File:<name>` | Images |
+| Openverse | `openverse:<uuid>` | Images |
+| The Met | `met:<objectID>` | Public-domain object photos |
+| NASA 3D Resources | `nasa:<path in the repo>` | Spacecraft, planets, textures |
+| BlenderKit | `blenderkit:<asset uuid>` | Free CC0 materials and models (`.blend`) |
+| Direct CC0 host | `url:https://…` on kenney.nl, sharetextures.com, cgbookcase.com, 3dtextures.me, quaternius.com, polyhaven.org, ambientcg.com | Files or zips from those hosts |
+
+Smithsonian 3D and NIH 3D were evaluated and left out: the former exposes no license field without a key, the latter no reachable API. Sketchfab, Poly Pizza and Europeana require keys.
+
+## Stages and evidence
+
+- **probe**: `probe.jpg` (first, middle, last frame), `references.jpg` (with image references), `estimate.json` (fitted render cost and predicted draft and master minutes), `checks.json` (scene stats and `warnings`). The saved `scene.blend` comes from this stage.
+- **preview** (draft) and **master**: `reel.mp4`, `timeline.jpg` (six decoded frames), `angles.jpg` (wide, three-quarter, overview with camera path), `references.jpg`, `seam.jpg` and `two-cycles.mp4` for loops, `cover.png`, `qc.json` (video checks, frame statistics, reference pairs, `warnings`). Master adds `master.mov` with `extras: ["prores"]`.
+- Review hashes are the preview's board JPEGs; finalize must quote them exactly with 12–4000 characters of notes.
+- States: `queued`, `running` (with `step`; `waiting for the GPU lock` means another render in this root is using the GPU), `ready`, `failed` (read `error` and `run.log`), `stalled` (no update for 30 minutes). Stages never resume or overwrite; start a new job.
+- Edited scripts, scenes or evidence, or changed studio code, invalidate a job: make a new one.
+
+## Script contract
+
+`build(kit)` must create a camera (`kit.camera`) and renderable geometry, and animate with keyframes. Imports are limited to `bpy`, `bmesh`, `mathutils`, `math`, `random`, `colorsys`, `itertools`, `functools`, `statistics`, `numpy`, `dataclasses`, `typing`, `enum`, `collections`, `string`, `textwrap`. File I/O, `exec`/`eval`, dunder access, handlers, text blocks, saving and rendering are the studio's. This check catches mistakes; it is not a sandbox, so scripts still run as the local user.
