@@ -115,6 +115,16 @@ def video_frames(bins, source, target, cap):
     return meta, frames
 
 
+def gif_frames(bins, path):
+    r = subprocess.run([bins['ffprobe'], '-v', 'error', '-count_frames', '-select_streams', 'v:0',
+                        '-show_entries', 'stream=nb_read_frames', '-of', 'csv=p=0', str(path)],
+                       capture_output=True, text=True, timeout=120, env=p.render_env())
+    try:
+        return int(r.stdout.strip().split(',')[0])
+    except ValueError:
+        return 1
+
+
 def check_gltf(path):
     doc = json.loads(path.read_text(encoding='utf-8'))
     for group in ('buffers', 'images'):
@@ -143,6 +153,8 @@ def ingest(root, raw_path, role=None, max_frames=DEFAULT_MAX_FRAMES):
     if not path.is_file():
         raise ValueError(f'Reference is not a readable file: {path}')
     kind = kind_of(path)
+    if path.suffix.lower() == '.gif' and gif_frames(p.executables(), path) > 1:
+        kind = 'video'  # an animated GIF is a clip: reduce it to scene frames like any video
     size = path.stat().st_size
     if not size or size > LIMITS[kind]:
         raise ValueError(f'{kind} reference must be 1 byte to {LIMITS[kind] // 1_000_000} MB')

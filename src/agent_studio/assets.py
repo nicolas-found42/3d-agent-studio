@@ -10,6 +10,7 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import shutil
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -69,22 +70,40 @@ def spdx(raw):
     raise LicenseError(f'License {raw!r} is not on the allowlist (CC0, public domain, CC-BY, OFL, Apache, MIT)')
 
 
-def http(url, *, max_bytes=MAX_BYTES):
+def http(url, *, max_bytes=MAX_BYTES, attempts=4):
+    """GET over HTTPS with bounded retries on rate limits and transient server errors."""
     parsed = urllib.parse.urlsplit(url)
     if parsed.scheme != 'https':
         raise ValueError(f'Only HTTPS downloads are allowed: {url}')
     req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT, 'Accept': '*/*'})
-    try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-            final = r.geturl()
-            data = r.read(max_bytes + 1)
-    except urllib.error.HTTPError as exc:
-        raise ValueError(f'Download failed ({exc.code}) for {url}') from exc
-    except urllib.error.URLError as exc:
-        raise ValueError(f'Download failed for {url}: {exc.reason}') from exc
+    for attempt in range(attempts):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                final = r.geturl()
+                data = r.read(max_bytes + 1)
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code in (429, 502, 503, 504) and attempt < attempts - 1:
+                wait = exc.headers.get('Retry-After', '')
+                time.sleep(min(30.0, float(wait) if wait.isdigit() else 2.0 * 2 ** attempt))
+                continue
+            raise ValueError(f'Download failed ({exc.code}) for {url}') from exc
+        except urllib.error.URLError as exc:
+            if attempt < attempts - 1:
+                time.sleep(2.0 * 2 ** attempt)
+                continue
+            raise ValueError(f'Download failed for {url}: {exc.reason}') from exc
     if len(data) > max_bytes:
         raise ValueError(f'Asset exceeds {max_bytes // 1_000_000} MB: {url}')
     return data, final
+
+
+def commons_thumb(url, width=3000):
+    """Rewrite an upload.wikimedia.org original to a bounded-width thumbnail (lighter, rarely rate-limited)."""
+    m = re.match(r'https://upload\.wikimedia\.org/wikipedia/commons/([0-9a-f])/([0-9a-f]{2})/([^/]+)$', url)
+    if not m or url.lower().endswith(('.svg', '.tif', '.tiff')):
+        return url
+    return f'https://upload.wikimedia.org/wikipedia/commons/thumb/{m[1]}/{m[2]}/{m[3]}/{width}px-{m[3]}'
 
 
 def get_json(url):
@@ -224,9 +243,9 @@ def resolve_khronos(name, f):
     base = f'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/{name}'
     meta = get_json(base + '/metadata.json')
     legal = meta.get('legal') or []
-    licenses = {spdx(item.get('license', '').replace('CC-BY 4.0', 'CC-BY-4.0')) for item in legal}
-    if len(licenses) != 1:
-        raise LicenseError(f'Khronos {name} has mixed or missing licenses')
+    if not legal:
+        raise LicenseError(f'Khronos {name} lists no license')
+    licenses = sorted({spdx(item.get('license', '').replace('CC-BY 4.0', 'CC-BY-4.0')) for item in legal})
     try:
         f.download(f'{name}.glb', base + f'/glTF-Binary/{name}.glb')
     except ValueError:
@@ -237,7 +256,7 @@ def resolve_khronos(name, f):
             if item.get('type') == 'file':
                 f.download(item['name'], item['download_url'])
     authors = ', '.join(sorted({item.get('artist') or item.get('owner', '') for item in legal}))
-    return dict(kind='model', title=name, author=authors, license=licenses.pop(),
+    return dict(kind='model', title=name, author=authors, license=' AND '.join(licenses),
                 source_url=f'https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/{name}')
 
 
@@ -266,7 +285,11 @@ def resolve_openverse(name, f):
     data = get_json(f'https://api.openverse.org/v1/images/{urllib.parse.quote(name)}/')
     license = spdx(data.get('license') + (f'-{data["license_version"]}' if data.get('license') == 'by' else ''))
     url = data['url']
-    f.download('image.' + (url.rsplit('.', 1)[-1].lower()[:4] if '.' in url[-6:] else 'jpg'), url)
+    ext = url.rsplit('.', 1)[-1].lower()[:4] if '.' in url[-6:] else 'jpg'
+    try:
+        f.download('image.' + ext, commons_thumb(url) if (data.get('width') or 0) > 3000 else url)
+    except ValueError:
+        f.download('image.' + ext, url)
     return dict(kind='image', title=data.get('title') or name, author=data.get('creator') or '',
                 license=license, source_url=data.get('foreign_landing_url'))
 
@@ -355,7 +378,9 @@ def resolve(root, asset_id):
     try:
         f = Fetch(temp)
         meta = RESOLVERS[source](name, f)
-        meta['license'] = spdx(meta['license']) if not ALLOWED_LICENSES.match(meta.get('license') or '') else meta['license']
+        # Every part of a compound license (e.g. 'CC0-1.0 AND CC-BY-4.0') must be allowed on its own.
+        meta['license'] = ' AND '.join(part if ALLOWED_LICENSES.match(part) else spdx(part)
+                                       for part in (meta.get('license') or '').split(' AND '))
         if not f.files:
             raise ValueError(f'{asset_id} produced no files')
         info = {'id': asset_id, 'source': source, **meta, 'files': f.files}

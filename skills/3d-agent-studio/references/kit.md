@@ -184,6 +184,8 @@ Conventions the studio relies on:
 
 - `kit.import_model(source, location=(0, 0, 0), rotation=(0, 0, 0), size=None, scale=1.0, on_ground=True, name=None)`  
   Import a model reference or asset (glb/gltf/obj/fbx/usd/stl/ply/blend). Returns a parent empty. size=metres fits the largest dimension; on_ground puts its lowest point at z=location.z.
+- `kit.play_animation(root, speed=1.0, action=None, start=0.0)`  
+  Loop an imported model's embedded animation (e.g. a rigged glTF walk) over the whole shot. root is what kit.import_model returned; speed scales playback; action picks one by name substring. Returns the animated objects. Whole repeats keep loops seamless only if the clip length divides the shot; otherwise prefer non-looping shots.
 - `kit.blend_material(source)`  
   Append the first material from a .blend asset (e.g. a BlenderKit material).
 - `kit.image_plane(source, height=2.0, location=(0, 0, 1), rotation=(90, 0, 0), index=0, emission=0.0, name=None)`  

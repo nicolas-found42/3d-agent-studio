@@ -76,6 +76,10 @@ REFERENCE_LEVELS = {
     'clearly_related': 'A viewer would see the reference in the render.',
     'close': 'The render closely matches the reference in this respect.',
 }
+# Draft-quality renders are 16 spp denoised; noise there is expected, so these only ever ask for a look.
+SOFT_AT_PREVIEW = {'noisy'}
+DIAGRAM_QUESTION = ('Are the main elements of `render` arranged in the same overall layout as the diagram in `reference` '
+                    '(same order and relative positions), even though one is a 3D render and the other a flat diagram?')
 ROLE_QUESTION = {
     'subject': 'How closely does the subject in `render` resemble the subject of `reference`?',
     'style': 'How closely does the visual style of `render` (rendering look, materials, color, light) match `reference`?',
@@ -149,7 +153,7 @@ def band(p):
     return 'yes' if p > YES else 'no' if p < NO else 'unsure'
 
 
-def review(job, stage, prompt, elements, expect_text=False):
+def review(job, stage, prompt, elements, expect_text=False, diagrams=()):
     stage_dir = job / stage
     log = []
     findings = {'elements': {}, 'defects': {}, 'quality': None, 'prompt_match': None, 'references': []}
@@ -185,34 +189,59 @@ def review(job, stage, prompt, elements, expect_text=False):
     # Request 3+: one request per reference pair (each needs its own two images).
     pairs_file = stage_dir / 'pairs.json'
     pairs = json.loads(pairs_file.read_text()) if pairs_file.is_file() else []
-    for pr in pairs[:8]:
-        ans = call(['reference:', {'image': pr['reference_path']}, 'render:', {'image': pr['frame_path']}],
-                   {'match': score(ROLE_QUESTION[pr['role']], REFERENCE_LEVELS)}, log)
+    seen = set()
+    for pr in pairs:
+        key = (pr['reference'], pr.get('index', 0) if pr['reference'] not in diagrams else 0, pr['frame_path'])
+        if key in seen or len(seen) >= 8:
+            continue
+        seen.add(key)
+        if pr['reference'] in diagrams:
+            ans = call(['reference:', {'image': pr['reference_path']}, 'render:', {'image': pr['frame_path']}],
+                       {'layout': noul(DIAGRAM_QUESTION)}, log)
+            p = ans['layout']['noul']
+            lvl = 'close' if p > YES else 'unrelated' if p < NO else 'related'
+        else:
+            ans = call(['reference:', {'image': pr['reference_path']}, 'render:', {'image': pr['frame_path']}],
+                       {'match': score(ROLE_QUESTION[pr['role']], REFERENCE_LEVELS)}, log)
+            lvl = list(REFERENCE_LEVELS)[level(ans['match'], REFERENCE_LEVELS)]
         findings['references'].append({'reference': pr['reference'], 'role': pr['role'], 'frame': Path(pr['frame_path']).name,
-                                       'level': list(REFERENCE_LEVELS)[level(ans['match'], REFERENCE_LEVELS)]})
-    return decide(findings), findings, log
+                                       'diagram': pr['reference'] in diagrams, 'level': lvl})
+    return decide(findings, stage), findings, log
 
 
-def decide(f):
-    """The truth table: code, not Jev, decides pass, fix or look."""
+def decide(f, stage='preview', overrides=()):
+    """The truth table: code, not Jev, decides pass, fix or look.
+
+    overrides: [{'item': prefix of a fix/look line, 'reason': why a person accepted it}] recorded by a
+    reviewer who looked; matching items move to 'overridden' and no longer block a pass.
+    """
     fixes, looks = [], []
     for e, p in f['elements'].items():
         (looks if band(p) == 'unsure' else fixes if band(p) == 'no' else []).append(f'element: {e} ({p:.2f})')
     for d, p in f['defects'].items():
-        (looks if band(p) == 'unsure' else fixes if band(p) == 'yes' else []).append(f'defect: {d} ({p:.2f})')
+        soft = d in SOFT_AT_PREVIEW and stage in ('probe', 'preview')
+        target = looks if band(p) == 'unsure' or (soft and band(p) == 'yes') else fixes if band(p) == 'yes' else None
+        if target is not None:
+            target.append(f'defect: {d} ({p:.2f})')
     if f.get('text_readable') is not None and band(f['text_readable']) != 'yes':
         (fixes if band(f['text_readable']) == 'no' else looks).append(f'text legibility ({f["text_readable"]:.2f})')
     if f['quality'] in ('blockout', 'basic'):
         fixes.append(f'quality: {f["quality"]}')
     if f['prompt_match'] in ('unrelated', 'loose'):
         fixes.append(f'prompt match: {f["prompt_match"]}')
-    for r in f['references']:
-        if r['level'] in ('unrelated', 'related'):
-            fixes.append(f'reference {r["reference"]} ({r["role"]}): {r["level"]}')
-    if f['control'] >= NO:
+    for item in sorted({f'reference {r["reference"]} ({r["role"]}): {r["level"]}' for r in f['references']
+                        if r['level'] in ('unrelated', 'related')}):
+        fixes.append(item)
+    if f.get('control', 0) >= NO:
         looks.append(f'control: "{CONTROL}" answered {f["control"]:.2f}; element answers are unreliable on this board')
+    overridden = []
+    for o in overrides:
+        for bucket in (fixes, looks):
+            for item in [i for i in bucket if i.startswith(o['item'])]:
+                bucket.remove(item)
+                overridden.append({'item': item, 'reason': o['reason']})
     verdict = 'fix' if fixes else 'look' if looks else 'pass'
-    return {'verdict': verdict, 'fix': fixes, 'look': looks}
+    return {'verdict': verdict, 'fix': fixes, 'look': looks, 'overridden': overridden}
 
 
 def main():
@@ -223,11 +252,15 @@ def main():
     ap.add_argument('--prompt', help='Defaults to the job brief prompt')
     ap.add_argument('--expect-text', action='store_true')
     ap.add_argument('--out', type=Path)
+    ap.add_argument('--diagram', action='append', default=[], help='Reference ID that is a diagram/UI, judged on layout')
+    ap.add_argument('--overrides', type=Path, help='JSON list of {item, reason} accepted by a reviewer who looked')
     a = ap.parse_args()
     job = a.job.resolve()
     prompt = a.prompt or json.loads((job / 'job.json').read_text())['brief']['prompt']
     elements = [e.strip() for e in a.elements.split(';') if e.strip()]
-    decision, findings, log = review(job, a.stage, prompt, elements, a.expect_text)
+    decision, findings, log = review(job, a.stage, prompt, elements, a.expect_text, set(a.diagram))
+    if a.overrides:
+        decision = decide(findings, a.stage, json.loads(a.overrides.read_text()))
     out = a.out or (job / a.stage / 'jev-review.json')
     out.write_text(json.dumps({'model': MODEL, 'decision': decision, 'findings': findings,
                                'requests': json.loads(json.dumps(log, default=str))}, indent=2))

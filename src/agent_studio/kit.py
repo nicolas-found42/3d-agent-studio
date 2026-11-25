@@ -384,7 +384,8 @@ class Kit:
     def bsdf(self, mat):
         node = next((n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
         if node is None:
-            raise ValueError(f'Material {mat.name} has no Principled BSDF')
+            raise ValueError(f'Material {mat.name} has no Principled BSDF (kit.emissive, kit.flat and kit.toon '
+                             'materials have none); use kit.material for this helper')
         return node
 
     def _noise_bump(self, mat, scale, strength, detail=6.0):
@@ -840,8 +841,10 @@ class Kit:
             return [(r * math.sin(-a + 2 * a * i / steps), cz + r * math.cos(-a + 2 * a * i / steps), 0.0, cz)
                     for i in range(steps + 1)]
         rise = rise or span * 0.87
-        if rise <= h:
-            raise ValueError('A gothic arch needs rise greater than half the span')
+        if rise <= h * 1.02:
+            # A pointed arch needs rise > span/2; fall back to an equilateral arch rather than fail.
+            print(f'KIT_NOTE gothic arch rise {rise:.2f} <= half span {h:.2f}; using equilateral rise', flush=True)
+            rise = span * math.sqrt(3) / 2
         cx = (rise * rise - h * h) / (2 * h)
         r = h + cx
         apex = math.atan2(rise, -cx)
@@ -1446,6 +1449,33 @@ class Kit:
         root.location = Vector(location) + offset
         root.rotation_euler = [math.radians(a) for a in rotation]
         return root
+
+    def play_animation(self, root, speed=1.0, action=None, start=0.0):
+        """Loop an imported model's embedded animation (e.g. a rigged glTF walk) over the whole shot.
+        root is what kit.import_model returned; speed scales playback; action picks one by name
+        substring. Returns the animated objects. Whole repeats keep loops seamless only if the
+        clip length divides the shot; otherwise prefer non-looping shots."""
+        animated = []
+        for obj in [root, *root.children_recursive]:
+            ad = obj.animation_data
+            acts = [a for a in bpy.data.actions if action and action.lower() in a.name.lower()] if action else []
+            act = acts[0] if acts else (ad.action if ad and ad.action else None)
+            if act is None:
+                continue
+            ad = ad or obj.animation_data_create()
+            first, last = act.frame_range
+            length = max(1.0, last - first)
+            ad.action = None
+            track = ad.nla_tracks.new()
+            strip = track.strips.new(act.name, int(self.frame(start)), act)
+            strip.scale = 1.0 / speed
+            strip.repeat = max(1.0, (self.frames + 2) / (length / speed))
+            if hasattr(ad, 'action_slot') and hasattr(strip, 'action_slot') and act.slots:
+                strip.action_slot = act.slots[0]
+            animated.append(obj)
+        if not animated:
+            raise ValueError('No embedded animation found under this model')
+        return animated
 
     def _model_path(self, source):
         ref = next((r for r in self.references if r.id == source), None)

@@ -37,13 +37,15 @@ def main():
     a = ap.parse_args()
     folder = ROOT / 'acceptance' / a.slug
     spec = json.loads((folder / 'acceptance.json').read_text())
-    refs = []
+    refs, diagrams = [], []
     for item in spec.get('inputs', []):
         code, out = studio(a.root, 'ingest', (folder / 'inputs' / item['file']).resolve(), '--role', item['role'],
                            *(['--max-frames', item['max_frames']] if 'max_frames' in item else []))
         if code:
             raise SystemExit(f'ingest failed for {item["file"]}: {out}')
         refs.append({'id': out['id'], 'role': item['role'], 'note': item.get('note', '')})
+        if item.get('diagram'):
+            diagrams.append(out['id'])
         print('ingested', item['file'], out['id'], out['kind'], out.get('image_references'))
     brief = {**spec['brief'], 'references': refs}
     brief_file = a.root / 'briefs' / f'{a.slug}.json'
@@ -61,6 +63,12 @@ def main():
     job = a.root / job_id
     review = [sys.executable, str(ROOT / 'tools' / 'review' / 'review.py'), str(job), '--stage', stage,
               '--elements', '; '.join(spec['elements'])] + (['--expect-text'] if spec.get('expect_text') else [])
+    for ref in diagrams:
+        review += ['--diagram', ref]
+    if spec.get('overrides'):
+        overrides = a.root / 'briefs' / f'{a.slug}-overrides.json'
+        overrides.write_text(json.dumps(spec['overrides']))
+        review += ['--overrides', str(overrides)]
     verdict = subprocess.run(review, cwd=ROOT, capture_output=True, text=True)
     print(verdict.stdout[-3000:], verdict.stderr[-1500:])
     result = folder / 'result'
@@ -82,6 +90,7 @@ def main():
                '[0]scale=-2:540,setsar=1[a];[1]scale=-2:540,setsar=1[b];[a][b]hstack=inputs=2', '-frames:v', '1', target)
     jev = json.loads((src / 'jev-review.json').read_text())
     (result / 'review.json').write_text(json.dumps({'job_id': job_id, 'stage': stage, 'brief': brief,
+                                                    'reviewer_notes': spec.get('reviewer_notes', {}),
                                                     'jev': {'decision': jev['decision'], 'quality': jev['findings']['quality'],
                                                             'prompt_match': jev['findings']['prompt_match'],
                                                             'elements': jev['findings']['elements'],

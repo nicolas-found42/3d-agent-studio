@@ -44,9 +44,9 @@ Only `prompt` is required.
 
 | Kind | Extensions | Roles (first is default) | In the script |
 |---|---|---|---|
-| image | png jpg webp tif bmp gif heic exr hdr | subject, style, composition, palette, storyboard | `kit.image`, `kit.image_plane`, `kit.image_material` |
-| video | mp4 mov m4v webm mkv avi | as image, plus motion | each frame is an image: `ref.paths[i]`, `ref.times[i]` |
-| model | glb gltf (self-contained) obj fbx usd usda usdc usdz blend stl ply | asset | `kit.import_model(ref_id, size=…)` |
+| image | png jpg webp tif bmp gif (single frame) heic exr hdr | subject, style, composition, palette, storyboard | `kit.image`, `kit.image_plane`, `kit.image_material` |
+| video | mp4 mov m4v webm mkv avi, animated gif | as image, plus motion | each frame is an image: `ref.paths[i]`, `ref.times[i]` |
+| model | glb gltf (self-contained) obj fbx usd usda usdc usdz blend stl ply | asset | `kit.import_model(ref_id, size=…)`; `kit.play_animation(root)` loops an embedded rig animation |
 | data | csv tsv json | data | `kit.data(ref_id)` |
 | vector | svg | logo, asset | `kit.svg(ref_id)` |
 | font | ttf otf | font | `kit.text(..., font=ref_id)` |
@@ -61,7 +61,7 @@ Asset IDs are resolved before Blender runs, cached under `<root>/assets-cache`, 
 | Poly Haven | `polyhaven:<slug>[@1k\|2k\|4k]` | HDRIs, PBR textures, models |
 | ambientCG | `ambientcg:<AssetId>[@1K\|2K\|4K]` | PBR materials, HDRIs |
 | Fontsource | `fontsource:<id>[@weight][:italic]` | Fonts |
-| Khronos glTF samples | `khronos:<ModelName>` | CC0/CC-BY sample models only |
+| Khronos glTF samples | `khronos:<ModelName>` | CC0/CC-BY sample models only (e.g. `khronos:Fox`, a rigged walking fox, CC0 AND CC-BY-4.0) |
 | Wikimedia Commons | `wikimedia:File:<name>` | Images |
 | Openverse | `openverse:<uuid>` | Images |
 | The Met | `met:<objectID>` | Public-domain object photos |
@@ -69,7 +69,7 @@ Asset IDs are resolved before Blender runs, cached under `<root>/assets-cache`, 
 | BlenderKit | `blenderkit:<asset uuid>` | Free CC0 materials and models (`.blend`) |
 | Direct CC0 host | `url:https://…` on kenney.nl, sharetextures.com, cgbookcase.com, 3dtextures.me, quaternius.com, polyhaven.org, ambientcg.com | Files or zips from those hosts |
 
-Smithsonian 3D and NIH 3D were evaluated and left out: the former exposes no license field without a key, the latter no reachable API. Sketchfab, Poly Pizza and Europeana require keys.
+Downloads retry rate limits (HTTP 429/5xx) with backoff, and large Wikimedia originals are fetched as 3000 px thumbnails. Kenney pages load, but their zip links are not in the static HTML: pass the zip's direct URL. Smithsonian 3D and NIH 3D were evaluated and left out: the former exposes no license field without a key, the latter no reachable API. Sketchfab, Poly Pizza and Europeana require keys.
 
 ## Stages and evidence
 

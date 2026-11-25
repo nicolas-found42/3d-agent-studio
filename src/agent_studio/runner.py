@@ -149,7 +149,7 @@ def scene_stats(scene):
         obj = inst.object
         if obj.type == 'MESH':
             polys += len(obj.data.polygons)
-    animated = [o.name for o in scene.objects if o.animation_data and o.animation_data.action]
+    animated = [o.name for o in scene.objects if o.animation_data and (o.animation_data.action or len(o.animation_data.nla_tracks))]
     for data in list(bpy.data.materials) + list(bpy.data.lights) + list(bpy.data.cameras):
         if data.animation_data and data.animation_data.action:
             animated.append(data.name)
@@ -159,12 +159,13 @@ def scene_stats(scene):
     lights = [o for o in scene.objects if o.type == 'LIGHT' and not o.hide_render]
     emissive = any(n.type == 'EMISSION' or (n.type == 'BSDF_PRINCIPLED' and n.inputs['Emission Strength'].default_value > 0)
                    for m in bpy.data.materials if m.node_tree for n in m.node_tree.nodes)
+    toon = any(n.type == 'SHADERTORGB' for m in bpy.data.materials if m.node_tree for n in m.node_tree.nodes)
     sky = scene.world and scene.world.node_tree and any(n.type in ('TEX_SKY', 'TEX_ENVIRONMENT') for n in scene.world.node_tree.nodes)
     return {'objects': len(scene.objects), 'evaluated_polygons': polys, 'lights': len(lights),
             'emissive_materials': emissive, 'sky_or_hdri': bool(sky), 'engine': scene.render.engine,
             'camera': scene.camera.name, 'camera_type': scene.camera.data.type, 'lens_mm': round(scene.camera.data.lens, 2),
             'animated': sorted(set(animated)), 'view_transform': scene.view_settings.view_transform,
-            'look': scene.view_settings.look, 'motion_blur': scene.render.use_motion_blur}
+            'look': scene.view_settings.look, 'motion_blur': scene.render.use_motion_blur, 'toon_materials': toon}
 
 
 def render_still(scene, frame, path):

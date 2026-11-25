@@ -246,6 +246,8 @@ def probe_outputs(bins, job, stage, brief):
     warnings = frame_warnings(raw['stills'])
     if not scene['lights'] and not scene['emissive_materials'] and not scene['sky_or_hdri']:
         warnings.append('No lights, emissive materials, sky or HDRI: the scene is lit only by the flat world color')
+    if scene.get('toon_materials') and scene['engine'] == 'CYCLES':
+        warnings.append('kit.toon materials need EEVEE (kit.render(engine="EEVEE")); Cycles renders them as plain diffuse')
     if not scene['animated']:
         warnings.append('Nothing in the scene is keyframed; the video will be a still image')
     if not estimate['draft']['fits']:
