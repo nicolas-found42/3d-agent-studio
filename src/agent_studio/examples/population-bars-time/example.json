@@ -1,0 +1,31 @@
+{
+  "slug": "population-bars-time",
+  "title": "Wildlife Populations Over Time",
+  "category": "data",
+  "prompt": "A 3D bar chart of five species populations over ten years built from inline data: bars rise year by year with a large year label, colors per species, floor grid, on a clean background.",
+  "description": "Reveal a table of population counts with growing beveled bars and camera-facing labels in a clean gallery.",
+  "brief": {
+    "prompt": "A 3D bar chart of five species populations over ten years built from inline data: bars rise year by year with a large year label, colors per species, floor grid, on a clean background.",
+    "orientation": "square",
+    "seconds": 6,
+    "loop": false,
+    "fps": 30,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "slow orbit quarter turn",
+    "lighting": "soft gallery light",
+    "style": "clean infographic, flat colors with labels",
+    "motion": "bars grow year by year with year counter"
+  },
+  "techniques": [
+    "data table to grouped bars",
+    "bevel-preserving shape keys",
+    "year counter visibility intervals",
+    "camera-facing labels"
+  ]
+}

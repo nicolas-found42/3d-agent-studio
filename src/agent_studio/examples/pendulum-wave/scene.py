@@ -209,14 +209,17 @@ def build(kit):
 
     # ------------------------------------------------------------------ camera: overhead tilt
     center = Vector((0, 0.02, base_z + 0.33))
-    cam = kit.camera(tuple(center + Vector((0, -CAM_RADIUS, 0.3))), target=tuple(center), lens=55,
+    cam = kit.camera(tuple(center + Vector((0, -CAM_RADIUS, 0.3))), target=tuple(center), lens=48,
                      dof=CAM_RADIUS, fstop=8)
 
     def on_arc(t):
         # (1 - cos)/2 eases out of and back into the low view; equal at t = 0 and t = 1.
         k = (1 - math.cos(2 * math.pi * t)) / 2
         e = math.radians(ELEV_LOW + (ELEV_HIGH - ELEV_LOW) * k)
-        return center + Vector((0.0, -CAM_RADIUS * math.cos(e), CAM_RADIUS * math.sin(e)))
+        radius_horizontal = CAM_RADIUS * math.cos(e)
+        bearing = math.radians(24)
+        return center + Vector((0.22 + radius_horizontal * math.sin(bearing),
+                                -radius_horizontal * math.cos(bearing), CAM_RADIUS * math.sin(e)))
 
     kit.animate(cam, 'location', on_arc)
     kit.note('Pendulum i swings BASE_CYCLES + i times per loop; all bobs realign at the loop point.')

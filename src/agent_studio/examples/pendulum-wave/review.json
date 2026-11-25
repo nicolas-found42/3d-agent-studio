@@ -1,0 +1,53 @@
+{
+  "job_id": "574049e3893b49b189bcdeb9e1473755",
+  "drafts": 1,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: fine pendulum wires (0.66)",
+        "defect: interpenetration (0.41)",
+        "defect: noisy (0.71)",
+        "defect: set_unfinished (0.47)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "polished brass pendulum bobs": 0.95,
+      "fine pendulum wires": 0.66,
+      "a walnut support frame": 0.93,
+      "bobs at varying transverse positions": 0.83,
+      "a museum-style plinth": 0.73
+    },
+    "defects": {
+      "floating": 0.16,
+      "interpenetration": 0.41,
+      "too_dark": 0.05,
+      "blown_out": 0.05,
+      "noisy": 0.71,
+      "clipping": 0.25,
+      "placeholder": 0.03,
+      "empty": 0.12,
+      "set_unfinished": 0.47
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.15,
+      "2": 0.65,
+      "3": 0.2
+    }
+  },
+  "notes": {
+    "probe": "The lower view establishes the walnut frame on a dark museum plinth. The center still overturns that view and spreads the brass bobs into two lines.",
+    "timeline": "The bobs spread into arcs and alternating groups under one warm spot as the camera tilts up. The low opening and closing views align the bobs in a diagonal row, with the wood grain and brass reflections separating the apparatus from the dark gallery.",
+    "angles": "The wide image shows the full plinth and warm spot, and the oblique proof confirms a complete freestanding wooden frame around the suspension. The top-down view records the camera arc clear of the mechanism.",
+    "seam": "The four seam images match the diagonal bob line and the low camera position. The measured rendered first-to-extra difference is 0.00045 against typical sampled change of 0.01697.",
+    "playback": "Two decoded cycles sampled every half-second show the bobs leave alignment, move as transverse groups, and settle back into alignment as the camera comes down. Each loop uses 360 frames at 60 fps.",
+    "jev_look_items": "Faint paired lines are visible above the lit bobs in the oblique views. Some dark wires are subpixel at preview size. Overlap in projection is strongest from above, where the rail hides part of the suspension. The low and side views separate the bobs from the frame. Mild mottling appears in the shadows and the brushed wood remains visible. The apparatus sits on a simple museum plinth."
+  }
+}

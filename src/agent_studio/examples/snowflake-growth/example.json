@@ -1,0 +1,26 @@
+{
+  "slug": "snowflake-growth",
+  "title": "Snowflake Growth",
+  "category": "micro-macro",
+  "prompt": "A macro snowflake grows from a hexagonal plate: six dendritic arms branch outward symmetrically, sparkling ice against a dark blue background with cold rim light.",
+  "description": "Grow a six-fold ice crystal using radial hierarchies and staggered branches.",
+  "brief": {
+    "prompt": "A macro snowflake grows from a hexagonal plate: six dendritic arms branch outward symmetrically, sparkling ice against a dark blue background with cold rim light.",
+    "orientation": "square",
+    "seconds": 6,
+    "fps": 30,
+    "loop": false
+  },
+  "tags": {
+    "camera": "slow rotation on axis",
+    "lighting": "cold rim light on dark blue",
+    "style": "crystalline ice",
+    "motion": "dendritic arms grow outward"
+  },
+  "techniques": [
+    "instanced radial hierarchy logic",
+    "hexagonal seed plate",
+    "cascading branch growth windows",
+    "glossy ice with colored edge highlights"
+  ]
+}

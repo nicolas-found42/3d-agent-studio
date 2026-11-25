@@ -1,0 +1,87 @@
+{
+  "job_id": "24703dbf6abc4c7a8f9ea7f956eddb48",
+  "drafts": 1,
+  "scene_sha256": "c30d5e2f124dc269bcfc68eeb7c30207d83d8d17649cc3dae5d0927f6a37b961",
+  "review_hashes": {
+    "timeline.jpg": "ce699af55dff18c196fc8fbdca10e2aa26d65e272c596df297d268acfab8300d",
+    "angles.jpg": "9a456adea8b6c1e09ae702cfdb96233193742d2879cab8f3d1c68a89b7d7aa5a",
+    "seam.jpg": "b0c74cccff7c610c99908388755137bb0aaad46af8b7262b59db89722cbba3ed"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "two twisting backbone rails": 0.86,
+      "color-coded crossbars": 0.96,
+      "glossy spherical beads": 0.97,
+      "a blue background": 0.79
+    },
+    "defects": {
+      "floating": 0.07,
+      "interpenetration": 0.23,
+      "too_dark": 0.04,
+      "blown_out": 0.04,
+      "noisy": 0.69,
+      "clipping": 0.09,
+      "placeholder": 0.06,
+      "empty": 0.1,
+      "set_unfinished": 0.69
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.29,
+      "2": 0.62,
+      "3": 0.09
+    },
+    "look": [
+      "defect: noisy (0.69)",
+      "defect: set_unfinished (0.69)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "defect: noisy (0.69)": "The small azure flecks in the background are outlying particles, while close faceted highlights are physically reflected. At draft resolution the moving beads soften slightly but the rail remains clearly outlined.",
+      "defect: set_unfinished (0.69)": "The shot is a single complete educational molecular model in deliberately empty space. Wider views emphasize orbit scale and still show both rail ends and the connecting crossbars."
+    }
+  },
+  "notes": {
+    "probe": "The revised framing keeps both ends of the long helix inside the vertical image with room for the camera to bob. The middle pose shows a distinct pearl-like phosphate rail against the dark blue gradient and clearly separated colors at the base crosslinks. The last pose is close to the first.",
+    "timeline": "The front-lit phosphate beads and four base colors remain readable around the combined molecule rotation and orbital camera. The upward and downward sweep shows increasingly foreshortened ends at opposite phases. An outer terminal bead brushes the lower edge at the steepest tilt, while both rails and all central base pairs remain legible.",
+    "angles": "The expanse of navy negative space keeps the molecular model isolated. The overhead proof shows the full circular camera path. The quarter-angle proof shows the two helix rails tied together through the crossbars.",
+    "seam": "The last two and first two frames continue the camera motion in the same direction. Neither the tube highlight nor the lower bar jumps visibly. Normalized first-versus-extra difference is 0.00407, below a typical sampled change of 0.05668."
+  },
+  "render": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 360,
+      "height": 640,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 1256343
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 145,
+      "predicted_minutes": 2.72,
+      "budget_minutes": 10,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 2.72,
+      "actual_minutes": 1.422,
+      "budget_minutes": 10.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.913
+    },
+    "warnings": []
+  }
+}

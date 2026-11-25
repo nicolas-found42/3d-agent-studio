@@ -1,0 +1,29 @@
+{
+  "slug": "kinetic-type-manifesto",
+  "title": "Kinetic Type Manifesto",
+  "category": "typography",
+  "prompt": "Kinetic typography: the words MAKE / THINGS / MOVE appear one after another as chunky extruded 3D letters that slam in, rotate and stack, in bold flat colors on a flat background.",
+  "description": "Build a colorful dimensional poster with bold extruded words, readable color fields, and camera cuts.",
+  "brief": {
+    "prompt": "Kinetic typography: the words MAKE / THINGS / MOVE appear one after another as chunky extruded 3D letters that slam in, rotate and stack, in bold flat colors on a flat background.",
+    "orientation": "vertical",
+    "seconds": 6,
+    "fps": 30,
+    "loop": false,
+    "assets": [
+      "fontsource:archivo-black@400"
+    ]
+  },
+  "tags": {
+    "camera": "snappy cuts via camera jumps and pushes",
+    "lighting": "flat graphic studio",
+    "style": "bold flat colors and extruded type",
+    "motion": "words slam and rotate in sequence"
+  },
+  "techniques": [
+    "extruded Archivo Black with separate ivory faces and bevel shadows",
+    "chamfered color plates and graphic semi-ring motifs",
+    "keyframed group impact overshoot and 3D pitch",
+    "orthographic match cuts and vertical shifts"
+  ]
+}

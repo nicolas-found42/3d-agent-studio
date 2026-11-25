@@ -1,0 +1,56 @@
+{
+  "job_id": "9a25330ac6ea494aa85fd2ba9ec996a9",
+  "drafts": 2,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: ribbon growth across the frames (0.59)",
+        "defect: set_unfinished (0.47)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "intertwined luminous ribbons": 0.97,
+      "teal strands": 0.97,
+      "magenta strands": 0.97,
+      "black negative space": 0.99,
+      "ribbon growth across the frames": 0.59
+    },
+    "defects": {
+      "floating": 0.05,
+      "interpenetration": 0.24,
+      "too_dark": 0.04,
+      "blown_out": 0.05,
+      "noisy": 0.23,
+      "clipping": 0.11,
+      "placeholder": 0.03,
+      "empty": 0.05,
+      "set_unfinished": 0.47
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0.02,
+      "1": 0.39,
+      "2": 0.4,
+      "3": 0.19
+    },
+    "prompt_match_probabilities": {
+      "0": 0,
+      "1": 0.03,
+      "2": 0.18,
+      "3": 0.79
+    }
+  },
+  "notes": {
+    "probe": "The opening strands curl around black negative space. A wide pale-teal ribbon crosses the nearer plane in the middle, and the final view looks through a deeper spiral of magenta and blue.",
+    "timeline": "Teal, ultramarine, blue-violet, and magenta lines keep a defined center as the nearer lines grow thicker across the frame. Thin tips and broad ribbons remain distinct where they turn across the opening.",
+    "angles": "The mid-motion wide and three-quarter proofs show the flow curling through a volume, with the endpoints describing a long arc. The plain top-down proof reveals the side-on path through the field.",
+    "playback": "Across the decoded six-second clip, a sparse leading curl fills in behind the growing tips while the camera moves forward into the opening. The blue loop in the inner channel is visible only in the developed view. QC confirms 180 frames at 30 fps and no warnings.",
+    "jev_look_items": "The repeated teal and magenta arrangement can make the growth read as camera motion in six stills. The decoded clip shows new arcs developing inside the opening, and the evaluated blend confirms 208 curves with mean curve-reveal fractions of 30.1%, 52.8%, 86.5%, and 100% at frames 1, 77, 113, and 180. The cropped strands are part of a wider volume visible in the angle board, and the black background and open center are deliberate."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "slug": "robot-dog-idle",
+  "title": "Robot Dog Idle",
+  "category": "character",
+  "prompt": "A friendly cartoon robot dog sits on a checkered floor: boxy body, round eyes on a screen face, antenna ears. It breathes, tilts its head and wags a spring tail in a loop.",
+  "description": "Rig a sitting robot dog with nested pivots, colored toon bands and loop-safe secondary motion.",
+  "brief": {
+    "prompt": "A friendly cartoon robot dog sits on a checkered floor: boxy body, round eyes on a screen face, antenna ears. It breathes, tilts its head and wags a spring tail in a loop.",
+    "orientation": "square",
+    "seconds": 5,
+    "fps": 24,
+    "loop": true,
+    "seed": 11
+  },
+  "tags": {
+    "camera": "low hero angle with a slow repeating arc",
+    "lighting": "graphic toon lighting with ink outlines",
+    "style": "cel-shaded with outlines in EEVEE",
+    "motion": "breathing, head tilt, and spring tail wag"
+  },
+  "techniques": [
+    "tinted Shader to RGB bands layered with lit plastic",
+    "curved checker cyclorama",
+    "inverted-hull ink lines and controlled eye glow",
+    "joint empties for secondary motion",
+    "closed loop camera and idle cycles"
+  ]
+}

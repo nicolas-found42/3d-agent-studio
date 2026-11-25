@@ -1,0 +1,92 @@
+{
+  "job_id": "665e57c91c9d47a099c573b43bd7399b",
+  "drafts": 2,
+  "scene_sha256": "8bff0bc9f30befda75822ca1506f0d49340f13ac05c8338ef5c85159423228d5",
+  "review_hashes": {
+    "timeline.jpg": "a89c7bc82f031886730d0e151493918ac31e72da91b302927686e5a2e27a26a1",
+    "angles.jpg": "2191a1fddadbaef26b1f8f0e83bccb1b0d3839fab94c90e24b3828170c1c5b20"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "a lunar lander with multiple landing legs": 0.96,
+      "a cratered grey terrain": 0.97,
+      "a black sky": 0.99,
+      "a low dust cloud or moving dust": 0.78
+    },
+    "defects": {
+      "floating": 0.27,
+      "interpenetration": 0.28,
+      "too_dark": 0.05,
+      "blown_out": 0.05,
+      "noisy": 0.48,
+      "clipping": 0.08,
+      "placeholder": 0.02,
+      "empty": 0.26,
+      "set_unfinished": 0.31
+    },
+    "quality": "polished",
+    "prompt_match": "clear",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.28,
+      "2": 0.58,
+      "3": 0.14
+    },
+    "prompt_match_probabilities": {
+      "0": 0,
+      "1": 0.33,
+      "2": 0.42,
+      "3": 0.25
+    },
+    "look": [
+      "defect: noisy (0.48)",
+      "defect: set_unfinished (0.31)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "defect: noisy (0.48)": "Fine specks in the fourth and fifth plates are the intended dust and ballistic grains, while the rock surface has deliberate irregular regolith shading. The viewport-wide silhouette and dark sky remain clean.",
+      "defect: set_unfinished (0.31)": "The three-quarter proof reveals the deliberately bounded exterior terrain tile. The full low-angle shot stays within the textured foreground, craters and intended horizon."
+    }
+  },
+  "notes": {
+    "probe": "The public Apollo Lunar Module render shows a sharply side-lit flight attitude, four distinct legs, antennas and gold foil. The first two plates progress toward the rough cratered terrain, and the final feet meet the landing patch under a distinct Earth disk and black sky.",
+    "credits": "Credits for open-licensed assets used in this scene.\n\nApollo Lunar Module by NASA \u2014 LicenseRef-NASA-Media-Guidelines \u2014 https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Apollo%20Lunar%20Module",
+    "timeline": "The imported module descends from above the sharp horizon with the dish, foil, ladder and four legs visible against a black sky. Touchdown begins in the fourth plate, followed by a thin outward-growing dust field around the feet. The final low fixed view shows the leg pads maintaining ground contact and a hard sun shadow.",
+    "angles": "The wide plate exposes the near rocks, perturbed crater lip and sharp horizon. Higher views reveal the irregular terrain and the exact landing patch. They show the positions of the individual legs relative to that patch."
+  },
+  "render": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 360,
+      "height": 450,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 403087
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 144,
+      "predicted_minutes": 2.88,
+      "budget_minutes": 18,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 2.88,
+      "actual_minutes": 2.127,
+      "budget_minutes": 18.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.354
+    },
+    "warnings": []
+  }
+}

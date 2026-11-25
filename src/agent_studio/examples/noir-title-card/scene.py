@@ -22,12 +22,12 @@ WINDOW_Y = (-1.55, -0.25)
 WINDOW_Z = (0.85, 2.55)
 SLAT_PITCH = 0.055
 TITLE = 'THE LONG NIGHT'
-TITLE_X, TITLE_Z = 0.55, 1.62
-TITLE_SIZE = 0.36
+TITLE_X, TITLE_Z = 0.06, 1.62
+TITLE_SIZE = 0.293
 FONT = 'fontsource:playfair-display@700'
 
 # ----------------------------------------------------------------------------- timing (shot progress)
-TITLE_IN = (0.30, 0.72)
+TITLE_IN = (0.09, 0.31)
 
 # ----------------------------------------------------------------------------- greys
 PLASTER = '#B8B6B2'
@@ -73,7 +73,10 @@ def build(kit):
 
     # ------------------------------------------------------------------ room shell
     kit.box('Back wall', (6.0, 0.1, 3.0), (0.6, WALL_Y + 0.05, 1.5), plaster)
-    kit.box('Floor', (6.0, 6.0, 0.05), (0.6, -2.6, -0.025), floor)
+    kit.box('Floor', (6.0, 6.0, 0.05), (0.6, -2.6, -0.025), floor, ground=True)
+    # Complete the room footprint outside the title framing and leave the proof view open above the return.
+    kit.box('Right partition', (.13, 4.8, 1.08), (3.57, -2.38, .54), wainscot, bevel=.013)
+    kit.box('Right partition rail', (.185, 4.8, .063), (3.56, -2.38, 1.095), trim, bevel=.012)
     # Wainscot panelling with a chair rail and skirting: three horizontal bands of detail.
     kit.box('Wainscot', (6.0, 0.03, 0.95), (0.6, WALL_Y - 0.015, 0.475), wainscot)
     for k in range(9):
@@ -134,6 +137,7 @@ def build(kit):
         y = rng.uniform(y0 - 1.0, y1 + 1.0)
         z_start = rng.uniform(0.0, 4.0)
         s = kit.cylinder(f'Rain streak {k}', 0.0025, 0.12, (x, y, z_start), streak, segments=4, smooth=False)
+        s['studio_ground'] = True  # Exterior weather is outside the measured room footprint.
         speed = rng.uniform(5.5, 7.5)
 
         def fall(t, z0_=z_start, v=speed):
@@ -145,7 +149,8 @@ def build(kit):
     city = kit.emissive('Distant windows', '#FFFFFF', strength=0.6)
     for k in range(18):
         kit.plane(f'Distant window {k}', (rng.uniform(0.3, 0.8), rng.uniform(0.4, 0.9)),
-                  (ROOM_X0 - 14.0, rng.uniform(-5.0, 3.0), rng.uniform(0.5, 6.0)), city, rotation=(90, 0, 90))
+                  (ROOM_X0 - 14.0, rng.uniform(-5.0, 3.0), rng.uniform(0.5, 6.0)), city,
+                  rotation=(90, 0, 90), ground=True)
 
     # ------------------------------------------------------------------ props
     # Coat hook with a fedora: a silhouette that says the genre before the words arrive.
@@ -165,20 +170,46 @@ def build(kit):
     kit.box('Light switch', (0.08, 0.012, 0.12), (-0.55, WALL_Y - 0.006, 1.25), trim, bevel=0.004)
     # Filing cabinet with an ashtray and a burning cigarette: the smoke's source is on screen.
     cab = kit.material('Cabinet steel', '#3C3C3C', roughness=0.45, metallic=0.6)
-    kit.box('Filing cabinet', (0.48, 0.6, 1.05), (2.0, -0.33, 0.525), cab, bevel=0.01)
+    kit.box('Filing cabinet', (0.48, 0.6, 1.05), (1.47, -0.33, 0.525), cab, bevel=0.01)
     for k in range(3):
-        kit.box('Drawer front', (0.42, 0.01, 0.3), (2.0, -0.635, 0.2 + k * 0.33), cab, bevel=0.006)
-        kit.box('Drawer pull', (0.12, 0.02, 0.02), (2.0, -0.65, 0.3 + k * 0.33), metal, bevel=0.004)
+        kit.box('Drawer front', (0.42, 0.01, 0.3), (1.47, -0.635, 0.2 + k * 0.33), cab, bevel=0.006)
+        kit.box('Drawer pull', (0.12, 0.02, 0.02), (1.47, -0.65, 0.3 + k * 0.33), metal, bevel=0.004)
     kit.lathe('Ashtray', [(0.0, 0.0), (0.075, 0.0), (0.08, 0.02), (0.07, 0.025), (0.06, 0.008), (0.0, 0.008)],
               segments=40, material=kit.glass('Ashtray glass', '#DDDDDD', roughness=0.08),
-              location=(1.92, -0.32, 1.05))
-    kit.cylinder('Cigarette', 0.0045, 0.08, (1.94, -0.34, 1.075), kit.material('Paper', '#E8E8E8', roughness=0.7),
+              location=(1.39, -0.32, 1.05))
+    kit.cylinder('Cigarette', 0.0045, 0.08, (1.41, -0.34, 1.075), kit.material('Paper', '#E8E8E8', roughness=0.7),
                  rotation=(0, 80, 20), segments=12)
-    kit.sphere('Cigarette ember', 0.005, (1.98, -0.326, 1.082), kit.emissive('Ember', '#FFFFFF', 4.0), segments=10,
+    kit.sphere('Cigarette ember', 0.005, (1.45, -0.326, 1.082), kit.emissive('Ember', '#FFFFFF', 4.0), segments=10,
                rings=6)
 
+    # The proof camera also sees the adjacent desk, lamp, and upholstered office chair.
+    dx, dy = 2.85, -1.37
+    kit.box('Writing desk top', (.93, .64, .095), (dx,dy,.82), wainscot, bevel=.028)
+    for x in (dx-.39,dx+.39):
+        for y in (dy-.25,dy+.25):
+            kit.box('Desk leg', (.069,.071,.79), (x,y,.395), trim, bevel=.009)
+    kit.box('Desk drawer', (.68,.59,.18), (dx,dy,.706), wainscot, bevel=.016)
+    kit.box('Desk blotter', (.48,.34,.011), (dx,dy-.067,.874), felt, bevel=.012)
+    kit.box('Paper folders', (.21,.31,.046), (dx+.24,dy+.14,.898), blind, bevel=.008)
+    kit.lathe('Desk lamp base', [(0,0),(.116,0),(.126,.022),(.078,.042),(0,.048)],
+              segments=30, material=metal, location=(dx-.27,dy+.13,.866))
+    kit.tube('Desk lamp arm', [(dx-.27,dy+.13,.89),(dx-.27,dy+.13,1.18),(dx-.22,dy+.04,1.22)],
+             .019, metal)
+    kit.lathe('Enamel desk lamp shade', [(.131,0),(.12,.055),(.068,.102),(.044,.114),
+                                        (.041,.096),(.063,.09),(.112,.05),(.125,0)],
+              segments=38, material=metal, location=(dx-.22,dy+.04,1.17))
+    cx, cy = 2.70, -2.16
+    kit.box('Office chair seat', (.51,.48,.094), (cx,cy,.452), felt, bevel=.045)
+    kit.box('Office chair back', (.48,.092,.45), (cx,cy-.23,.688), felt, bevel=.046)
+    kit.cylinder('Office chair stem', .056,.37,(cx,cy,.215),metal,segments=18)
+    for i in range(5):
+        a = math.tau*i/5
+        kit.tube('Chair splayed base', [(cx,cy,.074),(cx+.24*math.cos(a),cy+.24*math.sin(a),.056)],
+                 .026,metal,resolution=3)
+
     # ------------------------------------------------------------------ title
-    ink = kit.material('Title paint', INK, roughness=0.55)
+    ink = kit.material('Ivory letter paint', '#F2F2F2', roughness=0.67,
+                       emission='#DDDDDD', emission_strength=.55)
     nt = ink.node_tree
     out = next(n for n in nt.nodes if n.type == 'OUTPUT_MATERIAL')
     paint = out.inputs['Surface'].links[0].from_socket
@@ -190,11 +221,11 @@ def build(kit):
     fade.inputs[0].default_value = 0.0
     kit.key(fade.inputs[0], 'default_value', [(0.0, 0.0), (TITLE_IN[0], 0.0), (TITLE_IN[1], 1.0), (1.0, 1.0)])
     kit.text(TITLE, size=TITLE_SIZE, location=(TITLE_X, WALL_Y - 0.004, TITLE_Z), rotation=(90, 0, 0),
-             material=ink, extrude=0.002, font=FONT, name='Title', spacing=1.08)
+             material=ink, extrude=0.002, font=FONT, name='Title', spacing=1.02)
     kit.box('Title rule', (2.3, 0.004, 0.012), (TITLE_X, WALL_Y - 0.002, TITLE_Z - 0.09), ink)
 
     # ------------------------------------------------------------------ smoke
-    smoke = kit.box('Cigarette smoke', (1.4, 0.9, 1.75), (1.65, -0.5, 1.08 + 0.875))
+    smoke = kit.box('Cigarette smoke', (1.4, 0.9, 1.75), (1.12, -0.46, 1.08 + 0.875))
     smat = kit.material('Smoke volume', '#FFFFFF')
     snt = smat.node_tree
     snt.nodes.clear()
@@ -264,11 +295,13 @@ def build(kit):
     snt.links.new(fade_top.outputs['Result'], m2.inputs[1])
     dens = snt.nodes.new('ShaderNodeMath')
     dens.operation = 'MULTIPLY'
-    dens.inputs[1].default_value = 9.0
+    dens.inputs[1].default_value = 16.0
     snt.links.new(m2.outputs[0], dens.inputs[0])
     snt.links.new(dens.outputs[0], vol.inputs['Density'])
     smoke.data.materials.append(smat)
     smoke.visible_shadow = False
+    kit.spot('Cigarette smoke edge', (.98, -.61, 1.07), (1.2, -.45, 2.17),
+             power=17, color='#E3E3E3', angle=24, blend=.55, radius=.035)
     # The noise field sinks through the box while the mask stays put: the smoke appears to rise.
     kit.animate(drift.inputs['Location'], 'default_value', lambda t: (0.12 * t, 0.05 * t, -0.9 * t), step=4,
                 interpolation='BEZIER')
@@ -286,6 +319,6 @@ def build(kit):
     kit.render(exposure=0.0, look='AgX - High Contrast', motion_blur=True, shutter=0.5)
 
     # ------------------------------------------------------------------ camera: slow push-in
-    cam = kit.camera((1.45, -4.25, 1.55), target=(-0.35, 0.0, 1.52), lens=30, dof=4.3, fstop=5.6)
-    kit.dolly(cam, (1.45, -4.25, 1.55), (1.2, -3.55, 1.58), target_start=(-0.35, 0.0, 1.52),
+    cam = kit.camera((1.45, -4.25, 1.55), target=(-0.12, 0.0, 1.52), lens=28, dof=4.3, fstop=5.6)
+    kit.dolly(cam, (1.45, -4.25, 1.55), (1.2, -3.55, 1.58), target_start=(-0.12, 0.0, 1.52),
               target_end=(-0.1, 0.0, 1.55), ease_kind='in_out', power=1.6)

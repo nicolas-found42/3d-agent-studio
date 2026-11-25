@@ -124,7 +124,7 @@ def sand_material(kit):
     nt.links.new(sep.outputs['Z'], steep.inputs[0])
     steep.inputs[1].default_value = 0.6
     nt.links.new(tone.outputs['Fac'], steep.inputs[2])
-    ramp = kit._ramp(nt, [(0.0, '#6E5C4E'), (0.75, '#9C8670'), (1.3, '#B5A086')])  # muted: the moon and fire tint it
+    ramp = kit.color_ramp(nt, [(0.0, '#6E5C4E'), (0.75, '#9C8670'), (1.0, '#B5A086')])  # muted: the moon and fire tint it
     nt.links.new(steep.outputs[0], ramp.inputs['Fac'])
     nt.links.new(ramp.outputs['Color'], bs.inputs['Base Color'])
     return mat
@@ -138,7 +138,7 @@ def night_sky(kit, moon_dir):
     dirv = coord.outputs['Generated']          # in a world shader this is the view direction
     sep = nt.nodes.new('ShaderNodeSeparateXYZ')
     nt.links.new(dirv, sep.inputs[0])
-    grad = kit._ramp(nt, [(0.0, '#2A3A5C'), (0.12, '#14213D'), (0.5, '#070C1C'), (1.0, '#03050D')])
+    grad = kit.color_ramp(nt, [(0.0, '#2A3A5C'), (0.12, '#14213D'), (0.5, '#070C1C'), (1.0, '#03050D')])
     nt.links.new(sep.outputs['Z'], grad.inputs['Fac'])
     # Moon glow: dot(view, moon) sharpened with a power.
     dot = nt.nodes.new('ShaderNodeVectorMath')
@@ -251,7 +251,7 @@ def moon(kit, moon_dir, no_ink):
     maria = nt.nodes.new('ShaderNodeTexNoise')
     maria.inputs['Scale'].default_value = 2.2
     maria.inputs['Detail'].default_value = 5.0
-    ramp = kit._ramp(nt, [(0.38, '#9C9A93'), (0.55, '#F4F1E6')])
+    ramp = kit.color_ramp(nt, [(0.38, '#9C9A93'), (0.55, '#F4F1E6')])
     nt.links.new(maria.outputs['Fac'], ramp.inputs['Fac'])
     nt.links.new(ramp.outputs['Color'], em.inputs['Color'])
     distance = 1800.0   # inside the camera's 2000 m clip range
@@ -277,7 +277,7 @@ def campfire(kit, no_ink):
     cracks = nt.nodes.new('ShaderNodeTexVoronoi')
     cracks.feature = 'DISTANCE_TO_EDGE'
     cracks.inputs['Scale'].default_value = 18.0
-    ramp = kit._ramp(nt, [(0.0, '#FF6A1A'), (0.06, '#000000')])
+    ramp = kit.color_ramp(nt, [(0.0, '#FF6A1A'), (0.06, '#000000')])
     nt.links.new(cracks.outputs['Distance'], ramp.inputs['Fac'])
     nt.links.new(ramp.outputs['Color'], bs.inputs['Emission Color'])
     bs.inputs['Emission Strength'].default_value = 6.0
@@ -300,9 +300,9 @@ def campfire(kit, no_ink):
     coord = nt.nodes.new('ShaderNodeTexCoord')
     sep = nt.nodes.new('ShaderNodeSeparateXYZ')
     nt.links.new(coord.outputs['Generated'], sep.inputs[0])
-    col = kit._ramp(nt, [(0.0, '#FFF2C4'), (0.35, '#FFB43A'), (0.75, '#FF5A10'), (1.0, '#B0200A')])
+    col = kit.color_ramp(nt, [(0.0, '#FFF2C4'), (0.35, '#FFB43A'), (0.75, '#FF5A10'), (1.0, '#B0200A')])
     nt.links.new(sep.outputs['Z'], col.inputs['Fac'])
-    alpha = kit._ramp(nt, [(0.55, '#FFFFFF'), (1.0, '#000000')])
+    alpha = kit.color_ramp(nt, [(0.55, '#FFFFFF'), (1.0, '#000000')])
     nt.links.new(sep.outputs['Z'], alpha.inputs['Fac'])
     em = nt.nodes.new('ShaderNodeEmission')
     em.inputs['Strength'].default_value = 9.0
@@ -475,7 +475,7 @@ def drifting_sand(kit, sand_mat, no_ink):
     streak.inputs['Scale'].default_value = 2.0
     streak.inputs['Detail'].default_value = 6.0
     nt.links.new(mapping.outputs['Vector'], streak.inputs['Vector'])
-    ramp = kit._ramp(nt, [(0.52, '#000000'), (0.75, '#2A2A2A')])
+    ramp = kit.color_ramp(nt, [(0.52, '#000000'), (0.75, '#2A2A2A')])
     nt.links.new(streak.outputs['Fac'], ramp.inputs['Fac'])
     nt.links.new(ramp.outputs['Color'], bs.inputs['Alpha'])
     sh = kit.animate(mapping.inputs['Location'], 'default_value', lambda t: (-t * 1.4, 0.0, t * 0.6))

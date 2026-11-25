@@ -1,0 +1,94 @@
+{
+  "job_id": "6d008344a0d248c89b8a4370df5f2961",
+  "drafts": 1,
+  "scene_sha256": "7b12bf9cc3d1e97f5467032c0f1d9b48ae6655c5bedf1d9e9ab8e7a4a7538853",
+  "review_hashes": {
+    "timeline.jpg": "9bb39f8d30bc7f615dd9eecc95f95dbfb6df2ccdcc36bf9e49642b0cfe29a929",
+    "angles.jpg": "81cb4adce391c3b6816a4bccc9f2228faf7569ebd67cbd67eab6f7c4f43d2b14",
+    "seam.jpg": "345be8d0682b2d3257047b97352094eb562305558327ba8cc39a17006ac58cd8"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "a top down coffee cup with a spoon": 0.97,
+      "a croissant": 0.93,
+      "red or blue berries": 0.98,
+      "a jar of jam": 0.89,
+      "linen underneath": 0.6
+    },
+    "defects": {
+      "floating": 0.22,
+      "interpenetration": 0.48,
+      "too_dark": 0.03,
+      "blown_out": 0.07,
+      "noisy": 0.47,
+      "clipping": 0.09,
+      "placeholder": 0.02,
+      "empty": 0.08,
+      "set_unfinished": 0.69
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.12,
+      "2": 0.66,
+      "3": 0.22
+    },
+    "look": [
+      "element: linen underneath (0.60)",
+      "defect: interpenetration (0.48)",
+      "defect: noisy (0.47)",
+      "defect: set_unfinished (0.69)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "element: linen underneath (0.60)": "The pale table surface and diagonal teal napkin use procedural fabric weaves. Thread contrast is subtle in the compressed gallery board; the napkin edge and stacked dishes show the fabric plane clearly.",
+      "defect: interpenetration (0.48)": "The spoon crosses above the cup rim and its white handle in the overhead view, with a vertical rise in the angled evidence. The croissant segments overlap intentionally as laminated pastry.",
+      "defect: noisy (0.47)": "Soft grain appears chiefly in the linen and glaze highlights. The moving spoon and translucent steam remain legible.",
+      "defect: set_unfinished (0.69)": "The alternate angle exposes the edge of the neutral flat-lay surface. The intentional top-down setup stays inside that surface for the whole result."
+    }
+  },
+  "notes": {
+    "probe": "The saucer, berries, brass jar lid, open preserves, and laminated pastry all fit the overhead frame. The spoon changes orientation by half a turn midway and returns nearly to its starting pose by the final still. Translucent steam traces are visible above the coffee.",
+    "timeline": "The croissant ridges, open jam jar, and two groups of berries stay fixed in an overhead composition. The brass spoon completes a rotation around the cup while three translucent wisps change shape above it. The warning about small overall frame changes is consistent with the requested locked camera and localized motion.",
+    "angles": "The wide and overhead proofs show the diagonal teal napkin and separated plates with enough room between them. The oblique proof confirms the elevated cup rim, separate jar lid, and low relief pastry layers.",
+    "seam": "The warm spoon highlight moves across the center of the coffee in the same direction before and after the join. The wisp silhouettes and shadows match in the bordering frames. The first and baked extra frame differ by normalized mean 0.00003."
+  },
+  "render": {
+    "video": {
+      "frames": 120,
+      "duration_seconds": 5.0,
+      "fps": 24,
+      "width": 360,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 125057
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 121,
+      "predicted_minutes": 1.63,
+      "budget_minutes": 18,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 1.63,
+      "actual_minutes": 0.795,
+      "budget_minutes": 18.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 1.05
+    },
+    "warnings": [
+      "Sampled frames barely change; the animation may be missing"
+    ]
+  }
+}

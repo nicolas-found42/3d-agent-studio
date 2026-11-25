@@ -1,0 +1,32 @@
+{
+  "slug": "flow-field-ribbons",
+  "title": "Flow-Field Ribbons",
+  "category": "abstract",
+  "prompt": "Hundreds of thin luminous ribbons grow along a smooth 3D noise flow field on black, colored from teal to magenta, as the camera glides through them.",
+  "description": "Integrate a noisy corkscrew field into a layered ribbon tunnel and guide the camera through its moving depth.",
+  "brief": {
+    "prompt": "Hundreds of thin luminous ribbons grow along a smooth 3D noise flow field on black, colored from teal to magenta, as the camera glides through them.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "loop": false,
+    "fps": 30,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "slow push through the ribbons",
+    "lighting": "emissive only on black",
+    "style": "generative glowing gradients",
+    "motion": "ribbons grow along a noise field"
+  },
+  "techniques": [
+    "midpoint streamline integration",
+    "golden-angle annulus seeds",
+    "flat profiles with keyed bevel progress",
+    "position-driven emission gradients",
+    "focal depth and glowing leading tips"
+  ]
+}

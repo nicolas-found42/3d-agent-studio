@@ -1,0 +1,33 @@
+{
+  "slug": "lunar-landing",
+  "title": "Lunar Landing",
+  "category": "space",
+  "prompt": "A lunar lander descends onto a cratered grey surface under a hard low sun and black sky, its engine blasting dust outward in a ring as the legs touch down.",
+  "description": "Animate NASA\u2019s open Apollo lunar module over irregular crater terrain with sunlit ballistic dust.",
+  "brief": {
+    "prompt": "A lunar lander descends onto a cratered grey surface under a hard low sun and black sky, its engine blasting dust outward in a ring as the legs touch down.",
+    "orientation": "portrait",
+    "seconds": 6,
+    "fps": 24,
+    "loop": false,
+    "budget_minutes": {
+      "draft": 18
+    },
+    "assets": [
+      "nasa:3D Models/Apollo Lunar Module/Apollo Lunar Module.glb"
+    ]
+  },
+  "tags": {
+    "camera": "low static camera on surface",
+    "lighting": "hard low sun and black sky",
+    "style": "photoreal regolith",
+    "motion": "lander descends and dust blows outward"
+  },
+  "techniques": [
+    "NASA GLB animation under an imported root",
+    "warped crater height field",
+    "sunlit ballistic dust grains",
+    "radially masked touchdown haze",
+    "landing and settlement keyframes"
+  ]
+}

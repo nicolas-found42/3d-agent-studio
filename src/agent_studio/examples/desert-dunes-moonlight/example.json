@@ -10,7 +10,10 @@
     "seconds": 5,
     "loop": false,
     "fps": 24,
-    "seed": 11
+    "seed": 11,
+    "budget_minutes": {
+      "draft": 16
+    }
   },
   "tags": {
     "camera": "locked-off with subtle handheld",

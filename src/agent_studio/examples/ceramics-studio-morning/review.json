@@ -1,0 +1,90 @@
+{
+  "job_id": "2c1c84cca23f44daba4fc6ae043ec584",
+  "drafts": 1,
+  "scene_sha256": "10566a91a6ac6a823a3156ee153b174977a890624c603dc3024df53871ef0734",
+  "review_hashes": {
+    "timeline.jpg": "2c4e3d9e5b082c25681bfb904ee0976ba00964ac095caf75a7e21c9519ec7c7f",
+    "angles.jpg": "4da63b523b3b5d901f4b0ed60137f3ef4a1e4c904c5c7dfa05fcc55a8ba4e886"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "wooden shelves": 0.97,
+      "glazed bowls and vases in different colors": 0.99,
+      "a potter wheel": 0.68,
+      "small pottery tools": 0.93,
+      "warm window light": 0.75
+    },
+    "defects": {
+      "floating": 0.2,
+      "interpenetration": 0.32,
+      "too_dark": 0.04,
+      "blown_out": 0.1,
+      "noisy": 0.67,
+      "clipping": 0.29,
+      "placeholder": 0.03,
+      "empty": 0.08,
+      "set_unfinished": 0.57
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.23,
+      "2": 0.67,
+      "3": 0.1
+    },
+    "look": [
+      "element: a potter wheel (0.68)",
+      "defect: interpenetration (0.32)",
+      "defect: noisy (0.67)",
+      "defect: set_unfinished (0.57)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "element: a potter wheel (0.68)": "The low round dark object at front center is the potter wheel, with the unglazed salmon bowl seated on its silver-gray rotating wheel head. The wider proof shows sculpted layers of the circular body.",
+      "defect: interpenetration (0.32)": "The pottery touches the shelves and floor, and the clay bowl is firmly seated on the circular wheel head. No accidental surface overlap showed in the subject framing.",
+      "defect: noisy (0.67)": "Wood grain, mist and the scattered bright dust motes occupy the intended textural range. A little diffuse shadow grain is visible at draft sampling but does not obscure pottery contours or tool shapes.",
+      "defect: set_unfinished (0.57)": "The outside review views show the intentionally finite setup, with completed shelving, workshop bench and light-facing window. Its outer wall edge stays out of the camera framing."
+    }
+  },
+  "notes": {
+    "probe": "The wheel and clay bowl anchor the left side of the bench while the lateral move exposes the trimming tools and brush pot. Distinct celadon, slate, ivory, and warm earthen glazes show in the shelves. Small illuminated motes cross the warm side light and the left window enters late.",
+    "timeline": "The bench remains in sharp focus on the foreground wheel, clay vessel and hand tools while the lateral movement changes the parallax against three levels of glazed shelving. The left window comes into view late and bright motes drift in the open space in front of the shelf.",
+    "angles": "The wide and high oblique views show the depth of the bench, its legs, the supporting shelves and the wheel with a clay vessel on the rotating metal head. The overhead view confirms that the bench is independent of the shelving and maps the lateral camera track."
+  },
+  "render": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 787576
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 144,
+      "predicted_minutes": 3.66,
+      "budget_minutes": 18,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 3.66,
+      "actual_minutes": 2.077,
+      "budget_minutes": 18.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.762
+    },
+    "warnings": []
+  }
+}

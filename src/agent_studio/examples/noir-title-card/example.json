@@ -1,0 +1,32 @@
+{
+  "slug": "noir-title-card",
+  "title": "The Long Night",
+  "category": "typography",
+  "prompt": "A film-noir title card: the words THE LONG NIGHT in a period serif on an office wall striped by venetian-blind shadows, cigarette smoke drifting, rain on the window; black and white.",
+  "description": "Use real blind slats, a shadow-transmitting window material, and masked noise for a noir title reveal.",
+  "brief": {
+    "prompt": "A film-noir title card: the words THE LONG NIGHT in a period serif on an office wall striped by venetian-blind shadows, cigarette smoke drifting, rain on the window; black and white.",
+    "orientation": "ultrawide",
+    "seconds": 6,
+    "fps": 24,
+    "loop": false,
+    "assets": [
+      "fontsource:playfair-display@700"
+    ],
+    "budget_minutes": {
+      "draft": 18
+    }
+  },
+  "tags": {
+    "camera": "slow push-in",
+    "lighting": "hard venetian-blind shadows",
+    "style": "monochrome film noir",
+    "motion": "rain, drifting smoke, title fades up"
+  },
+  "techniques": [
+    "physical venetian blinds",
+    "light-path window shader",
+    "keyframed transparent title mix",
+    "height-shaped drifting smoke volume"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "slug": "domino-cascade",
+  "title": "Domino Cascade",
+  "category": "physics",
+  "prompt": "A long spiral chain of glossy colored dominoes on a wooden floor topples in a cascade, simulated as rigid bodies, as the camera tracks low alongside.",
+  "description": "Run a real-scale rigid-body cascade on a measured spiral and track the actual toppling front with the camera.",
+  "brief": {
+    "prompt": "A long spiral chain of glossy colored dominoes on a wooden floor topples in a cascade, simulated as rigid bodies, as the camera tracks low alongside.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "loop": false,
+    "fps": 30,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "low tracking along the dominoes",
+    "lighting": "warm table lamp and window light",
+    "style": "photoreal wood and lacquer",
+    "motion": "rigid-body domino chain falls in a spiral"
+  },
+  "techniques": [
+    "uniform arc-length domino spacing",
+    "millimetre-scale rigid-body tuning",
+    "camera tracking from simulated contacts",
+    "procedural staggered oak boards"
+  ]
+}

@@ -24,7 +24,7 @@ from mathutils import Vector
 # ---------------------------------------------------------------- constants (metres)
 DOMINO = (0.0075, 0.024, 0.048)     # thickness (along travel), width, height
 SPACING = 0.030                     # centre-to-centre along the chain (0.62 x height)
-R_OUTER, R_INNER = 0.56, 0.15       # spiral radii
+R_OUTER, R_INNER = 0.44, 0.15       # spiral radii
 PITCH = 0.10                        # distance between turns (> domino height)
 FIRST_TILT = 22.0                   # degrees: the first domino is already leaning, it starts the chain
 CAM_HEIGHT = 0.075                  # lens height above the floor
@@ -54,7 +54,7 @@ def spiral_points():
 
 # ---------------------------------------------------------------- materials
 def oak_floor(kit):
-    mat = kit.material('Oak floor', '#8A5A33', roughness=0.4, coat=0.25)
+    mat = kit.material('Oak floor', '#8A5A33', roughness=0.48, coat=0.16)
     nt, bs = mat.node_tree, kit.bsdf(mat)
     N, L = nt.nodes, nt.links
     coord = N.new('ShaderNodeTexCoord')
@@ -138,7 +138,7 @@ def build_room(kit):
                             ('Wall west left', (-ROOM, -1.55, 1.4), (0.1, 2.1, 1.4)),
                             ('Wall west right', (-ROOM, 1.55, 1.4), (0.1, 2.1, 1.4))):
         kit.box(name, size, loc, plaster, collection='Room')
-    sky = kit.emissive('Window daylight', '#DCE8FF', 4.0)
+    sky = kit.emissive('Window daylight', '#DCE8FF', 2.2)
     kit.box('Window sky', (0.02, 1.0, 1.4), (-ROOM - 0.6, 0, 1.4), sky, collection='Room')
     for z in (0.7, 1.4, 2.1):
         kit.box('Window bar', (0.06, 1.0, 0.05), (-ROOM, 0, z), trim, collection='Room')
@@ -150,8 +150,30 @@ def build_room(kit):
                             ('Skirting south', (0, -ROOM + 0.06, 0.06), (2 * ROOM, 0.02, 0.12)),
                             ('Skirting west', (-ROOM + 0.06, 0, 0.06), (0.02, 2 * ROOM, 0.12))):
         kit.box(name, size, loc, trim, bevel=0.004, collection='Room')
-    # Side table with a warm lamp in the north-east corner.
+    # Finish the whole room so wide proofs retain context around the low tracking view.
     walnut = kit.procedural('Walnut', 'wood', colors=['#3B2416', '#5A3923', '#704A2E'], scale=4.0)
+    gallery = kit.material('Exterior stone platform', '#4B443D', roughness=0.78, bump=(7.0, 0.15))
+    kit.ground(gallery, size=45, z=-0.27, name='Room foundation ground')
+    kit.box('Oak room foundation', (2 * ROOM + 0.22, 2 * ROOM + 0.22, 0.24), (0, 0, -0.15),
+            walnut, bevel=0.055, collection='Room')
+    for name, loc, size in (
+        ('North picture rail', (0, ROOM - 0.055, 1.18), (2 * ROOM, 0.05, 0.055)),
+        ('East picture rail', (ROOM - 0.055, 0, 1.18), (0.05, 2 * ROOM, 0.055)),
+        ('South picture rail', (0, -ROOM + 0.055, 1.18), (2 * ROOM, 0.05, 0.055)),
+    ):
+        kit.box(name, size, loc, trim, bevel=0.012, collection='Room')
+    paper = kit.material('Gallery print paper', '#E1C19F', roughness=0.65)
+    for i, (x, width, color) in enumerate(((-1.50, 0.7, '#587884'), (-0.57, 0.55, '#AB634D'), (0.23, 0.64, '#637458'))):
+        height = 0.58 if i == 1 else 0.78
+        kit.box(f'Walnut wall frame {i}', (width, 0.06, height), (x, ROOM - 0.086, 1.81), walnut,
+                bevel=0.024, collection='Room')
+        kit.box(f'Mat board {i}', (width - 0.065, 0.009, height - 0.07), (x, ROOM - 0.120, 1.81),
+                paper, bevel=0.007, collection='Room')
+        ink = kit.material(f'Print ink {i}', color, roughness=0.78)
+        kit.box(f'Abstract print {i}', (width - 0.14, 0.006, height * 0.58), (x, ROOM - 0.128, 1.83),
+                ink, bevel=0.009, collection='Room')
+
+    # Side table with a warm lamp in the north-east corner.
     tx, ty = 1.7, 1.75
     kit.cylinder('Side table top', 0.3, 0.035, (tx, ty, 0.55), walnut, bevel=0.008, collection='Room')
     for a in range(3):
@@ -181,7 +203,8 @@ def build(kit):
     floor = kit.box('Oak floor', (2 * ROOM, 2 * ROOM, 0.04), (0, 0, -0.02), oak_floor(kit), ground=True)
     kit.rigid_body(floor, 'PASSIVE', shape='BOX', friction=0.6, bounce=0.0)
     rbw = scene.rigidbody_world
-    rbw.substeps_per_frame = 12          # ~360 Hz at 30 fps: small dominoes need short steps
+    rbw.time_scale = 1.17                 # leave a short beat for the last tile to settle
+    rbw.substeps_per_frame = 14           # small dominoes need short solver steps
     rbw.solver_iterations = 20
     floor.rigid_body.use_margin, floor.rigid_body.collision_margin = True, 0.0005
 
@@ -222,7 +245,7 @@ def build(kit):
     build_room(kit)
 
     # --- light: cool window key through glazing bars, warm lamp, soft room fill ------------
-    kit.area('Window light', (-ROOM - 0.4, 0, 1.4), (0.2, 0, 0), power=1400, color='#DCE8FF', size=1.0, size_y=1.4)
+    kit.area('Window light', (-ROOM - 0.4, 0, 1.4), (0.2, 0, 0), power=940, color='#DCE8FF', size=1.0, size_y=1.4)
     kit.world('#2B2622', strength=0.25)
 
     # --- measure the toppling front by stepping the solver once ---------------------------
@@ -247,7 +270,7 @@ def build(kit):
         idx = min(len(chain) - 1, max(0, int(s / SPACING)))
         return chain[idx][0], chain[idx][1]
 
-    cam = kit.camera((0, -1, CAM_HEIGHT), (0, 0, 0.02), lens=40, clip=(0.01, 50), dof=0.3, fstop=3.2)
+    cam = kit.camera((0, -1, CAM_HEIGHT), (0, 0, 0.02), lens=37, clip=(0.01, 50), dof=0.3, fstop=4.5)
     tgt = kit.target_of(cam)
     for f in range(1, kit.frames + 1):
         s = min(total, smooth[f - 1])
@@ -260,4 +283,4 @@ def build(kit):
         cam.keyframe_insert('location', frame=f)
         tgt.keyframe_insert('location', frame=f)
         cam.data.dof.keyframe_insert('focus_distance', frame=f)
-    kit.render(exposure=0.3, look='AgX - Medium High Contrast', motion_blur=True, shutter=0.5)
+    kit.render(exposure=0.12, look='AgX - Medium High Contrast', motion_blur=True, shutter=0.5)

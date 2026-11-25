@@ -1,0 +1,91 @@
+{
+  "job_id": "70216977eac04ce6aec35ca9e7f4b8d1",
+  "drafts": 1,
+  "scene_sha256": "60465bc34757c9c666733f296f38e349b63e8974c613947e6d5a18a34b5b1397",
+  "review_hashes": {
+    "timeline.jpg": "44d3896127dbeb24261933adabd4523a8cbc895e73ce1abe2279240f67924d62",
+    "angles.jpg": "9d76f334f6ab37065e4dd13c4f78e6024bee74cf40a0a03aafc0b3e5a973fc07"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "two sheets of closely spaced small beads": 0.64,
+      "tails between the two sheets": 0.61,
+      "large embedded channel proteins": 0.96,
+      "short branched protrusions on the membrane surface": 0.59
+    },
+    "defects": {
+      "floating": 0.16,
+      "interpenetration": 0.48,
+      "too_dark": 0.04,
+      "blown_out": 0.05,
+      "noisy": 0.71,
+      "clipping": 0.21,
+      "placeholder": 0.18,
+      "empty": 0.07,
+      "set_unfinished": 0.26
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.45,
+      "2": 0.47,
+      "3": 0.07
+    },
+    "look": [
+      "element: two sheets of closely spaced small beads (0.64)",
+      "element: tails between the two sheets (0.61)",
+      "element: short branched protrusions on the membrane surface (0.59)",
+      "defect: interpenetration (0.48)",
+      "defect: noisy (0.71)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "element: two sheets of closely spaced small beads (0.64)": "The lower blue-green row appears along the near edge with a second bright blue row on top. The three-quarter view isolates the profile and shows where both rows extend around the channel.",
+      "element: tails between the two sheets (0.61)": "Thin green and blue rods fill the narrow open section between the head rows. They are easiest to see on the left edge of the first three plates and in the angled proof.",
+      "element: short branched protrusions on the membrane surface (0.59)": "The peach-colored clustered spheres above the purple channel branch into multiple short prongs in the lower row of the timeline.",
+      "defect: interpenetration (0.48)": "The nearby subunits join into a stylized channel and sit in a purpose-made gap in both lipid leaflets. The tail texture overlaps in projection but the wide and lower angled views preserve the separate two-sheet cross section.",
+      "defect: noisy (0.71)": "The dense highlights on the bead grid can look noisy at 16 samples. The empty background remains clean and individual tail geometry is still visible along the edge."
+    }
+  },
+  "notes": {
+    "probe": "The lateral drift reveals the tails between the near upper and lower phosphate sheets. Mauve channel bundles are embedded through both leaflets and the raised orange glycans stand off the upper surface. The principal channel and its branches fully enter the revised framing by the middle still.",
+    "timeline": "The oblique microscope glide shows an orange protein complex on the left and then two purple channels with peach glycan branches. The exposed edge of the bilayer lets the viewer trace individual tiny linkers between the upper and lower bead rows. The middle stages make the curved channel perimeter more legible than the first close tilt.",
+    "angles": "The wide and three-quarter views confirm two apposed leaflets, each with its own regularly packed heads. The overhead shows holes where the modeled channel subunits replace the lipid rows."
+  },
+  "render": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 2485741
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 144,
+      "predicted_minutes": 3.59,
+      "budget_minutes": 18,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 3.59,
+      "actual_minutes": 2.432,
+      "budget_minutes": 18.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.476
+    },
+    "warnings": []
+  }
+}

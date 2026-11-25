@@ -39,16 +39,16 @@ SUN_AZIMUTH = 62.0        # arcade and land on the nave floor ahead and to the r
                           # toward the lens (forward scattering makes them glow). Much further
                           # ahead and the 0.8 m deep window jambs swallow the beam.
 SUN_COLOR = '#FFB26E'
-SUN_STRENGTH = 20.0
+SUN_STRENGTH = 14.0
 HAZE_DENSITY = 0.012      # air in the whole church: dense enough that the low beams read as shafts
-DUST_DENSITY = 0.004      # a little extra up high so the clerestory beams glow under the vault
+DUST_DENSITY = 0.003      # a little extra up high so the clerestory beams glow under the vault
 EXPOSURE = 1.8
 
 # ----------------------------------------------------------------------------- camera
 CAM_START = (0.0, 2.5, 1.65)
 CAM_END = (0.0, 13.5, 1.65)
-LENS = 20.0
-SHIFT_Y = 0.22            # lens shift keeps verticals upright while showing the vault
+LENS = 16.0
+SHIFT_Y = 0.23            # lens shift keeps verticals upright while including the vault
 
 STONE = 'polyhaven:large_sandstone_blocks@1k'
 FLOOR = 'polyhaven:monastery_stone_floor@1k'
@@ -136,7 +136,7 @@ def stone_material(kit, name, tint, scale=0.45):
     noise.inputs['Scale'].default_value = 0.18
     noise.inputs['Detail'].default_value = 4
     nt.links.new(coord.outputs['Object'], noise.inputs['Vector'])
-    ramp = kit._ramp(nt, ['#B9AE9C', '#FFFFFF'])
+    ramp = kit.color_ramp(nt, ['#B9AE9C', '#FFFFFF'])
     nt.links.new(noise.outputs['Fac'], ramp.inputs['Fac'])
     mix = nt.nodes.new('ShaderNodeMix')
     mix.data_type, mix.blend_type = 'RGBA', 'MULTIPLY'
@@ -251,21 +251,81 @@ def groin_vault(kit, name, cx, cy, hx, hy, spring, rise, web_mat, rib_mat, col, 
     return web, ribs
 
 
-def gable_roof(kit, name, axis, centre, half, a0, a1, eave, rise, mat):
-    """Steep pitched roof: a triangular prism along `axis` ('y' or 'x') from a0 to a1."""
+def gable_roof(kit, name, axis, centre, half, a0, a1, eave, rise, lead, masonry, seam):
+    """Pitched lead roof with folded seams crossing both slopes and masonry gables."""
     prof = [(-half, eave), (half, eave), (0.0, eave + rise)]
 
     def at(u, z, a):
         return (centre + u, a, z) if axis == 'y' else (a, centre + u, z)
     verts = [at(u, z, a0) for u, z in prof] + [at(u, z, a1) for u, z in prof]
     faces = [(0, 2, 1), (3, 4, 5), (0, 1, 4, 3), (1, 2, 5, 4), (2, 0, 3, 5)]
-    roof = kit.mesh(name, verts, faces, mat, collection='Exterior')
+    roof = kit.mesh(name, verts, faces, lead, collection='Exterior')
+    roof.data.materials.append(masonry)
+    for face in roof.data.polygons[:3]:
+        face.material_index = 1
     bm = bmesh.new()                       # recalc normals so the prism is closed and outward
     bm.from_mesh(roof.data)
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     bm.to_mesh(roof.data)
     bm.free()
-    return roof
+
+    folds, strips = [], []
+    count = math.ceil((a1 - a0) / 1.3)
+    for i in range(count + 1):
+        a = a0 + (a1 - a0) * i / count
+        for start, end in (((-half, eave), (0, eave + rise)), ((0, eave + rise), (half, eave))):
+            k = len(folds)
+            folds.extend([at(u, z + 0.045, a + w) for u, z in (start, end) for w in (-0.045, 0.045)])
+            strips.append((k, k + 1, k + 3, k + 2))
+    kit.mesh(f'{name} standing seams', folds, strips, seam, collection='Exterior')
+    kit.tube(f'{name} ridge cap', [at(0, eave + rise + 0.04, a) for a in (a0, a1)], 0.13, seam,
+             collection='Exterior')
+
+
+def west_front(kit, stone, carved, wood, lead):
+    """A closed west elevation with recessed oak portals, thin mouldings and two belfries."""
+    wall = kit.box('West entrance wall', (2 * (AISLE_OUT + WALL), WALL, 33), (0, -1.5, 16.5), stone)
+    cuts, doors = bmesh.new(), bmesh.new()
+    for x, width, spring in ((-5.2, 2.4, 4.1), (0, 3.7, 5.3), (5.2, 2.4, 4.1)):
+        rise = 0.85 * width
+        opening = lancet(width, 0.02, spring, rise)
+        add_prism(cuts, opening, lambda u, z, w, x=x: (x + u, -2.3 + 1.4 * w, z))
+        add_face(doors, opening, lambda u, z, w=0, x=x: (x + u, -1.4, z))
+        kit.arch(f'West portal archivolt {x:g}', width, rise, depth=0.38, thickness=0.24,
+                 location=(x, -2.02, 0), material=carved, pier_height=spring, pier_width=0.30, collection='Exterior')
+        for side in (-1, 1):
+            for z in (1.7, 3.3):
+                kit.box(f'Oak door rail {x:g}.{side:+d}.{z:g}', (width * 0.45, 0.08, 0.10),
+                        (x + side * width * 0.24, -1.49, z), wood, bevel=0.02, collection='Exterior')
+    kit.boolean(wall, bm_object(kit, 'West portal cutters', cuts, None, 'Cutters'))
+    bm_object(kit, 'Recessed oak doors', doors, wood, 'Exterior')
+    for z in (9.5, 17.5, 27.0, 31.8):
+        kit.box(f'West string course {z:g}', (2 * AISLE_OUT, 0.32, 0.19), (0, -1.99, z), carved,
+                bevel=0.03, collection='Exterior')
+
+    shadow = kit.material('West belfry recess', '#262624', roughness=0.9)
+    for side in (-1, 1):
+        x = side * 9.25
+        name = f'West belfry {side:+d}'
+        kit.box(f'{name} body', (4.6, 4.6, 32.0), (x, -3.0, 16.0), stone, bevel=0.07, collection='Exterior')
+        for z in (8.6, 19.1, 25.9, 31.85):
+            kit.box(f'{name} ledge {z:g}', (4.85, 4.88, 0.26), (x, -3.0, z), carved, bevel=0.05,
+                    collection='Exterior')
+        panels = bmesh.new()
+        for front in (True, False):
+            angle = 0 if front else 90
+            for offset in (-0.87, 0.87):
+                opening = lancet(0.90, 0, 3.3, 0.81)
+                centre = (x + offset, -5.35, 26.4) if front else (x + side * 2.35, -3 + offset, 26.4)
+                add_face(panels, opening, lambda u, z, w=0, c=centre, front=front:
+                         (c[0] + u, c[1], c[2] + z) if front else (c[0], c[1] + u, c[2] + z))
+                kit.arch(f'{name} lancet surround {front}.{offset:g}', 0.90, 0.81, depth=0.25, thickness=0.12,
+                         location=centre, rotation=(0, 0, angle), material=carved, pier_height=3.3, pier_width=0.15,
+                         collection='Exterior')
+        bm_object(kit, f'{name} shadowed lancets', panels, shadow, 'Exterior')
+        kit.cone(f'{name} roof', 3.35, 8.3, (x, -3.0, 36.12), lead, rotation=(0, 0, 45),
+                 segments=4, smooth=False, collection='Exterior')
+        kit.ico(f'{name} finial', 0.25, (x, -3.0, 40.5), carved, subdivisions=2, collection='Exterior')
 
 
 def chair(kit, name, wood, rush):
@@ -307,7 +367,10 @@ def build(kit):
     rush = kit.procedural('Rush seats', 'fabric', colors=['#7A6238', '#8E7444', '#A0864F'], scale=0.4)
     iron = kit.material('Wrought iron', '#1C1B1A', roughness=0.55, metallic=0.8)
 
-    kit.plane('Nave floor', (60, 80), (0, 36, 0), floor, ground=True)
+    kit.plane('Nave and aisle flagstones', (2 * (AISLE_OUT + WALL), EAST + 1.8), (0, (EAST - 1.8) / 2, 0),
+              floor, ground=True)
+    kit.plane('Transept flagstones', (2 * (TRANSEPT_OUT + WALL), 13), (0, sum(CROSSING) / 2, -0.003),
+              floor, ground=True)
 
     # --- walls: long slabs with every opening cut by one boolean per wall (EXACT solver)
     for side in (-1, 1):
@@ -408,19 +471,38 @@ def build(kit):
                                      (3.0 * math.cos(a), EAST + 0.2, 25.5 + 3.0 * math.sin(a))], 0.07, carved,
                  collection='Tracery')
     kit.torus('Rose hub', 0.6, 0.1, (0, EAST + 0.2, 25.5), carved, rotation=(90, 0, 0), collection='Tracery')
-    kit.box('West wall', (2 * (AISLE_OUT + WALL), WALL, 33), (0, -1.5, 16.5), wall)
     kit.box('Nave roof', (2 * PIER_X + WALL, EAST + 2, 0.4), (0, EAST / 2, 33.2), wall)
 
     # --- exterior: never seen by the shot camera, but the review's three-quarter view sees the whole
     # set. Steep lead roofs, stepped buttresses, flyers and pinnacles make it read as a finished
     # building instead of a shell.
-    lead = kit.material('Lead roof', '#5B6064', roughness=0.55, metallic=0.4, bump=(6.0, 0.15))
+    lead = kit.procedural('Weathered lead roof', 'stone', colors=['#151E2C', '#2B3643', '#3A4650'],
+                          scale=1.5, roughness=0.81, bump=0.2)
+    seam = kit.material('Folded lead seams', '#1D2731', roughness=0.64, metallic=0.12)
+    forecourt = kit.procedural('Exterior paving', 'stone', colors=['#333735', '#595A4E', '#64665E'],
+                               scale=2.0, roughness=0.88, bump=0.35)
+    kit.ground(forecourt, size=520, z=-0.075, name='Recessed exterior ground')
+    kit.plane('West forecourt flagstones', (27, 19), (0, -11.45, -0.02), floor, ground=True)
+    west_front(kit, wall, carved, wood, lead)
     half = PIER_X + WALL / 2 + 0.3
-    gable_roof(kit, 'Nave roof gable', 'y', 0.0, half, -2.0, EAST + 1.0, 33.4, 11.0, lead)
+    gable_roof(kit, 'Nave roof gable', 'y', 0.0, half, -2.0, EAST + 1.0, 33.4, 11.0, lead, wall, seam)
     gable_roof(kit, 'Transept roof gable', 'x', sum(CROSSING) / 2, 6.8, -TRANSEPT_OUT - 1.0, TRANSEPT_OUT + 1.0,
-               33.4, 10.0, lead)
+               33.4, 10.0, lead, wall, seam)
     kit.cone('Crossing fleche', 1.4, 16.0, (0, sum(CROSSING) / 2, 52.0), lead, segments=8, smooth=False)
     for side in (-1, 1):
+        x, y = side * (TRANSEPT_OUT + WALL + 0.10), sum(CROSSING) / 2
+        kit.torus(f'Transept rose crown {side:+d}', 3.2, 0.18, (x, y, 23.5), carved,
+                  rotation=(0, 90, 0), segments=72, collection='Exterior')
+        kit.torus(f'Transept rose hub {side:+d}', 0.65, 0.10, (x, y, 23.5), carved,
+                  rotation=(0, 90, 0), collection='Exterior')
+        for i in range(12):
+            a = math.tau * i / 12
+            kit.tube(f'Transept rose tracery {side:+d}.{i}', [(x, y + r * math.cos(a), 23.5 + r * math.sin(a))
+                                                             for r in (0.6, 3.15)], 0.085, carved,
+                     collection='Exterior')
+        for z in (9.5, 19.3, 28.0):
+            kit.box(f'Transept string course {side:+d}.{z:g}', (0.35, 12.8, 0.22), (x, y, z), carved,
+                    bevel=0.04, collection='Exterior')
         for y_a, y_b in ((-1.5, CROSSING[0]), (CROSSING[1], EAST + 0.8)):
             # Aisle lean-to: a sloped slab from the aisle wall head up to under the triforium sill.
             ax0, ax1 = side * (AISLE_OUT + WALL + 0.3), side * 8.5   # meets the triforium back wall
@@ -523,14 +605,20 @@ def build(kit):
     kit.sun(elevation=SUN_ELEVATION, azimuth=SUN_AZIMUTH, strength=SUN_STRENGTH, color=SUN_COLOR, angle=0.6)
     # Soft bounce standing in for sunlit stone across the nave (keeps the shadow side from going black).
     fills = [kit.area('Bounce from sunlit north arcade', (-4.0, 30, 9), (2, 20, 2), 1800, '#FFD6A8', 6.0, size_y=30),
-             kit.area('Cool sky bounce off the floor', (0, 20, 0.4), (0, 20, 20), 900, '#C8D6FF', 8.0, size_y=30)]
+             kit.area('Cool sky bounce off the floor', (0, 20, 0.4), (0, 20, 20), 1900, '#C8D6FF', 8.0, size_y=30)]
     for light in fills:
         light.visible_camera = False          # fills light the room but never show as glowing panels...
         light.visible_volume_scatter = False  # ...and never light the haze, so only the sun draws shafts
-    kit.haze(HAZE_DENSITY, '#F4E6D2', anisotropy=0.6, size=(2 * TRANSEPT_OUT + 2, EAST + 3, 33),
-             location=(0, EAST / 2, 16.5))
-    kit.haze(DUST_DENSITY, '#F7EBDA', anisotropy=0.6, size=(2 * AISLE_OUT, EAST + 3, 21),
-             location=(0, EAST / 2, 22.5), name='Upper dust')
+    # Match the volume to the nave and transept plan so exterior sunlight stays clear of indoor dust.
+    haze_width = AISLE_OUT - 0.1
+    kit.haze(HAZE_DENSITY, '#F4E6D2', anisotropy=0.6, size=(2 * haze_width, EAST - 0.2, 32),
+             location=(0, EAST / 2, 16))
+    for side in (-1, 1):
+        kit.haze(HAZE_DENSITY, '#F4E6D2', anisotropy=0.6, size=(TRANSEPT_OUT - haze_width, 12.9, 32),
+                 location=(side * (TRANSEPT_OUT + haze_width) / 2, sum(CROSSING) / 2, 16),
+                 name=f'Transept haze {side:+d}')
+    kit.haze(DUST_DENSITY, '#F7EBDA', anisotropy=0.6, size=(2 * NAVE_HALF, EAST - 0.2, 21),
+             location=(0, EAST / 2, 22.3), name='Upper dust')
     kit.render(exposure=EXPOSURE, look='AgX - Medium High Contrast')
 
     # --- camera: eye level in the central aisle, slow eased dolly toward the crossing

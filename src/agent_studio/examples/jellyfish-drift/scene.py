@@ -22,13 +22,13 @@ import bpy
 from mathutils import Vector
 
 # ---------------------------------------------------------------- constants (metres)
-BELL_R = 0.18            # bell radius: an 36 cm deep-sea jellyfish
+BELL_R = 0.18            # bell radius: a 36 cm deep-sea jellyfish
 BELL_H = 0.15            # dome height above the rim
 RISE = 0.6               # metres risen per loop (10 cm/s over 6 s)
 PULSES = 3               # contractions per loop (whole number: loop-safe)
 TENTACLES = 16           # marginal tentacles around the rim
 ARMS = 4                 # frilled oral arms from the centre
-CAM_DIST = 1.75          # camera distance from the jellyfish axis
+CAM_DIST = 2.15          # camera distance from the jellyfish axis
 GLOW = '#58E6FF'         # cyan bioluminescence
 GLOW_WARM = '#FF6FD8'    # magenta gonads and arm frills
 WATER = '#020A1C'
@@ -40,6 +40,11 @@ def pulse(kit, t, lag=0.0):
     if phase < 0.3:
         return math.sin(0.5 * math.pi * phase / 0.3) ** 2      # snap shut in 30% of the cycle
     return math.cos(0.5 * math.pi * (phase - 0.3) / 0.7) ** 2  # ease open over the rest
+
+
+def rim_pose(kit, t):
+    contraction = pulse(kit, t)
+    return 0.93 * BELL_R * (1.0 - 0.27 * contraction), -0.016 - 0.02 * contraction
 
 
 def glow_material(kit, name, color, strength, edge_power=2.0, base_alpha=0.08, canals=0):
@@ -95,7 +100,7 @@ def glow_material(kit, name, color, strength, edge_power=2.0, base_alpha=0.08, c
     tint.data_type = 'RGBA'
     nt.links.new(mottle.outputs['Fac'], tint.inputs['Factor'])
     tint.inputs['A'].default_value = kit.color(color)
-    tint.inputs['B'].default_value = kit.color('#E8FBFF')
+    tint.inputs['B'].default_value = tuple(c + 0.18 * (1.0 - c) for c in kit.color(color))
     em = nt.nodes.new('ShaderNodeEmission')
     em.inputs['Strength'].default_value = strength
     nt.links.new(tint.outputs['Result'], em.inputs['Color'])
@@ -147,12 +152,17 @@ def build_bell(kit, root, bell_mat, inner_mat):
                       segments=24, material=inner_mat)
     stalk.parent = root
     # Marginal bulbs: tiny bright beads where each tentacle leaves the rim (fine detail).
-    bulb = kit.emissive('Marginal bulb', GLOW, 30.0)
+    bulb = kit.emissive('Marginal bulb', GLOW, 3.0)
     for i in range(TENTACLES):
         a = math.tau * (i + 0.5) / TENTACLES
-        b = kit.sphere(f'Marginal bulb {i + 1}', 0.006, (0.93 * BELL_R * math.cos(a), 0.93 * BELL_R * math.sin(a), -0.016),
-                       bulb, segments=8, rings=6)
+
+        def bulb_position(t, angle=a):
+            radius, height = rim_pose(kit, t)
+            return (radius * math.cos(angle), radius * math.sin(angle), height)
+
+        b = kit.sphere(f'Marginal bulb {i + 1}', 0.006, bulb_position(0), bulb, segments=8, rings=6)
         b.parent = root
+        kit.animate(b, 'location', bulb_position)
     return bell
 
 
@@ -195,12 +205,12 @@ def tentacles(kit, root, tent_mat, arm_mat):
         def shape(t, s, radial=radial, tangent=tangent, length=length, ph=ph):
             # The rim anchor follows the bell's contraction; further down the tentacle the same
             # pulse arrives later (lag grows with s), so a wave runs from rim to tip.
-            rim = 0.93 * BELL_R * (1.0 - 0.27 * pulse(kit, t))
+            rim, height = rim_pose(kit, t)
             late = pulse(kit, t, lag=0.12 * s)
             sway = 0.05 * s ** 1.2 * math.sin(math.tau * (PULSES * t - 1.4 * s) + ph)
             drift = 0.03 * s * kit.loop_noise(t, seed=i, cycles=1)
             out = rim + 0.06 * s - 0.05 * s * late          # spread out at rest, drawn in after a stroke
-            z = -0.016 - s * length * (1.0 - 0.06 * late)
+            z = height - s * length * (1.0 - 0.06 * late)
             return tuple(radial * out + tangent * (sway + drift) + Vector((0, 0, z)))
         animated_curve(kit, root, f'Tentacle {i + 1}', 9, 0.0024, lambda s: 1.0 - 0.75 * s, tent_mat, shape)
     for i in range(ARMS):
@@ -218,10 +228,10 @@ def tentacles(kit, root, tent_mat, arm_mat):
 
 
 def point_cloud(kit, name, count, speck, area, z0, rng):
-    """`count` specks per RISE-tall tile, repeated in three tiles so the field is periodic in Z."""
+    """Repeat `count` specks per RISE-tall tile so the visible field is periodic in Z."""
     xmin, xmax, ymin, ymax = area
     base = [(rng.uniform(xmin, xmax), rng.uniform(ymin, ymax), rng.uniform(0.0, RISE)) for _ in range(count)]
-    verts = [(x, y, z0 + z + tile * RISE) for tile in range(-1, 6) for x, y, z in base]
+    verts = [(x, y, z0 + z + tile * RISE) for tile in range(-3, 8) for x, y, z in base]
     holder = kit.mesh(name, verts, [])
     holder.instance_type = 'VERTS'           # one copy of `speck` on every vertex
     speck.parent = holder
@@ -246,10 +256,10 @@ def build(kit):
                                                    math.radians(6) * kit.wave(t)))
 
     # ---------------------------------------------------------------- the jellyfish
-    bell_mat = glow_material(kit, 'Bell glow', GLOW, 6.0, edge_power=2.2, base_alpha=0.06, canals=8)
-    inner_mat = glow_material(kit, 'Gonad glow', GLOW_WARM, 9.0, edge_power=1.2, base_alpha=0.35)
-    tent_mat = glow_material(kit, 'Tentacle glow', GLOW, 14.0, edge_power=0.8, base_alpha=0.5)
-    arm_mat = glow_material(kit, 'Oral arm glow', '#B58CFF', 7.0, edge_power=1.2, base_alpha=0.22)
+    bell_mat = glow_material(kit, 'Bell glow', GLOW, 1.6, edge_power=2.2, base_alpha=0.05, canals=8)
+    inner_mat = glow_material(kit, 'Gonad glow', GLOW_WARM, 2.6, edge_power=1.2, base_alpha=0.31)
+    tent_mat = glow_material(kit, 'Tentacle glow', GLOW, 3.2, edge_power=0.8, base_alpha=0.44)
+    arm_mat = glow_material(kit, 'Oral arm glow', '#B58CFF', 2.1, edge_power=1.2, base_alpha=0.22)
     build_bell(kit, root, bell_mat, inner_mat)
     tentacles(kit, root, tent_mat, arm_mat)
     # The jellyfish lights the water around it: a soft cyan point light inside the bell.
@@ -257,10 +267,10 @@ def build(kit):
     inner_light.parent = root
     kit.animate(inner_light.data, 'energy', lambda t: 2.2 + 2.0 * pulse(kit, t, lag=0.05))
     kit.animate(bell_mat.node_tree.nodes['Emission'].inputs['Strength'], 'default_value',
-                lambda t: 4.5 + 3.5 * pulse(kit, t, lag=0.05))
+                lambda t: 1.4 + 0.9 * pulse(kit, t, lag=0.05))
 
     # ---------------------------------------------------------------- plankton and marine snow
-    plankton_mat = kit.emissive('Plankton glow', '#7FF3FF', 12.0)
+    plankton_mat = kit.emissive('Plankton glow', '#7FF3FF', 3.5)
     snow_mat = kit.material('Marine snow', '#C9D8E8', roughness=0.8, emission='#9FC4FF', emission_strength=0.4)
     tiny = kit.ico('Plankton speck', 0.0018, material=plankton_mat, subdivisions=1)
     small = kit.ico('Plankton speck large', 0.0035, material=plankton_mat, subdivisions=1)
@@ -280,7 +290,7 @@ def build(kit):
         shaft.parent = rig
 
     # ---------------------------------------------------------------- the camera
-    cam = kit.camera(location=(0.0, -CAM_DIST, -0.36), target=(0.0, 0.0, -0.34), lens=42.0,
+    cam = kit.camera(location=(0.0, -CAM_DIST, -0.60), target=(0.0, 0.0, -0.63), lens=37.0,
                      dof=CAM_DIST, fstop=2.2, active=True)
     cam.parent = rig
     kit.target_of(cam).parent = rig

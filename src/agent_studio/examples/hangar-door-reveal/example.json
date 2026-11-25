@@ -1,0 +1,32 @@
+{
+  "slug": "hangar-door-reveal",
+  "title": "Hangar Door Reveal",
+  "category": "mechanical",
+  "prompt": "Inside a dark aircraft hangar, giant doors slide open and daylight floods through haze, revealing the silhouette of a towering walking mech; dust in the light beams.",
+  "description": "Stage a giant silhouette with telescoping door leaves, a low backlight and haze in a deep hangar.",
+  "brief": {
+    "prompt": "Inside a dark aircraft hangar, giant doors slide open and daylight floods through haze, revealing the silhouette of a towering walking mech; dust in the light beams.",
+    "orientation": "ultrawide",
+    "seconds": 6,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "locked wide, slight push",
+    "lighting": "backlight flooding through opening door into haze",
+    "style": "cinematic silhouette",
+    "motion": "huge doors slide open"
+  },
+  "techniques": [
+    "telescoping door leaf offsets",
+    "noise-modulated haze",
+    "real-scale truss silhouette",
+    "slow dust mote drift",
+    "fixed-length two-link leg poses with planted feet"
+  ]
+}

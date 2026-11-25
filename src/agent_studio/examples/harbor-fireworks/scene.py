@@ -20,15 +20,15 @@ from mathutils import Vector
 
 # ---------------------------------------------------------------- constants (metres, seconds)
 SHOW_Y = 260.0                     # the launch barge is 260 m out across the harbor
-CAM_AT = Vector((6.0, -4.0, 2.6))  # standing on the quay, eye height above the water
-SPARK_R = 0.45                     # spark size: ~1 px at preview, streaked by motion blur
+CAM_AT = Vector((5.1, -2.3, 3.2))  # standing on the quay, eye height above the water
+SPARK_R = 0.73                     # spark size: ~1 px at preview, streaked by motion blur
 # Each shell: launch time, burst time (shot progress 0..1), burst point, colour, sparks, speed.
 SHELLS = [
-    (0.00, 0.14, (-38.0, SHOW_Y, 118.0), '#FFC24A', 420, 34.0),   # gold chrysanthemum
-    (0.12, 0.30, (42.0, SHOW_Y + 20, 150.0), '#FF3FA4', 380, 38.0),  # magenta peony
-    (0.30, 0.47, (-6.0, SHOW_Y - 10, 136.0), '#3FE0FF', 420, 36.0),  # cyan
-    (0.44, 0.62, (58.0, SHOW_Y + 10, 104.0), '#FF4A3A', 340, 30.0),  # red
-    (0.58, 0.78, (-50.0, SHOW_Y + 30, 166.0), '#B8FF7A', 460, 40.0),  # lime willow
+    (-0.055, 0.14, (-38.0, SHOW_Y, 118.0), '#FFC24A', 420, 45.0),   # gold chrysanthemum
+    (0.12, 0.30, (42.0, SHOW_Y + 20, 150.0), '#FF3FA4', 380, 50.0),  # magenta peony
+    (0.29, 0.43, (-6.0, SHOW_Y - 10, 136.0), '#3FE0FF', 420, 46.0),  # cyan
+    (0.44, 0.62, (58.0, SHOW_Y + 10, 104.0), '#FF4A3A', 340, 43.0),  # red
+    (0.58, 0.78, (-50.0, SHOW_Y + 30, 166.0), '#B8FF7A', 460, 53.0),  # lime willow
 ]
 SPARK_LIFE = 1.9                   # seconds a spark burns
 
@@ -109,20 +109,24 @@ def shell(kit, n, launch, burst, at, colour, count, speed):
                        gravity=0.6, instance=trail_spark, size=1.0, size_random=0.5, start=launch,
                        end=burst, seed=10 + n, render_emitter=True)
     # --- the burst: every spark leaves one hidden ico sphere in a single frame
-    emitter = kit.ico(f'Burst {n} emitter', 1.0, at, subdivisions=3)
+    emitter = kit.ico(f'Burst {n} emitter', 3.3, at, subdivisions=3)
     mat = spark_material(kit, f'Burst {n} sparks', colour)
     spark = kit.ico(f'Burst {n} spark', SPARK_R, material=mat, subdivisions=1)
     ps = kit.particles(emitter, count=count, lifetime=life, velocity=speed, random_velocity=0.12 * speed,
-                       gravity=1.0, instance=spark, size=1.0, size_random=0.4, start=burst,
+                       gravity=1.0, instance=spark, size=1.05, size_random=0.48, start=burst,
                        end=burst + 1.0 / kit.frames, seed=20 + n)
     ps.settings.emit_from = 'VERT' if count <= len(emitter.data.vertices) else 'FACE'
-    ps.settings.drag_factor = 0.08               # air drag: the shell slows and then droops
+    # Long axes follow particle velocity, so the outer trails radiate instead of forming round dots.
+    spark.scale = (2.6, 0.77, 0.77)
+    ps.settings.use_rotations = True
+    ps.settings.rotation_mode = 'VEL'
+    ps.settings.drag_factor = 0.018               # air drag: the shell slows and then droops
     ps.settings.lifetime_random = 0.35           # sparks die at different times: ragged edges
     # --- the light it casts on the harbor: a flash, then decay with the sparks
     light = kit.point(f'Burst {n} light', at, power=0.0, color=colour, radius=8.0)
     b = burst
     kit.animate(light.data, 'energy', lambda t, b=b: 0.0 if t < b else
-                2.6e6 * math.exp(-(t - b) * kit.seconds / 0.55), step=1)
+                1.28e6 * math.exp(-(t - b) * kit.seconds / 0.55), step=1)
 
 
 def hull_mesh(kit, name, length, beam, depth, material, location, heading):
@@ -188,7 +192,7 @@ def sailboat(kit, n, at, length, heading, mats, mast_h):
 
 def build(kit):
     # ---------------------------------------------------------------- night sky: a dim gradient
-    kit.world('#010205', strength=1.0, top='#060B1A')
+    kit.world('#081124', strength=0.95, top='#20304B')
 
     # ---------------------------------------------------------------- water
     water = kit.plane('Harbor water', (1600, 1600), (0, 400, 0), material=water_material(kit), ground=True)
@@ -210,7 +214,7 @@ def build(kit):
             kit.procedural('Boat timber', 'wood', colors=['#2A1E16', '#3A2A1E', '#4A3626'], scale=3.0),
             kit.material('Rigging', '#151515', roughness=0.6),
             kit.procedural('Sail cover', 'fabric', colors=['#2C3138', '#363C44', '#3E444C'], scale=1.0))
-    for n, (x, y, length, heading, mast_h) in enumerate(((-9.0, 26.0, 9.0, 18, 12.0), (7.0, 44.0, 11.0, -10, 14.5),
+    for n, (x, y, length, heading, mast_h) in enumerate(((-4.3, 23.0, 9.0, 18, 12.0), (9.0, 43.0, 11.0, -10, 14.5),
                                                         (-24.0, 62.0, 8.0, 30, 10.5), (22.0, 78.0, 10.0, 5, 13.0),
                                                         (-2.0, 105.0, 12.0, -20, 15.0)), start=1):
         sailboat(kit, n, (x, y, 0.25), length, heading, mats, mast_h)
@@ -233,10 +237,11 @@ def build(kit):
     for n, (launch, burst, at, colour, count, speed) in enumerate(SHELLS, start=1):
         shell(kit, n, launch, burst, at, colour, count, speed)
     # A thin layer of smoke and haze over the water catches each flash.
-    kit.haze(density=0.0009, color='#AFB6C8', anisotropy=0.5, size=(900, 900, 260), location=(0, 300, 120))
+    kit.haze(density=0.00026, color='#AFB6C8', anisotropy=0.40, size=(900, 900, 260), location=(0, 300, 120))
 
     # ---------------------------------------------------------------- camera: static, slow tilt up
-    cam = kit.camera(location=CAM_AT, target=(0.0, SHOW_Y, 18.0), lens=22.0)
+    cam = kit.camera(location=CAM_AT, target=(0.0, SHOW_Y, 18.0), lens=23.5)
     kit.dolly(cam, CAM_AT, CAM_AT, target_start=(0.0, SHOW_Y, 18.0), target_end=(0.0, SHOW_Y, 62.0),
               ease_kind='in_out', power=2.0)
-    kit.render(exposure=0.6, look='AgX - Medium High Contrast', shutter=0.9, volume_step=4.0)
+    kit.glow(strength=0.25, size=0.28, threshold=1.4)
+    kit.render(exposure=0.36, look='AgX - Medium High Contrast', shutter=0.68, volume_step=4.0)

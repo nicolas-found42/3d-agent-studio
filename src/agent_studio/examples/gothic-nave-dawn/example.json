@@ -1,0 +1,39 @@
+{
+  "slug": "gothic-nave-dawn",
+  "title": "Gothic Nave at Dawn",
+  "category": "architecture",
+  "prompt": "A tall gothic cathedral nave at dawn: clustered piers, pointed arcades, ribbed vaults, clerestory windows. Shafts of warm low sun cut through faint haze while the camera dollies slowly toward the crossing.",
+  "description": "Build a Gothic elevation from a shared arch profile, layer scanned stone and let a low sun rake through upper windows.",
+  "brief": {
+    "prompt": "A tall gothic cathedral nave at dawn: clustered piers, pointed arcades, ribbed vaults, clerestory windows. Shafts of warm low sun cut through faint haze while the camera dollies slowly toward the crossing.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "fps": 24,
+    "loop": false,
+    "seed": 11,
+    "assets": [
+      "polyhaven:large_sandstone_blocks@1k",
+      "polyhaven:monastery_stone_floor@1k"
+    ],
+    "budget_minutes": {
+      "draft": 24
+    },
+    "samples": {
+      "preview": 24
+    }
+  },
+  "tags": {
+    "camera": "slow dolly down the nave",
+    "lighting": "low dawn sun through clerestory with haze",
+    "style": "photoreal scanned stone",
+    "motion": "camera only"
+  },
+  "techniques": [
+    "shared pointed-arch profile for cutters, tracery and vaults",
+    "layered clustered piers and ribs",
+    "box-projected sandstone scans",
+    "openings shape light shafts",
+    "axial dolly toward the crossing",
+    "folded lead roofs on masonry gables"
+  ]
+}

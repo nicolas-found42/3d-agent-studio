@@ -1,0 +1,111 @@
+{
+  "job_id": "8a3f17dccc0b492b88267520fd08ea2b",
+  "drafts": 4,
+  "scene_sha256": "561abb3cc4a476a51b8e267f7976e72bb495938f9f79175a896a851ffcd0e484",
+  "review_hashes": {
+    "timeline.jpg": "17b7aa16df9459d8546eec9c4091c48b46b2416051e4fb6b1f6d69e095fb63f3",
+    "angles.jpg": "96de1cb96c70f81f52a5ff797040eafb643d123ebba98695d0c2024da7f6f378"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "the word MAKE": 0.99,
+      "the word THINGS": 0.99,
+      "the word MOVE": 0.99,
+      "coral, amber and mint geometric color fields": 0.83,
+      "offset layers of chunky letter shapes": 0.9
+    },
+    "defects": {
+      "floating": 0.13,
+      "interpenetration": 0.37,
+      "too_dark": 0.02,
+      "blown_out": 0.04,
+      "noisy": 0.51,
+      "clipping": 0.13,
+      "placeholder": 0.12,
+      "empty": 0.07,
+      "set_unfinished": 0.76
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "text_readable": 0.96,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.38,
+      "2": 0.56,
+      "3": 0.05
+    },
+    "prompt_match_probabilities": {
+      "0": 0,
+      "1": 0.07,
+      "2": 0.25,
+      "3": 0.68
+    },
+    "look": [
+      "defect: interpenetration (0.37)",
+      "defect: noisy (0.51)"
+    ],
+    "fix": [],
+    "overridden": [
+      {
+        "item": "defect: set_unfinished (0.76)",
+        "reason": "The scene intentionally fills a single sculpted graphics cabinet. The three-quarter proof at frame 60 shows its complete beveled casing, side return, mounted relief, floor and plinth. The mint MOVE plate is hidden at that intermediate pose because its entrance is later. The final timeline and denser playback frames show all three completed plates. A second reviewer independently checked the same angles and cover and agreed."
+      }
+    ],
+    "raw_decision": {
+      "verdict": "fix",
+      "fix": [
+        "defect: set_unfinished (0.76)"
+      ],
+      "look": [
+        "defect: interpenetration (0.37)",
+        "defect: noisy (0.51)"
+      ],
+      "overridden": []
+    },
+    "reviewed_findings": {
+      "defect: interpenetration (0.37)": "The extruded words are intentionally mounted onto raised press plates. They cross the printed arcs behind them in projection. The three-quarter proof reveals the separate face, plate and bezel thicknesses.",
+      "defect: noisy (0.51)": "The glossy parts show light draft grain in the dark blue reflection, as well as a subtle painted dot pattern. Letter contours and the word transitions stay legible in the decoded reel."
+    }
+  },
+  "notes": {
+    "probe": "A strong diagonal studio highlight crosses the coated cobalt panel as MAKE settles. The second card brings warm amber into the middle and the mint MOVE card finishes a highly legible stack. The closer orthographic rig keeps the camera position independent from its framing scale.",
+    "timeline": "In 20 frames sampled from the decoded reel at nine-frame intervals, the coral MAKE plate pitches in the opening, the amber THINGS plate slides in from the left, and the mint MOVE plate sweeps in from the right before all three stack and hold. The oversized color arcs establish contrast while ivory letter faces stay readable across the same art-directed cabinet.",
+    "angles": "At proof frame 60 the wide plate shows THINGS crossing the frame on its entrance. The three-quarter proof shows the complete coated cabinet, structural side return, base and raised typography. The overhead verifies the separation between camera position and face.",
+    "playback": "The ready silent H.264 draft decodes to 180 frames in ascending presentation order at 30 fps. All 180 decoded image hashes are distinct. The sequence shows continuous entry, overshoot and settle at each cut."
+  },
+  "render": {
+    "video": {
+      "frames": 180,
+      "duration_seconds": 6.0,
+      "fps": 30,
+      "width": 360,
+      "height": 640,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 612689
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 180,
+      "predicted_minutes": 2.5,
+      "budget_minutes": 10,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 2.5,
+      "actual_minutes": 1.863,
+      "budget_minutes": 10.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.342
+    },
+    "warnings": []
+  }
+}

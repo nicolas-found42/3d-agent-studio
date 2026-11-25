@@ -1,5 +1,36 @@
 [
  {
+  "slug": "alpine-lake-sunrise",
+  "title": "Alpine Lake at Sunrise",
+  "category": "landscape",
+  "prompt": "An alpine lake at sunrise: ridged snow-capped peaks, pine forest on the shoreline, still water reflecting pink light, mist on the surface. The camera skims low over the water toward the mountains.",
+  "description": "Use a shared heightfield to place shoreline and pines, then shade the rock, snow and distance haze by altitude and slope.",
+  "brief": {
+   "prompt": "An alpine lake at sunrise: ridged snow-capped peaks, pine forest on the shoreline, still water reflecting pink light, mist on the surface. The camera skims low over the water toward the mountains.",
+   "orientation": "ultrawide",
+   "seconds": 6,
+   "fps": 24,
+   "loop": false,
+   "seed": 11,
+   "budget_minutes": {
+    "draft": 20
+   }
+  },
+  "tags": {
+   "camera": "low flythrough over water toward mountains",
+   "lighting": "physical sky at sunrise with long shadows",
+   "style": "photoreal procedural terrain",
+   "motion": "camera and drifting mist"
+  },
+  "techniques": [
+   "nonuniform terrain sampling",
+   "altitude and slope terrain masks",
+   "instanced pines anchored to the heightfield",
+   "physical sunrise fill",
+   "noise-driven surface mist"
+  ]
+ },
+ {
   "slug": "bamboo-grove-rain",
   "title": "Bamboo Grove in Rain",
   "category": "landscape",
@@ -30,6 +61,62 @@
    "rain as stacked streak tiles on a sawtooth fall",
    "kit.world gradient plus kit.haze for overcast depth",
    "kit.rack_focus at f/1.4"
+  ]
+ },
+ {
+  "slug": "black-hole-accretion",
+  "title": "Black Hole Accretion",
+  "category": "space",
+  "prompt": "A black hole with a swirling, glowing orange-white accretion disk and a thin photon ring, stars around it, seen at a slight tilt as the disk rotates in a seamless loop.",
+  "description": "Animate concentric accretion materials and illustrative lensing arcs with a loop-safe camera.",
+  "brief": {
+   "prompt": "A black hole with a swirling, glowing orange-white accretion disk and a thin photon ring, stars around it, seen at a slight tilt as the disk rotates in a seamless loop.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "fps": 24,
+   "loop": true
+  },
+  "tags": {
+   "camera": "slow tilt orbit",
+   "lighting": "accretion disc as sole key",
+   "style": "cinematic emissive",
+   "motion": "disc swirls"
+  },
+  "techniques": [
+   "concentric annular emissive meshes",
+   "independent turbulent texture speeds",
+   "illustrative photon ring and lensed arcs",
+   "closed camera azimuth motion"
+  ]
+ },
+ {
+  "slug": "breakfast-flatlay",
+  "title": "Breakfast Flat Lay",
+  "category": "still-life",
+  "prompt": "A top-down breakfast flat lay on linen: a coffee cup with rising steam, a croissant, berries, a jar of jam, a spoon slowly stirring the coffee, in a seamless loop.",
+  "description": "Compose a caf\u00e9 still life from above with layered pastry, clusters of fruit, and a looped stirring spoon.",
+  "brief": {
+   "prompt": "A top-down breakfast flat lay on linen: a coffee cup with rising steam, a croissant, berries, a jar of jam, a spoon slowly stirring the coffee, in a seamless loop.",
+   "orientation": "square",
+   "seconds": 5,
+   "fps": 24,
+   "loop": true,
+   "budget_minutes": {
+    "draft": 18
+   }
+  },
+  "tags": {
+   "camera": "top-down locked camera",
+   "lighting": "bright soft daylight",
+   "style": "bright editorial food photography",
+   "motion": "steam rises and spoon stirs"
+  },
+  "techniques": [
+   "layered curved pastry forms",
+   "lathed cup and wide saucer",
+   "berry drupelet clusters",
+   "turntable spoon axis",
+   "looping steam wisps"
   ]
  },
  {
@@ -67,6 +154,412 @@
   ]
  },
  {
+  "slug": "cell-membrane",
+  "title": "Cell Membrane",
+  "category": "micro-macro",
+  "prompt": "A microscopic view of a cell membrane: a lipid bilayer of thousands of beads with tails, embedded channel proteins and glycoproteins, gently jiggling, in a soft translucent scientific-illustration style.",
+  "description": "Batch a lipid bilayer into editable meshes, then animate it with displacement shape keys.",
+  "brief": {
+   "prompt": "A microscopic view of a cell membrane: a lipid bilayer of thousands of beads with tails, embedded channel proteins and glycoproteins, gently jiggling, in a soft translucent scientific-illustration style.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "fps": 24,
+   "loop": false,
+   "budget_minutes": {
+    "draft": 18
+   }
+  },
+  "tags": {
+   "camera": "microscopic drift past proteins",
+   "lighting": "soft translucent backlight and depth",
+   "style": "scientific illustration with subsurface",
+   "motion": "lipids jiggle and proteins drift"
+  },
+  "techniques": [
+   "batched phosphate and lipid meshes",
+   "shape-keyed thermal variation",
+   "six-subunit stylized channel proteins",
+   "sugar residues as branched surface details"
+  ]
+ },
+ {
+  "slug": "ceramics-studio-morning",
+  "title": "Ceramics Studio Morning",
+  "category": "still-life",
+  "prompt": "A pottery studio in the morning: wooden shelves of handmade bowls and vases in varied glazes, a potter's wheel, tools, sunbeams through a window with dust motes drifting.",
+  "description": "Throw varied hollow vessels from return profiles and establish the workshop with a lateral slide.",
+  "brief": {
+   "prompt": "A pottery studio in the morning: wooden shelves of handmade bowls and vases in varied glazes, a potter's wheel, tools, sunbeams through a window with dust motes drifting.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "fps": 24,
+   "loop": false,
+   "budget_minutes": {
+    "draft": 18
+   }
+  },
+  "tags": {
+   "camera": "slow lateral slide along shelves",
+   "lighting": "morning window light and dust motes",
+   "style": "soft photoreal",
+   "motion": "dust drifts in light"
+  },
+  "techniques": [
+   "closed profiles with return walls",
+   "varied glaze recipes",
+   "procedurally dressed shelves",
+   "small drifting emissive dust motes"
+  ]
+ },
+ {
+  "slug": "city-network-pulses",
+  "title": "City Network Pulses",
+  "category": "data",
+  "prompt": "An abstract city transit network: glowing nodes for stations on a dark map, edges as tubes, light pulses travelling along routes with busier routes brighter; the camera tilts from oblique to top-down.",
+  "description": "Turn station and ridership data into layered route geometry and animate moving pulses by distance along each line.",
+  "brief": {
+   "prompt": "An abstract city transit network: glowing nodes for stations on a dark map, edges as tubes, light pulses travelling along routes with busier routes brighter; the camera tilts from oblique to top-down.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "loop": false,
+   "fps": 24,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "tilt-down from oblique to top view",
+   "lighting": "dark blue night with emissive data",
+   "style": "stylized data viz, clean",
+   "motion": "light pulses travel along edges"
+  },
+  "techniques": [
+   "octilinear filleted route geometry",
+   "arc-length pulse motion",
+   "ridership-weighted thickness and intensity",
+   "batched street block meshes"
+  ]
+ },
+ {
+  "slug": "clockwork-gear-train",
+  "title": "Clockwork Gear Train",
+  "category": "mechanical",
+  "prompt": "A macro view of a clockwork gear train: brass gears with real teeth meshing at correct ratios, steel arbors, jewel bearings, an escapement ticking; shallow depth of field, seamless loop.",
+  "description": "Build pitch-matched involute gears, key their inverse tooth-count ratios and slide macro focus between contacts.",
+  "brief": {
+   "prompt": "A macro view of a clockwork gear train: brass gears with real teeth meshing at correct ratios, steel arbors, jewel bearings, an escapement ticking; shallow depth of field, seamless loop.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "loop": true,
+   "fps": 24,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "macro slide across gears with shallow depth of field",
+   "lighting": "warm practical lamp, dark background",
+   "style": "photoreal brass and steel",
+   "motion": "meshing gears with correct ratios"
+  },
+  "techniques": [
+   "involute tooth profile construction",
+   "inverse tooth-count rotation ratios",
+   "whole shaft turns for looping",
+   "animated macro focus target"
+  ]
+ },
+ {
+  "slug": "desert-dunes-moonlight",
+  "title": "Desert Dunes by Moonlight",
+  "category": "landscape",
+  "prompt": "Rolling desert dunes under a full moon and a dense starfield, a small campfire with a tent glowing warm in the cold blue night. Gentle handheld drift; the fire flickers.",
+  "description": "Teaches a sculpted dune heightfield on a variable-density grid, a procedural world-shader starfield, cool moonlight against warm flickering practicals, and painterly Freestyle ink lines with an exclusion collection.",
+  "brief": {
+   "prompt": "Rolling desert dunes under a full moon and a dense starfield, a small campfire with a tent glowing warm in the cold blue night. Gentle handheld drift; the fire flickers.",
+   "orientation": "vertical",
+   "seconds": 5,
+   "loop": false,
+   "fps": 24,
+   "seed": 11,
+   "budget_minutes": {
+    "draft": 16
+   }
+  },
+  "tags": {
+   "camera": "locked-off with subtle handheld",
+   "lighting": "cool moonlight and starfield, warm campfire practical",
+   "style": "painterly ink lines (freestyle)",
+   "motion": "campfire flicker and drifting sand"
+  },
+  "techniques": [
+   "asymmetric dune heightfield on a non-uniform grid (kit.mesh)",
+   "world-shader starfield, moon glow and Milky Way via Voronoi and Light Path",
+   "kit.sun moonlight plus emissive moon disc on the same direction",
+   "flame tongues and point light flickering with kit.loop_noise",
+   "Freestyle linestyle modifiers: taper, distance thinning, Perlin wobble, collection exclusion",
+   "baked kit.particles grains and scrolling alpha streamer cards",
+   "translucent tent canvas lit by an interior practical",
+   "kit.handheld with a tiny sine dolly"
+  ]
+ },
+ {
+  "slug": "dna-helix-orbit",
+  "title": "Double Helix Orbit",
+  "category": "micro-macro",
+  "prompt": "A DNA double helix built from glossy spheres and tubes: phosphate backbone and colored base pairs rotating, the camera orbiting and rising along it in a seamless loop.",
+  "description": "Construct a double helix with phased coordinate rails, paired crosslinks, and a loop-safe orbit.",
+  "brief": {
+   "prompt": "A DNA double helix built from glossy spheres and tubes: phosphate backbone and colored base pairs rotating, the camera orbiting and rising along it in a seamless loop.",
+   "orientation": "vertical",
+   "seconds": 6,
+   "fps": 24,
+   "loop": true
+  },
+  "tags": {
+   "camera": "orbit and rise along the helix",
+   "lighting": "cool key with warm accents",
+   "style": "glossy molecular model",
+   "motion": "helix rotates"
+  },
+  "techniques": [
+   "phased trigonometric helix rails",
+   "glossy beads and paired crosslinks",
+   "animated camera track target",
+   "whole-cycle keyframes"
+  ]
+ },
+ {
+  "slug": "domino-cascade",
+  "title": "Domino Cascade",
+  "category": "physics",
+  "prompt": "A long spiral chain of glossy colored dominoes on a wooden floor topples in a cascade, simulated as rigid bodies, as the camera tracks low alongside.",
+  "description": "Run a real-scale rigid-body cascade on a measured spiral and track the actual toppling front with the camera.",
+  "brief": {
+   "prompt": "A long spiral chain of glossy colored dominoes on a wooden floor topples in a cascade, simulated as rigid bodies, as the camera tracks low alongside.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "loop": false,
+   "fps": 30,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "low tracking along the dominoes",
+   "lighting": "warm table lamp and window light",
+   "style": "photoreal wood and lacquer",
+   "motion": "rigid-body domino chain falls in a spiral"
+  },
+  "techniques": [
+   "uniform arc-length domino spacing",
+   "millimetre-scale rigid-body tuning",
+   "camera tracking from simulated contacts",
+   "procedural staggered oak boards"
+  ]
+ },
+ {
+  "slug": "dutch-still-life",
+  "title": "Dutch Still Life",
+  "category": "still-life",
+  "prompt": "A Dutch golden-age still life on a dark table: a draped cloth, a silver jug, a half-peeled lemon, grapes, a roemer glass of wine and a candle, lit by a single window in deep chiaroscuro.",
+  "description": "Dress a low-key tabletop using hollow lathed vessels, irregular folds, and a flickering practical candle.",
+  "brief": {
+   "prompt": "A Dutch golden-age still life on a dark table: a draped cloth, a silver jug, a half-peeled lemon, grapes, a roemer glass of wine and a candle, lit by a single window in deep chiaroscuro.",
+   "orientation": "portrait",
+   "seconds": 6,
+   "fps": 24,
+   "loop": false,
+   "budget_minutes": {
+    "draft": 20
+   }
+  },
+  "tags": {
+   "camera": "imperceptibly slow push",
+   "lighting": "single-window chiaroscuro",
+   "style": "painterly old-master still life",
+   "motion": "a candle flickers and a fly lands"
+  },
+  "techniques": [
+   "hollow lathed metal and glass vessels",
+   "elliptical wine meniscus and stem prunts",
+   "irregular folded linen mesh",
+   "animated candle mesh and practical",
+   "hand-placed grapes and curled lemon peel"
+  ]
+ },
+ {
+  "slug": "flow-field-ribbons",
+  "title": "Flow-Field Ribbons",
+  "category": "abstract",
+  "prompt": "Hundreds of thin luminous ribbons grow along a smooth 3D noise flow field on black, colored from teal to magenta, as the camera glides through them.",
+  "description": "Integrate a noisy corkscrew field into a layered ribbon tunnel and guide the camera through its moving depth.",
+  "brief": {
+   "prompt": "Hundreds of thin luminous ribbons grow along a smooth 3D noise flow field on black, colored from teal to magenta, as the camera glides through them.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "loop": false,
+   "fps": 30,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "slow push through the ribbons",
+   "lighting": "emissive only on black",
+   "style": "generative glowing gradients",
+   "motion": "ribbons grow along a noise field"
+  },
+  "techniques": [
+   "midpoint streamline integration",
+   "golden-angle annulus seeds",
+   "flat profiles with keyed bevel progress",
+   "position-driven emission gradients",
+   "focal depth and glowing leading tips"
+  ]
+ },
+ {
+  "slug": "fractured-sphere-breath",
+  "title": "Fractured Sphere, Breathing",
+  "category": "abstract",
+  "prompt": "A sphere made of Voronoi-like ceramic shards breathes: the shards drift outward revealing a glowing orange core, then close again, as a seamless loop.",
+  "description": "Bisect a shell into ceramic Voronoi shards and key a loop in which their rough faces catch light from the core.",
+  "brief": {
+   "prompt": "A sphere made of Voronoi-like ceramic shards breathes: the shards drift outward revealing a glowing orange core, then close again, as a seamless loop.",
+   "orientation": "square",
+   "seconds": 5,
+   "loop": true,
+   "fps": 30,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "static centered",
+   "lighting": "soft studio HDRI-like gradient world and rim lights",
+   "style": "matte ceramic shards with glowing core",
+   "motion": "shards breathe outward and back"
+  },
+  "techniques": [
+   "bmesh half-plane cuts",
+   "separate glaze and bisque faces",
+   "emissive core with internal practical",
+   "phase-shifted periodic expanding shards"
+  ]
+ },
+ {
+  "slug": "gothic-nave-dawn",
+  "title": "Gothic Nave at Dawn",
+  "category": "architecture",
+  "prompt": "A tall gothic cathedral nave at dawn: clustered piers, pointed arcades, ribbed vaults, clerestory windows. Shafts of warm low sun cut through faint haze while the camera dollies slowly toward the crossing.",
+  "description": "Build a Gothic elevation from a shared arch profile, layer scanned stone and let a low sun rake through upper windows.",
+  "brief": {
+   "prompt": "A tall gothic cathedral nave at dawn: clustered piers, pointed arcades, ribbed vaults, clerestory windows. Shafts of warm low sun cut through faint haze while the camera dollies slowly toward the crossing.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "fps": 24,
+   "loop": false,
+   "seed": 11,
+   "assets": [
+    "polyhaven:large_sandstone_blocks@1k",
+    "polyhaven:monastery_stone_floor@1k"
+   ],
+   "budget_minutes": {
+    "draft": 24
+   },
+   "samples": {
+    "preview": 24
+   }
+  },
+  "tags": {
+   "camera": "slow dolly down the nave",
+   "lighting": "low dawn sun through clerestory with haze",
+   "style": "photoreal scanned stone",
+   "motion": "camera only"
+  },
+  "techniques": [
+   "shared pointed-arch profile for cutters, tracery and vaults",
+   "layered clustered piers and ribs",
+   "box-projected sandstone scans",
+   "openings shape light shafts",
+   "axial dolly toward the crossing",
+   "folded lead roofs on masonry gables"
+  ]
+ },
+ {
+  "slug": "hangar-door-reveal",
+  "title": "Hangar Door Reveal",
+  "category": "mechanical",
+  "prompt": "Inside a dark aircraft hangar, giant doors slide open and daylight floods through haze, revealing the silhouette of a towering walking mech; dust in the light beams.",
+  "description": "Stage a giant silhouette with telescoping door leaves, a low backlight and haze in a deep hangar.",
+  "brief": {
+   "prompt": "Inside a dark aircraft hangar, giant doors slide open and daylight floods through haze, revealing the silhouette of a towering walking mech; dust in the light beams.",
+   "orientation": "ultrawide",
+   "seconds": 6,
+   "loop": false,
+   "fps": 24,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "locked wide, slight push",
+   "lighting": "backlight flooding through opening door into haze",
+   "style": "cinematic silhouette",
+   "motion": "huge doors slide open"
+  },
+  "techniques": [
+   "telescoping door leaf offsets",
+   "noise-modulated haze",
+   "real-scale truss silhouette",
+   "slow dust mote drift",
+   "fixed-length two-link leg poses with planted feet"
+  ]
+ },
+ {
+  "slug": "harbor-fireworks",
+  "title": "Harbor Fireworks",
+  "category": "physics",
+  "prompt": "Fireworks burst over a quiet harbor at night: rockets rise, explode into colored particle spheres that fall and fade, reflected in dark rippling water with moored boats silhouetted.",
+  "description": "Light harbor water and moored boats with changing bursts and key practical light intensity to spark decay.",
+  "brief": {
+   "prompt": "Fireworks burst over a quiet harbor at night: rockets rise, explode into colored particle spheres that fall and fade, reflected in dark rippling water with moored boats silhouetted.",
+   "orientation": "vertical",
+   "seconds": 6,
+   "loop": false,
+   "fps": 24,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "static wide with slow tilt up",
+   "lighting": "night, fireworks as only light sources reflected in water",
+   "style": "cinematic night",
+   "motion": "particle bursts rise and explode"
+  },
+  "techniques": [
+   "radial particle bursts",
+   "age-driven spark emission",
+   "keyed practical flash lights",
+   "anisotropic rippling reflections"
+  ]
+ },
+ {
   "slug": "headphones-exploded-view",
   "title": "Headphones, Exploded View",
   "category": "product",
@@ -100,6 +593,219 @@
   ]
  },
  {
+  "slug": "jellyfish-drift",
+  "title": "Jellyfish Drift",
+  "category": "character",
+  "prompt": "A bioluminescent jellyfish drifts upward through the dark deep sea: translucent bell pulsing, long glowing tentacles trailing, plankton specks floating in volumetric blue light. Seamless loop.",
+  "description": "Animate a pulsing translucent bell and delayed tentacle waves through a vertically repeating field of plankton.",
+  "brief": {
+   "prompt": "A bioluminescent jellyfish drifts upward through the dark deep sea: translucent bell pulsing, long glowing tentacles trailing, plankton specks floating in volumetric blue light. Seamless loop.",
+   "orientation": "vertical",
+   "seconds": 6,
+   "fps": 24,
+   "loop": true,
+   "seed": 11,
+   "budget_minutes": {
+    "draft": 20
+   }
+  },
+  "tags": {
+   "camera": "slow vertical drift with the creature",
+   "lighting": "bioluminescence and blue underwater volume",
+   "style": "emissive translucent",
+   "motion": "pulsing bell and trailing tentacles"
+  },
+  "techniques": [
+   "vertically periodic world and tracking rig",
+   "asymmetric bell contraction shape key",
+   "keyframed tentacle curves",
+   "facing-dependent emission and transparency",
+   "instanced marine snow"
+  ]
+ },
+ {
+  "slug": "kinetic-type-manifesto",
+  "title": "Kinetic Type Manifesto",
+  "category": "typography",
+  "prompt": "Kinetic typography: the words MAKE / THINGS / MOVE appear one after another as chunky extruded 3D letters that slam in, rotate and stack, in bold flat colors on a flat background.",
+  "description": "Build a colorful dimensional poster with bold extruded words, readable color fields, and camera cuts.",
+  "brief": {
+   "prompt": "Kinetic typography: the words MAKE / THINGS / MOVE appear one after another as chunky extruded 3D letters that slam in, rotate and stack, in bold flat colors on a flat background.",
+   "orientation": "vertical",
+   "seconds": 6,
+   "fps": 30,
+   "loop": false,
+   "assets": [
+    "fontsource:archivo-black@400"
+   ]
+  },
+  "tags": {
+   "camera": "snappy cuts via camera jumps and pushes",
+   "lighting": "flat graphic studio",
+   "style": "bold flat colors and extruded type",
+   "motion": "words slam and rotate in sequence"
+  },
+  "techniques": [
+   "extruded Archivo Black with separate ivory faces and bevel shadows",
+   "chamfered color plates and graphic semi-ring motifs",
+   "keyframed group impact overshoot and 3D pitch",
+   "orthographic match cuts and vertical shifts"
+  ]
+ },
+ {
+  "slug": "lunar-landing",
+  "title": "Lunar Landing",
+  "category": "space",
+  "prompt": "A lunar lander descends onto a cratered grey surface under a hard low sun and black sky, its engine blasting dust outward in a ring as the legs touch down.",
+  "description": "Animate NASA\u2019s open Apollo lunar module over irregular crater terrain with sunlit ballistic dust.",
+  "brief": {
+   "prompt": "A lunar lander descends onto a cratered grey surface under a hard low sun and black sky, its engine blasting dust outward in a ring as the legs touch down.",
+   "orientation": "portrait",
+   "seconds": 6,
+   "fps": 24,
+   "loop": false,
+   "budget_minutes": {
+    "draft": 18
+   },
+   "assets": [
+    "nasa:3D Models/Apollo Lunar Module/Apollo Lunar Module.glb"
+   ]
+  },
+  "tags": {
+   "camera": "low static camera on surface",
+   "lighting": "hard low sun and black sky",
+   "style": "photoreal regolith",
+   "motion": "lander descends and dust blows outward"
+  },
+  "techniques": [
+   "NASA GLB animation under an imported root",
+   "warped crater height field",
+   "sunlit ballistic dust grains",
+   "radially masked touchdown haze",
+   "landing and settlement keyframes"
+  ]
+ },
+ {
+  "slug": "marble-run",
+  "title": "Maple Marble Run",
+  "category": "physics",
+  "prompt": "A wooden marble run with spiral ramps and a lift: a glass marble rolls down the curving tracks, drops through a funnel and is lifted back to the top as a seamless loop.",
+  "description": "Build a two-rail helix with a turned wooden funnel and synchronize a glass marble, return lift and follow camera.",
+  "brief": {
+   "prompt": "A wooden marble run with spiral ramps and a lift: a glass marble rolls down the curving tracks, drops through a funnel and is lifted back to the top as a seamless loop.",
+   "orientation": "portrait",
+   "seconds": 6,
+   "loop": true,
+   "fps": 30,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "camera follows the marble on a path",
+   "lighting": "bright playroom daylight",
+   "style": "toy-like wood and glass",
+   "motion": "marble rolls down a track and loops"
+  },
+  "techniques": [
+   "swept twin spiral rails",
+   "profile-turned maple funnel",
+   "glass marble with colored inclusions",
+   "piecewise periodic route and synchronized lift"
+  ]
+ },
+ {
+  "slug": "market-town-agents",
+  "title": "Market Town Agents",
+  "category": "data",
+  "prompt": "An agent-based simulation as a living miniature: a market town plaza with homes, stalls and a well, dozens of small figures moving between them along paths, trading and gathering; tilt-shift miniature look.",
+  "description": "Animate a crowd of linked figures from home-and-goal routes in a late-afternoon miniature village.",
+  "brief": {
+   "prompt": "An agent-based simulation as a living miniature: a market town plaza with homes, stalls and a well, dozens of small figures moving between them along paths, trading and gathering; tilt-shift miniature look.",
+   "orientation": "ultrawide",
+   "seconds": 6,
+   "loop": false,
+   "fps": 24,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "high wide crane down into a plaza",
+   "lighting": "warm late afternoon sun",
+   "style": "miniature tilt-shift diorama",
+   "motion": "many agents walk between stalls and homes"
+  },
+  "techniques": [
+   "goal-based arc-length crowd routes",
+   "linked figure meshes",
+   "animated rack focus with miniature aperture",
+   "Voronoi cobblestones"
+  ]
+ },
+ {
+  "slug": "neon-sign-sting",
+  "title": "Neon Sign Sting",
+  "category": "typography",
+  "prompt": "A neon sign reading OPEN LATE flickers on letter by letter on a wet brick wall at night, its pink and cyan glow reflecting in puddles below.",
+  "description": "Shape letters from gas tubes and cue each emitter and its practical spill together.",
+  "brief": {
+   "prompt": "A neon sign reading OPEN LATE flickers on letter by letter on a wet brick wall at night, its pink and cyan glow reflecting in puddles below.",
+   "orientation": "horizontal",
+   "seconds": 5,
+   "fps": 24,
+   "loop": false
+  },
+  "tags": {
+   "camera": "slow push toward the sign",
+   "lighting": "neon key on wet brick",
+   "style": "photoreal night",
+   "motion": "neon tubes flicker on letter by letter"
+  },
+  "techniques": [
+   "stroke-based neon letters",
+   "emission and practical spill synchronized",
+   "staggered brick courses",
+   "puddle material with low roughness"
+  ]
+ },
+ {
+  "slug": "noir-title-card",
+  "title": "The Long Night",
+  "category": "typography",
+  "prompt": "A film-noir title card: the words THE LONG NIGHT in a period serif on an office wall striped by venetian-blind shadows, cigarette smoke drifting, rain on the window; black and white.",
+  "description": "Use real blind slats, a shadow-transmitting window material, and masked noise for a noir title reveal.",
+  "brief": {
+   "prompt": "A film-noir title card: the words THE LONG NIGHT in a period serif on an office wall striped by venetian-blind shadows, cigarette smoke drifting, rain on the window; black and white.",
+   "orientation": "ultrawide",
+   "seconds": 6,
+   "fps": 24,
+   "loop": false,
+   "assets": [
+    "fontsource:playfair-display@700"
+   ],
+   "budget_minutes": {
+    "draft": 18
+   }
+  },
+  "tags": {
+   "camera": "slow push-in",
+   "lighting": "hard venetian-blind shadows",
+   "style": "monochrome film noir",
+   "motion": "rain, drifting smoke, title fades up"
+  },
+  "techniques": [
+   "physical venetian blinds",
+   "light-path window shader",
+   "keyframed transparent title mix",
+   "height-shaped drifting smoke volume"
+  ]
+ },
+ {
   "slug": "paper-city-isometric",
   "title": "Paper City, Isometric",
   "category": "architecture",
@@ -127,6 +833,275 @@
    "arc-length car paths with unwrapped heading via kit.animate",
    "layered card base from bevelled kit.box slabs",
    "kit.scatter with avoid circles for flower dots"
+  ]
+ },
+ {
+  "slug": "pendulum-wave",
+  "title": "Pendulum Wave",
+  "category": "abstract",
+  "prompt": "A pendulum wave machine: fifteen brass bobs on fine wires from a walnut frame swing with slightly different periods, forming traveling waves and realigning exactly at the loop point.",
+  "description": "Use distinct integer cycle counts to animate a bifilar pendulum wave that locks back into alignment at the seam.",
+  "brief": {
+   "prompt": "A pendulum wave machine: fifteen brass bobs on fine wires from a walnut frame swing with slightly different periods, forming traveling waves and realigning exactly at the loop point.",
+   "orientation": "portrait",
+   "seconds": 6,
+   "loop": true,
+   "fps": 60,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "slow overhead tilt",
+   "lighting": "museum spot lighting on dark wood",
+   "style": "photoreal brass and walnut",
+   "motion": "pendulum wave pattern"
+  },
+  "techniques": [
+   "integer-cycle pendulum wave",
+   "bifilar suspension pivots",
+   "stretched procedural walnut grain",
+   "cosine camera arc"
+  ]
+ },
+ {
+  "slug": "perfume-bottle-light",
+  "title": "Perfume Bottle Light Study",
+  "category": "product",
+  "prompt": "A faceted perfume bottle with amber liquid and a gold cap on a glossy plinth, against a saturated magenta backdrop. A hard light slowly sweeps across it while the camera pushes in.",
+  "description": "Use a thick faceted shell and a separate liquid volume, then move a hard key and caustic gobo across a small studio set.",
+  "brief": {
+   "prompt": "A faceted perfume bottle with amber liquid and a gold cap on a glossy plinth, against a saturated magenta backdrop. A hard light slowly sweeps across it while the camera pushes in.",
+   "orientation": "vertical",
+   "seconds": 5,
+   "fps": 24,
+   "loop": false,
+   "seed": 11,
+   "budget_minutes": {
+    "draft": 16
+   }
+  },
+  "tags": {
+   "camera": "slow push-in",
+   "lighting": "sweeping hard spot and a caustic gobo",
+   "style": "photoreal glass and liquid",
+   "motion": "light sweeps across the bottle"
+  },
+  "techniques": [
+   "lathed glass shell with an inner wall",
+   "nested amber liquid volume",
+   "single sweeping hard key",
+   "caustic gobo follows the glass shadow",
+   "small-scale studio framing"
+  ]
+ },
+ {
+  "slug": "population-bars-time",
+  "title": "Wildlife Populations Over Time",
+  "category": "data",
+  "prompt": "A 3D bar chart of five species populations over ten years built from inline data: bars rise year by year with a large year label, colors per species, floor grid, on a clean background.",
+  "description": "Reveal a table of population counts with growing beveled bars and camera-facing labels in a clean gallery.",
+  "brief": {
+   "prompt": "A 3D bar chart of five species populations over ten years built from inline data: bars rise year by year with a large year label, colors per species, floor grid, on a clean background.",
+   "orientation": "square",
+   "seconds": 6,
+   "loop": false,
+   "fps": 30,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "slow orbit quarter turn",
+   "lighting": "soft gallery light",
+   "style": "clean infographic, flat colors with labels",
+   "motion": "bars grow year by year with year counter"
+  },
+  "techniques": [
+   "data table to grouped bars",
+   "bevel-preserving shape keys",
+   "year counter visibility intervals",
+   "camera-facing labels"
+  ]
+ },
+ {
+  "slug": "ringed-planet-flyby",
+  "title": "Ringed Planet Flyby",
+  "category": "space",
+  "prompt": "A flyby of a banded gas giant with wide icy rings: the camera passes close to ring particles and rocks, the planet looming with the rings' shadow across its bands; a distant sun.",
+  "description": "Use nested annuli and ring debris for scale during a close flyby under hard sunlight.",
+  "brief": {
+   "prompt": "A flyby of a banded gas giant with wide icy rings: the camera passes close to ring particles and rocks, the planet looming with the rings' shadow across its bands; a distant sun.",
+   "orientation": "ultrawide",
+   "seconds": 8,
+   "fps": 24,
+   "loop": false,
+   "budget_minutes": {
+    "draft": 25
+   }
+  },
+  "tags": {
+   "camera": "flyby past rings toward planet",
+   "lighting": "single distant sun and ring shadow",
+   "style": "photoreal space",
+   "motion": "camera passes ring particles"
+  },
+  "techniques": [
+   "latitudinal procedural cloud bands",
+   "nested annular ring meshes",
+   "near-plane ring debris scattering",
+   "spline camera flyby"
+  ]
+ },
+ {
+  "slug": "robot-dog-idle",
+  "title": "Robot Dog Idle",
+  "category": "character",
+  "prompt": "A friendly cartoon robot dog sits on a checkered floor: boxy body, round eyes on a screen face, antenna ears. It breathes, tilts its head and wags a spring tail in a loop.",
+  "description": "Rig a sitting robot dog with nested pivots, colored toon bands and loop-safe secondary motion.",
+  "brief": {
+   "prompt": "A friendly cartoon robot dog sits on a checkered floor: boxy body, round eyes on a screen face, antenna ears. It breathes, tilts its head and wags a spring tail in a loop.",
+   "orientation": "square",
+   "seconds": 5,
+   "fps": 24,
+   "loop": true,
+   "seed": 11
+  },
+  "tags": {
+   "camera": "low hero angle with a slow repeating arc",
+   "lighting": "graphic toon lighting with ink outlines",
+   "style": "cel-shaded with outlines in EEVEE",
+   "motion": "breathing, head tilt, and spring tail wag"
+  },
+  "techniques": [
+   "tinted Shader to RGB bands layered with lit plastic",
+   "curved checker cyclorama",
+   "inverted-hull ink lines and controlled eye glow",
+   "joint empties for secondary motion",
+   "closed loop camera and idle cycles"
+  ]
+ },
+ {
+  "slug": "snowflake-growth",
+  "title": "Snowflake Growth",
+  "category": "micro-macro",
+  "prompt": "A macro snowflake grows from a hexagonal plate: six dendritic arms branch outward symmetrically, sparkling ice against a dark blue background with cold rim light.",
+  "description": "Grow a six-fold ice crystal using radial hierarchies and staggered branches.",
+  "brief": {
+   "prompt": "A macro snowflake grows from a hexagonal plate: six dendritic arms branch outward symmetrically, sparkling ice against a dark blue background with cold rim light.",
+   "orientation": "square",
+   "seconds": 6,
+   "fps": 30,
+   "loop": false
+  },
+  "tags": {
+   "camera": "slow rotation on axis",
+   "lighting": "cold rim light on dark blue",
+   "style": "crystalline ice",
+   "motion": "dendritic arms grow outward"
+  },
+  "techniques": [
+   "instanced radial hierarchy logic",
+   "hexagonal seed plate",
+   "cascading branch growth windows",
+   "glossy ice with colored edge highlights"
+  ]
+ },
+ {
+  "slug": "space-station-docking",
+  "title": "Space Station Docking",
+  "category": "mechanical",
+  "prompt": "A ring-shaped space station rotates slowly above Earth while a small shuttle aligns and docks with the hub, thrusters puffing; harsh sun, deep black space, stars.",
+  "description": "Build a detailed ring station over a procedural Earth and match a shuttle\u2019s roll to the dock as it approaches.",
+  "brief": {
+   "prompt": "A ring-shaped space station rotates slowly above Earth while a small shuttle aligns and docks with the hub, thrusters puffing; harsh sun, deep black space, stars.",
+   "orientation": "horizontal",
+   "seconds": 8,
+   "loop": false,
+   "fps": 24,
+   "seed": 11,
+   "budget_minutes": {
+    "probe": 8,
+    "draft": 24
+   }
+  },
+  "tags": {
+   "camera": "slow tracking alongside the shuttle",
+   "lighting": "harsh sunlight in space, earthshine fill",
+   "style": "photoreal hard-surface",
+   "motion": "station rotates, shuttle docks"
+  },
+  "techniques": [
+   "scale-separated planet and station",
+   "procedural cloud and limb shells",
+   "spin-matched docking",
+   "per-object thruster puff fades"
+  ]
+ },
+ {
+  "slug": "street-walker-tracking",
+  "title": "Street Walker Tracking Shot",
+  "category": "character",
+  "prompt": "A stylized clay-like figure walks along a sunny old-town street past shopfronts and lamp posts at golden hour; the camera tracks alongside at walking pace.",
+  "description": "Build a clay street with layered storefronts and use a tracked camera and analytic leg IK to keep the character\u2019s feet planted as it walks.",
+  "brief": {
+   "prompt": "A stylized clay-like figure walks along a sunny old-town street past shopfronts and lamp posts at golden hour; the camera tracks alongside at walking pace.",
+   "orientation": "ultrawide",
+   "seconds": 6,
+   "fps": 24,
+   "loop": false,
+   "seed": 11,
+   "budget_minutes": {
+    "draft": 20
+   }
+  },
+  "tags": {
+   "camera": "side tracking shot following the walker",
+   "lighting": "golden-hour sun down the street",
+   "style": "warm stylized clay",
+   "motion": "planted walking cycle with translation"
+  },
+  "techniques": [
+   "procedural two-bone leg IK",
+   "planted stance and rolling heel strike",
+   "recessed facade generator",
+   "shop signs and lantern practicals",
+   "offset side tracking at walking pace"
+  ]
+ },
+ {
+  "slug": "watch-hero-turntable",
+  "title": "Watch Hero Turntable",
+  "category": "product",
+  "prompt": "A luxury mechanical wristwatch on a dark stand: brushed steel case, sapphire crystal, applied indices, a sweeping second hand. The camera orbits it in a seamless loop against a dark gradient.",
+  "description": "Model a watch at true scale and use directional steel, a sapphire crystal and moving reflections to distinguish its finishes.",
+  "brief": {
+   "prompt": "A luxury mechanical wristwatch on a dark stand: brushed steel case, sapphire crystal, applied indices, a sweeping second hand. The camera orbits it in a seamless loop against a dark gradient.",
+   "orientation": "square",
+   "seconds": 6,
+   "fps": 24,
+   "loop": true,
+   "seed": 11,
+   "budget_minutes": {
+    "draft": 16
+   }
+  },
+  "tags": {
+   "camera": "360 degree orbit around the watch",
+   "lighting": "dark studio three-point with rim",
+   "style": "photoreal metal and sapphire glass",
+   "motion": "ticking hand and camera orbit"
+  },
+  "techniques": [
+   "metre-scale case and macro lens",
+   "radial anisotropic grain",
+   "sapphire with shadow-ray transmission",
+   "articulated band",
+   "whole-turn orbit with loop-safe ticks"
   ]
  }
 ]

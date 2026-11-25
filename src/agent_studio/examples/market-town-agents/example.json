@@ -1,0 +1,31 @@
+{
+  "slug": "market-town-agents",
+  "title": "Market Town Agents",
+  "category": "data",
+  "prompt": "An agent-based simulation as a living miniature: a market town plaza with homes, stalls and a well, dozens of small figures moving between them along paths, trading and gathering; tilt-shift miniature look.",
+  "description": "Animate a crowd of linked figures from home-and-goal routes in a late-afternoon miniature village.",
+  "brief": {
+    "prompt": "An agent-based simulation as a living miniature: a market town plaza with homes, stalls and a well, dozens of small figures moving between them along paths, trading and gathering; tilt-shift miniature look.",
+    "orientation": "ultrawide",
+    "seconds": 6,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "high wide crane down into a plaza",
+    "lighting": "warm late afternoon sun",
+    "style": "miniature tilt-shift diorama",
+    "motion": "many agents walk between stalls and homes"
+  },
+  "techniques": [
+    "goal-based arc-length crowd routes",
+    "linked figure meshes",
+    "animated rack focus with miniature aperture",
+    "Voronoi cobblestones"
+  ]
+}

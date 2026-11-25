@@ -42,10 +42,10 @@ CLOTHES = ['#B23A3A', '#2F5E9E', '#E0B13A', '#3E7D4E', '#7A4B8C', '#D9773A', '#E
 SKIN = ['#E2B896', '#C68E68', '#8D5A3F', '#F0CBA8']
 
 # ----------------------------------------------------------------------------- shot
-CAM_START = Vector((-6.0, -78.0, 58.0))
-CAM_END = Vector((-2.0, -31.0, 13.5))
+CAM_START = Vector((-12.0, -65.0, 54.0))
+CAM_END = Vector((-1.5, -24.5, 15.0))
 LOOK_START = Vector((0.0, 4.0, 0.0))
-LOOK_END = Vector((0.0, 1.0, 1.2))
+LOOK_END = Vector((0.0, 0.1, 1.1))
 FSTOP = 0.06                   # toy aperture: see the module note
 
 
@@ -110,20 +110,46 @@ def awning_material(kit, name, a, b):
     return mat
 
 
+def clay_roof(kit, name, color):
+    mat = kit.material(name, color, roughness=0.63)
+    tree, bsdf = mat.node_tree, kit.bsdf(mat)
+    coord = tree.nodes.new('ShaderNodeTexCoord')
+    tiles = tree.nodes.new('ShaderNodeTexBrick')
+    tiles.offset, tiles.offset_frequency = 0.5, 2
+    tiles.inputs['Scale'].default_value = 1.25
+    tiles.inputs['Brick Width'].default_value = 0.51
+    tiles.inputs['Row Height'].default_value = 0.24
+    tiles.inputs['Mortar Size'].default_value = 0.018
+    rgb = kit.color(color)
+    tiles.inputs['Color1'].default_value = rgb
+    tiles.inputs['Color2'].default_value = (*[c * 0.56 for c in rgb[:3]], 1)
+    tiles.inputs['Mortar'].default_value = kit.color('#533123')
+    bump = tree.nodes.new('ShaderNodeBump')
+    bump.inputs['Strength'].default_value = 0.37
+    bump.inputs['Distance'].default_value = 0.046
+    bump.invert = True
+    tree.links.new(coord.outputs['Object'], tiles.inputs['Vector'])
+    tree.links.new(tiles.outputs['Color'], bsdf.inputs['Base Color'])
+    tree.links.new(tiles.outputs['Fac'], bump.inputs['Height'])
+    tree.links.new(bump.outputs['Normal'], bsdf.inputs['Normal'])
+    return mat
+
+
 def build(kit):
     rng = kit.rng
     # Cycles with AgX Punchy: miniature photos are saturated and contrasty.
-    kit.render(exposure=0.15, look='AgX - Punchy', bounces=5, motion_blur=False)
+    kit.render(exposure=0.46, look='AgX - Punchy', bounces=5, motion_blur=False)
 
     # -------------------------------------------------------------------- light
-    # Late afternoon: a low sun (16 degrees) from the west-south-west rakes long shadows across the
+    # Late afternoon: a low sun from the west rakes long shadows across the
     # cobbles; kit.sky supplies the matching warm sun and blue sky fill. A thin warm haze softens
     # the far rings of houses.
-    kit.sky(sun_elevation=16, sun_rotation=215, strength=0.16, aerosol=1.6)
-    kit.haze(density=0.0035, color='#FFD9A8', anisotropy=0.5, size=(260, 260, 60), location=(0, 0, 30))
+    kit.sky(sun_elevation=20, sun_rotation=215, strength=0.13, sun_disc=False, aerosol=1.45)
+    kit.sun(elevation=20, azimuth=-108, strength=3.2, color='#FFE0B1', angle=2.6)
+    kit.haze(density=0.0013, color='#FFD9A8', anisotropy=0.4, size=(260, 260, 60), location=(0, 0, 30))
 
     # -------------------------------------------------------------------- ground, plaza, lanes
-    grass = kit.procedural('Meadow', 'ground', colors=['#4F6A2C', '#6E8A3A', '#8C9A4A'], scale=0.6, bump=0.2)
+    grass = kit.procedural('Meadow', 'ground', colors=['#3E5930', '#5F7937', '#8E9A4F'], scale=0.6, bump=0.2)
     kit.ground(grass, size=600)
     plaza = kit.cylinder('Plaza cobbles', PLAZA_R, 0.08, (0, 0, 0.04), cobble_material(kit), segments=96, bevel=0.03)
     curb_mat = kit.procedural('Curb stone', 'stone', colors=['#857B6C', '#A59A88', '#BDB29E'], scale=2.0)
@@ -152,18 +178,19 @@ def build(kit):
     # -------------------------------------------------------------------- the well
     well_stone = kit.procedural('Well stone', 'stone', colors=['#7B7266', '#9E9483', '#B7AD99'], scale=3.0, bump=0.5)
     timber = kit.procedural('Timber', 'wood', colors=['#4A3020', '#6B4630', '#8A6040'], scale=4.0)
-    kit.lathe('Well ring', [(1.05, 0.0), (1.25, 0.0), (1.25, 0.85), (1.2, 0.92), (1.05, 0.92), (1.05, 0.0)],
-              segments=48, material=well_stone, smooth=False)
-    kit.cylinder('Well water', 1.06, 0.05, (0, 0, 0.55), kit.material('Well water', '#1F3A3E', 0.05), segments=48)
-    for x in (-1.15, 1.15):
-        kit.box('Well post', (0.16, 0.16, 2.3), (x, 0, 1.15 + 0.08), timber, bevel=0.02)
-    kit.cylinder('Well windlass', 0.07, 2.5, (0, 0, 1.9), timber, rotation=(0, 90, 0), segments=16)
-    roof_mat = kit.procedural('Well shingles', 'wood', colors=['#5A3A28', '#7A5236', '#93673F'], scale=6.0)
-    for side in (-1, 1):
-        kit.box('Well roof', (2.9, 1.25, 0.06), (0, side * 0.5, 2.62), roof_mat, rotation=(side * 32, 0, 0), bevel=0.01)
-    kit.tube('Well rope', [(0.1, 0, 1.88), (0.1, 0, 1.2)], radius=0.015, material=kit.material('Rope', '#B49A6A', .9))
+    kit.lathe('Well ring', [(1.19, 0.0), (1.47, 0.0), (1.47, 0.90), (1.52, 0.98),
+                           (1.47, 1.08), (1.19, 1.08), (1.19, 0.0)],
+              segments=64, material=well_stone, smooth=False)
+    pool = kit.material('Well water', '#1D5660', 0.085, coat=0.5)
+    kit.cylinder('Well water', 1.20, 0.05, (0, 0, 0.46), pool, segments=64)
+    for x in (-1.40, 1.40):
+        kit.box('Well post', (0.18, 0.20, 2.75), (x, 0, 1.43), timber, bevel=0.024)
+    kit.cylinder('Well windlass', 0.11, 2.94, (0, 0, 2.00), timber, rotation=(0, 90, 0), segments=20)
+    kit.torus('Well crank wheel', 0.28, 0.031, (1.57, 0, 2), timber, rotation=(0, 90, 0), segments=24, sides=8)
+    kit.box('Well crossbeam', (3.2, 0.18, 0.20), (0, 0, 2.78), timber, bevel=0.035)
+    kit.tube('Well rope', [(0.1, 0, 1.93), (0.1, 0, 1.18)], radius=0.019, material=kit.material('Rope', '#B49A6A', .9))
     kit.cylinder('Bucket', 0.17, 0.26, (0.1, 0, 1.08), kit.procedural('Bucket wood', 'wood', scale=8), segments=20,
-                 radius_top=0.2)
+                 radius_top=0.20)
 
     # -------------------------------------------------------------------- market stalls
     goods_mats = [kit.material(n, c, 0.45, coat=0.2) for n, c in
@@ -220,8 +247,9 @@ def build(kit):
     glass_mat = kit.material('Window glass', '#2A2E33', 0.12, coat=0.6)
     frame_mat = kit.material('Window frame', '#EDE4D2', 0.6)
     beam_mat = kit.material('Timber beam', '#4A3424', 0.7)
-    roof_mats = [kit.procedural(f'Roof tiles {i}', 'terrazzo' if i % 2 else 'stone', colors=[c, c, '#6A3020'], scale=3.0,
-                                bump=0.4) for i, c in enumerate(ROOF)]
+    roof_mats = [clay_roof(kit, f'Roof tiles {i}', color) for i, color in enumerate(ROOF)]
+    hedge_mat = kit.procedural('Planter foliage', 'leaf', colors=['#435B2B', '#698347', '#7D9851'], scale=3.7)
+    blossom = kit.material('Scarlet window flowers', '#B94539', roughness=0.68, subsurface=0.12)
     plaster_mats = [kit.material(f'Plaster {c}', c, 0.85, bump=(8.0, 0.08)) for c in PLASTER]
     doors = []                                      # door positions: agents' homes
 
@@ -259,6 +287,17 @@ def build(kit):
                 parts.append(kit.box('Window frame', (0.95, 0.08, 1.15), (xw, -d / 2 - 0.02, zc), frame_mat))
                 parts.append(kit.box('Window glass', (0.75, 0.1, 0.95), (xw, -d / 2 - 0.035, zc), glass_mat))
                 parts.append(kit.box('Window sill', (1.1, 0.2, 0.07), (xw, -d / 2 - 0.08, zc - 0.62), frame_mat))
+                parts.append(kit.box('Window mullion', (0.055, 0.035, 0.96), (xw, -d / 2 - 0.093, zc), frame_mat))
+                if f == 0 and w > 5.5:
+                    parts.append(kit.box('Window planter box', (0.95, 0.28, 0.17), (xw, -d / 2 - 0.15, zc - 0.57),
+                                         door_mat, bevel=0.032))
+                    for dx in (-0.30, 0, 0.30):
+                        plant = kit.ico('Window planter leaves', 0.14,
+                                        (xw + dx, -d / 2 - 0.17, zc - 0.42), hedge_mat, subdivisions=1)
+                        parts.append(plant)
+                        flower = kit.ico('Window blossom', 0.052, (xw + dx, -d / 2 - 0.23, zc - 0.32),
+                                         blossom, subdivisions=1)
+                        parts.append(flower)
                 if rng.random() < 0.5:
                     parts.append(kit.box('Shutter', (0.42, 0.05, 1.1), (xw - 0.72, -d / 2 - 0.04, zc),
                                          kit.material('Shutter', rng.choice(['#3F6E5A', '#6E3A32', '#3A5A7A']), 0.7)))
@@ -480,12 +519,12 @@ def build(kit):
 
     # -------------------------------------------------------------------- camera: crane down
     cam = kit.camera(CAM_START, LOOK_START, lens=32)
-    kit.dolly(cam, CAM_START, CAM_END, LOOK_START, LOOK_END, ease_kind='in_out', power=2.2)
+    kit.dolly(cam, CAM_START, CAM_END, LOOK_START, LOOK_END, ease_kind='smooth')
     # Keep the plaza in the thin plane of focus all the way down: key the focus distance to the
     # camera-to-look-target distance along the move.
     keys = []
     for k in range(9):
         t = k / 8
-        e = kit.ease(t, 'in_out', 2.2)
+        e = kit.ease(t, 'smooth')
         keys.append((t, (kit.lerp(CAM_START, CAM_END, e) - kit.lerp(LOOK_START, LOOK_END, e)).length))
     kit.rack_focus(cam, keys, fstop=FSTOP)

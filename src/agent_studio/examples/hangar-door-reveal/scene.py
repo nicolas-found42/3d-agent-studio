@@ -1,4 +1,4 @@
-"""Hangar door reveal: giant doors slide open, daylight floods through haze, a mech stands outside.
+"""Hangar door reveal: giant doors slide open, daylight floods through haze, a mech steps forward.
 
 Teaches:
 - staging a silhouette: expose for the bright exterior, keep the interior near black, and put
@@ -22,7 +22,7 @@ HALL_D = 64.0          # interior depth (y, from the door wall at y=0 back to y=
 EAVES = 33.0           # underside of the roof
 LEAVES = 3             # door leaves per side
 LEAF_W = DOOR_W / 2 / LEAVES + 0.3   # a little overlap between neighbouring leaves
-MECH_Y = 15.0          # the mech stands just outside the door
+MECH_Y = 15.0          # the mech starts just outside the door
 MECH_SCALE = 1.0       # the mech is ~24 m to the antenna tips at 1.0
 
 # ----------------------------------------------------------------------------- timing (shot progress)
@@ -216,6 +216,8 @@ def build(kit):
     def build_mech():
         s = MECH_SCALE
         root = kit.empty('Mech', (0, 0, 0), size=2)
+        body = kit.empty('Mech moving body', size=1)
+        body.parent = root
         parts = []
 
         def add(obj):
@@ -231,23 +233,72 @@ def build(kit):
             b = Vector(b) * s
             return add(strut(name, a, b, r * 2 * s, r * 1.6 * s, mat))
 
-        for side in (-1, 1):
+        def bind_leg_group(name, anchor, start):
+            pivot = kit.empty(name, anchor, size=0.6)
+            pivot.parent = root
+            for child in parts[start:]:
+                child.parent = pivot
+                child.location -= anchor
+            del parts[start:]
+            return pivot
+
+        def body_pose(t):
+            progress = kit.ease(kit.segment(t, 0.48, 0.96), 'smooth')
+            return Vector((0, -2.95 * s * progress, 0.16 * s * math.sin(math.tau * progress) ** 2))
+
+        for side, swing, reach in ((-1, (0.48, 0.73), 3.8), (1, (0.72, 0.96), 3.3)):
             x = side * 3.4
-            # Reverse-jointed leg: foot, shin raked back to a heel joint, thigh forward to the hip.
+            ankle, heel, hip = (Vector(p) * s for p in ((x, 0, 1.6), (x * 1.08, 3.4, 8), (x * 0.85, -0.2, 13)))
+            start = len(parts)
             box('Mech foot', (2.6, 4.2, 1.0), (x, -0.6, 0.5))
             box('Mech toe', (2.2, 1.6, 0.7), (x, -3.0, 0.35), rot=(-12, 0, 0))
             box('Mech heel spur', (1.2, 1.8, 0.8), (x, 1.9, 0.6), rot=(20, 0, 0))
-            ankle, heel, hip = (x, 0.0, 1.6), (x * 1.08, 3.4, 8.0), (x * 0.85, -0.2, 13.0)
-            limb('Mech shin', ankle, heel, 0.9)
-            limb('Mech thigh', heel, hip, 1.25)
-            for j in (ankle, heel, hip):
-                add(kit.sphere('Mech joint', 1.15 * s, tuple(Vector(j) * s), mech_joint, segments=24, rings=12))
-            # Hydraulic rams beside each leg segment: mid-scale detail that breaks the silhouette.
-            p0 = Vector(ankle) + Vector((side * 0.9, 0.4, 1.0))
-            p1 = Vector(heel) + Vector((side * 0.9, -0.6, -0.8))
-            limb('Mech ram', p0, p1, 0.22, mech_joint)
-            limb('Mech ram', Vector(heel) + Vector((side * 0.8, -0.8, 0.8)), Vector(hip) + Vector((side * 1.1, 0.8, -1.2)),
-                 0.3, mech_joint)
+            add(kit.sphere('Mech ankle hinge', 1.15 * s, ankle, mech_joint, segments=24, rings=12))
+            foot = bind_leg_group(f'Mech foot pivot {side}', ankle, start)
+
+            limb('Mech shin', ankle / s, heel / s, 0.9)
+            limb('Mech shin ram', ankle / s + Vector((side * 0.9, 0.4, 1)),
+                 heel / s + Vector((side * 0.9, -0.6, -0.8)), 0.22, mech_joint)
+            add(kit.sphere('Mech heel hinge', 1.15 * s, heel, mech_joint, segments=24, rings=12))
+            shin = bind_leg_group(f'Mech shin pivot {side}', heel, start)
+
+            limb('Mech thigh', heel / s, hip / s, 1.25)
+            limb('Mech thigh ram', heel / s + Vector((side * 0.8, -0.8, 0.8)),
+                 hip / s + Vector((side * 1.1, 0.8, -1.2)), 0.3, mech_joint)
+            add(kit.sphere('Mech hip hinge', 1.15 * s, hip, mech_joint, segments=24, rings=12))
+            thigh = bind_leg_group(f'Mech thigh pivot {side}', hip, start)
+            shin.rotation_mode = thigh.rotation_mode = 'QUATERNION'
+
+            rest_upper, rest_lower = heel - hip, ankle - heel
+            upper, lower = rest_upper.length, rest_lower.length
+
+            def pose(t):
+                progress = kit.ease(kit.segment(t, *swing), 'smooth')
+                toe = ankle + Vector((0, -reach * s * progress, 1.45 * s * math.sin(math.pi * progress)))
+                pivot = hip + body_pose(t)
+                axis = toe - pivot
+                span = min(axis.length, upper + lower)
+                direction = axis.normalized()
+                # Place the backward joint at the intersection of both fixed-length leg segments.
+                projection = (upper ** 2 - lower ** 2 + span ** 2) / (2 * span)
+                bend = (rest_upper - direction * rest_upper.dot(direction)).normalized()
+                middle = pivot + direction * projection + bend * math.sqrt(max(0, upper ** 2 - projection ** 2))
+                return pivot, middle, toe
+
+            kit.animate(foot, 'location', lambda t: pose(t)[2], step=2)
+            kit.animate(shin, 'location', lambda t: pose(t)[1], step=2)
+            kit.animate(thigh, 'location', lambda t: pose(t)[0], step=2)
+
+            def shin_rotation(t):
+                _, middle, toe = pose(t)
+                return rest_lower.rotation_difference(toe - middle)
+
+            def thigh_rotation(t):
+                pivot, middle, _ = pose(t)
+                return rest_upper.rotation_difference(middle - pivot)
+
+            kit.animate(shin, 'rotation_quaternion', shin_rotation, step=2)
+            kit.animate(thigh, 'rotation_quaternion', thigh_rotation, step=2)
             # Shoulder, arm, forearm cannon.
             box('Mech shoulder', (3.2, 4.0, 2.8), (side * 6.3, 0.4, 18.6), rot=(0, side * -8, 0))
             box('Mech shoulder plate', (3.6, 3.0, 0.4), (side * 6.6, 0.2, 20.2), rot=(0, side * -14, 0))
@@ -288,17 +339,13 @@ def build(kit):
                      radius=0.07 * s, material=mech_joint))
         add(kit.tube('Mech antenna', [tuple(Vector(p) * s) for p in ((4.3, 1.6, 20.2), (4.8, 2.2, 23.4))],
                      radius=0.05 * s, material=mech_joint))
-        bpy.context.view_layer.update()
-        for p in parts:
-            kit.parent(p, root)
+        for part in parts:
+            part.parent = body
+        kit.animate(body, 'location', body_pose, step=2)
         root.location = (2.5, MECH_Y, 0)
         root.rotation_euler.z = math.radians(-8)
-        return root
 
-    mech = build_mech()
-    # The mech is not a statue: a slow weight shift and a slight head-up as its eyes ignite.
-    kit.animate(mech, 'rotation_euler', lambda t: math.radians(-8 + 2.5 * kit.ease(kit.segment(t, 0.5, 1.0))),
-                index=2, step=3, interpolation='BEZIER')
+    build_mech()
     kit.key(eye.node_tree.nodes['Emission'].inputs['Strength'], 'default_value',
             [(EYES_ON[0], 0.0), (EYES_ON[1], 60.0), (1.0, 45.0)])
 
@@ -311,9 +358,10 @@ def build(kit):
     # Physical sky for the bright exterior, with a low sun almost behind the mech so its long
     # shadow reaches into the hangar along the beam.
     kit.sky(sun_elevation=9.0, sun_rotation=180.0, strength=0.1, sun_disc=False, aerosol=2.5)
-    kit.sun(elevation=9.0, azimuth=14.0, strength=5.0, color='#FFE2BE', angle=0.6, name='Low sun')
+    kit.sun(elevation=9.0, azimuth=14.0, strength=4.0, color='#FFE2BE', angle=0.6, name='Low sun')
+    kit.area('Dim service lights', (-16, -42, 16), (-5, -8, 5), 21500, '#C6D4EB', 8, size_y=4)
     # Interior haze with a noise-driven density: shafts break into drifting dusty layers.
-    haze = kit.haze(density=0.03, color='#E8E2D8', anisotropy=0.6, size=(HALL_W - 1.5, HALL_D - 1, EAVES),
+    haze = kit.haze(density=0.012, color='#E8E2D8', anisotropy=0.38, size=(HALL_W - 1.5, HALL_D - 1, EAVES),
                     location=(0, -HALL_D / 2, EAVES / 2), name='Hangar dust haze')
     hn = haze.data.materials[0].node_tree
     vol = next(n for n in hn.nodes if n.type == 'PRINCIPLED_VOLUME')
@@ -321,8 +369,8 @@ def build(kit):
     dust.inputs['Scale'].default_value = 0.09
     dust.inputs['Detail'].default_value = 4.0
     dust_map = hn.nodes.new('ShaderNodeMapRange')
-    dust_map.inputs['To Min'].default_value = 0.01
-    dust_map.inputs['To Max'].default_value = 0.055
+    dust_map.inputs['To Min'].default_value = 0.003
+    dust_map.inputs['To Max'].default_value = 0.020
     hn.links.new(dust.outputs['Fac'], dust_map.inputs['Value'])
     hn.links.new(dust_map.outputs['Result'], vol.inputs['Density'])
     # Drift the noise slowly through the hall so the dust visibly moves in the beams.
@@ -332,7 +380,7 @@ def build(kit):
     hn.links.new(drift.outputs['Vector'], dust.inputs['Vector'])
     kit.animate(drift.inputs['Location'], 'default_value', lambda t: (1.2 * t, -0.6 * t, 0.4 * t), step=6,
                 interpolation='BEZIER')
-    kit.haze(density=0.0035, color='#F2E6D6', anisotropy=0.5, size=(500, 400, 80), location=(0, 202, 40),
+    kit.haze(density=0.0008, color='#F2E6D6', anisotropy=0.40, size=(500, 400, 80), location=(0, 202, 40),
              name='Exterior haze')
 
     # Dust motes: small bright specks that only show where the beam lights them.

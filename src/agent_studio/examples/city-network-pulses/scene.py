@@ -117,21 +117,6 @@ class Polyline:
         return a.lerp(b, (s - self.cum[lo]) / seg), (b - a).normalized()
 
 
-def poly_tube(kit, name, pts, radius, mat):
-    """Curve object with a round bevel along an exact POLY spline."""
-    cu = bpy.data.curves.new(name, 'CURVE')
-    cu.dimensions = '3D'
-    cu.bevel_depth, cu.bevel_resolution = radius, 3
-    cu.use_fill_caps = True
-    sp = cu.splines.new('POLY')
-    sp.points.add(len(pts) - 1)
-    for p, v in zip(sp.points, pts):
-        p.co = (v.x, v.y, LINE_Z, 1)
-    cu.materials.append(mat)
-    obj = bpy.data.objects.new(name, cu)
-    return kit._link(obj, 'Network')
-
-
 # ---------------------------------------------------------------- materials
 def map_material(kit):
     """Ink-blue ground with faint street lines (fract of object XY) and a soft vignette so the
@@ -222,10 +207,12 @@ def build(kit):
         pts = fillet(octilinear([STATIONS[s] for s in stops]), CORNER)
         line = Polyline(pts)
         radius = 0.22 + 0.33 * load
-        poly_tube(kit, f'Route {name}', pts, radius, emissive_line(kit, f'Route {name}', color, 1.0 + 4.0 * load))
+        route_material = emissive_line(kit, f'Route {name}', color, 0.65 + 2.8 * load)
+        kit.tube(f'Route {name}', [(p.x, p.y, LINE_Z) for p in pts], radius, route_material,
+                 collection='Network', spline='POLY')
         # Pulses: count and speed scale with ridership. Spacing is even with a seeded jitter.
         # White-hot core tinted toward the line colour, much brighter than the tube it rides.
-        pulse_mat = kit.emissive(f'Pulse {name}', tint(color, 0.6), 12 + 40 * load)
+        pulse_mat = kit.emissive(f'Pulse {name}', tint(color, 0.6), 7.0 + 24.0 * load)
         count = max(2, round(line.length / 22 * (0.5 + 1.5 * load)))
         speed = PULSE_SPEED * (0.6 + 0.4 * load)
         for k in range(count):
@@ -270,7 +257,7 @@ def build(kit):
 
     # --- light: night world plus a dim blue moon so the blocks keep their form --------------
     kit.world('#03060F', strength=0.5, top='#08122A')
-    kit.sun(elevation=35, azimuth=-140, strength=0.12, color='#9DB6FF', angle=3)
+    kit.sun(elevation=35, azimuth=-140, strength=0.24, color='#9DB6FF', angle=3)
 
     # --- camera: tilt from oblique to top-down on a sphere around the network centre -------
     centre = Vector((-2, 0, 0))
@@ -280,7 +267,7 @@ def build(kit):
         u = smoother(t)
         el = math.radians(30 + 60 * u)          # 30 degrees oblique -> exactly overhead
         az = math.radians(-28 * (1 - u))        # unwinds a slight yaw on the way up
-        dist = 100 + 22 * u
+        dist = 124 + 20 * u
         return centre + dist * Vector((math.cos(el) * math.sin(az), -math.cos(el) * math.cos(az), math.sin(el)))
     kit.animate(cam, 'location', orbit_point)
 

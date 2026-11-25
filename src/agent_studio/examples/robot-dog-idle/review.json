@@ -1,0 +1,81 @@
+{
+  "job_id": "e23ba5210ac348e285dd474fe0eabc2a",
+  "drafts": 3,
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: a dark ink contour tracing the shell silhouette and screen trim (0.46)",
+        "defect: interpenetration (0.35)",
+        "defect: noisy (0.47)",
+        "defect: set_unfinished (0.32)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "boxy sitting robot dog": 0.94,
+      "round eyes on a screen face": 0.94,
+      "antenna ears": 0.97,
+      "spring tail": 0.96,
+      "checkered floor": 0.99,
+      "a dark ink contour tracing the shell silhouette and screen trim": 0.46
+    },
+    "defects": {
+      "floating": 0.17,
+      "interpenetration": 0.35,
+      "too_dark": 0.04,
+      "blown_out": 0.04,
+      "noisy": 0.47,
+      "clipping": 0.14,
+      "placeholder": 0.02,
+      "empty": 0.12,
+      "set_unfinished": 0.32
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.2,
+      "2": 0.76,
+      "3": 0.04
+    },
+    "prompt_match_probabilities": {
+      "0": 0,
+      "1": 0.17,
+      "2": 0.31,
+      "3": 0.52
+    }
+  },
+  "notes": {
+    "probe": "The night-blue studio relight and round of heavier ink strokes gave the shell a distinct silhouette after two basic drafts. The revised probe shows the orange antenna tips, cyan eyes and blue checker in one readable low-angle composition.",
+    "timeline": "The five-second camera arc holds the boxy dog, bowl and ball in frame. The chest breathes, the head cocks and comes back, the eyes close briefly, and the antenna tips and spring tail show overlapping motion. The dark contour remains visible around the head and screen throughout.",
+    "angles": "The wide and elevated proofs show the feet and haunches planted on the checker floor, the bowl ahead of the left paw and the ball apart on the right. The elevated view makes the separation of the neck, spring tail, shoulders and side shell visible. The overhead shows their floor clearance relative to the camera path.",
+    "seam": "The two closing and two opening frames show a consistent pose, checker alignment and camera height. The extra frame matches the first at measured difference 0.0 with a typical sampled change of 0.0188.",
+    "jev_look_items": "The 0.46 ink score corresponds to a deliberate tight contour. Dark edges visibly trace the head shell and face bezel in the timeline. The 0.35 suspected interpenetration is explained by attached collar, spring and seated leg joints in the three-quarter proofs. Fine stippling remains visible on the lit plastic shoulders and face shell at the 0.47 noise score. Color bands, eyes and edge marks remain readable. The 0.32 unfinished-set score reflects the minimal cyclorama and its limits in the extra angles. The checker and wrapped indigo backdrop fill the hero shot."
+  },
+  "qc": {
+    "video": {
+      "frames": 120,
+      "duration_seconds": 5.0,
+      "fps": 24,
+      "width": 360,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 482005
+    },
+    "warnings": [],
+    "loop_seam": {
+      "first_vs_extra_frame": 0.0,
+      "typical_sampled_change": 0.0188
+    }
+  }
+}

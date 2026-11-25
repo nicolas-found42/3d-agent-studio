@@ -1,0 +1,52 @@
+{
+  "job_id": "177944a883154d01927856a063c149ee",
+  "drafts": 1,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: floating (0.30)",
+        "defect: noisy (0.52)",
+        "defect: set_unfinished (0.48)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "a nearly spherical shell": 0.91,
+      "irregular ceramic shards": 0.87,
+      "a bright orange core": 0.93,
+      "an opened pose": 0.97,
+      "a closed pose": 0.96
+    },
+    "defects": {
+      "floating": 0.3,
+      "interpenetration": 0.15,
+      "too_dark": 0.03,
+      "blown_out": 0.1,
+      "noisy": 0.52,
+      "clipping": 0.06,
+      "placeholder": 0.03,
+      "empty": 0.16,
+      "set_unfinished": 0.48
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.09,
+      "2": 0.76,
+      "3": 0.15
+    }
+  },
+  "notes": {
+    "probe": "The centered ivory shell opens at the middle still while the floor and rim stay cool, and closes again by the last still. The open pose keeps an unbroken silhouette around the orange core.",
+    "timeline": "Dark seams turn orange as the shell expands. The six frames show glazed outside faces, rough fractured walls and stronger orange spill into the floor haze near full opening. The stationary camera keeps the changing silhouette centered.",
+    "angles": "The wider and oblique plates show the three-dimensional shell, rim strips and reflective stage floor. The top view places the body above the floor and confirms a stationary camera path.",
+    "seam": "The four plate seam keeps the closed pose and nearly uniform dark cracks. The rendered first and extra frame difference is 0.00001 against 0.00788 for typical sampled change.",
+    "playback": "The decoded two-cycle sequence sampled twice per second shows the edge-by-edge opening, orange floor spill at peak expansion and resealing at the same scale before the sequence repeats.",
+    "jev_look_items": "Floating (0.30): the suspended abstract shell is deliberate. Noise (0.52): soft denoiser mottling is visible in the floor haze at preview samples, while the ceramic surfaces and fracture boundaries read clearly. Set unfinished (0.48): the wide views show a complete studio floor and rim setup around a self-contained abstract object."
+  }
+}

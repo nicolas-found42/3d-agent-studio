@@ -21,6 +21,7 @@ from mathutils import Matrix, Vector, noise
 # ---------------------------------------------------------------- constants (metres, degrees)
 LAKE_HALF_WIDTH = 520.0        # shore to shore at the camera end is ~1 km
 WALL_HEIGHT = 650.0            # valley walls saturate around this height
+LAKE_NEAR_END = -680.0         # rear shoreline, behind the drone at the start
 LAKE_FAR_END = 2600.0          # far shore, where the valley climbs into the massif
 MASSIF_Y = 7200.0              # centre line of the big snow peaks
 MASSIF_HEIGHT = 1100.0         # ridge height above the lake surface
@@ -47,13 +48,13 @@ def height(x, y):
     # Wobbly shoreline: the lake half-width varies with y and with low-frequency noise.
     half = shore_half_width(x, y)
     side = abs(x) - half                         # metres beyond the side shore
-    end = (y - LAKE_FAR_END) * .3                # metres beyond the far shore (gentle foothills)
+    end = max(y - LAKE_FAR_END, LAKE_NEAR_END - y) * .3
     beyond = max(side, end, -60.0)
     if beyond < 0:
         # Lake bed shelving down from the shore, plus one forested spit that gives the
         # camera a midground to pass (a Gaussian mound that breaks the water line).
         spit = SPIT_HEIGHT * math.exp(-(((x - SPIT[0]) / 85) ** 2 + ((y - SPIT[1]) / 300) ** 2)) - 3
-        return max(-6.0 + beyond * .15, spit)
+        return max(beyond * .31, spit)
     # Shore apron, then valley walls that steepen and saturate around WALL_HEIGHT.
     base = beyond * .09 + max(0.0, beyond - 50) ** 1.35 * .055
     walls = WALL_HEIGHT * (1 - math.exp(-base / WALL_HEIGHT))
@@ -77,7 +78,10 @@ def height(x, y):
 
 def shore_half_width(x, y):
     wobble = 90 * noise.noise(Vector((x * .0025, y * .0025, 1.7))) + 50 * math.sin(y * .0021)
-    return LAKE_HALF_WIDTH + wobble + 220 * smoothstep(0, 1600, y)
+    width = LAKE_HALF_WIDTH + wobble + 220 * smoothstep(0, 1600, y)
+    rear_curve = smoothstep(LAKE_NEAR_END, LAKE_NEAR_END + 440, y)
+    far_inlet = 1.0 - smoothstep(LAKE_FAR_END - 880, LAKE_FAR_END, y)
+    return 42 + (width - 42) * rear_curve * far_inlet
 
 
 def terrain_mesh(kit, mat):
@@ -238,9 +242,10 @@ def pine_material(kit):
 def build(kit):
     # --- terrain and lake -------------------------------------------------------------------
     terrain_mesh(kit, terrain_material(kit))
-    # The water plane stays inside the terrain's footprint: seen from outside (the review's
-    # three-quarter view) a mirror sheet poking past the land reads as an unfinished set.
-    kit.plane('Lake surface', (12600, 11200), (0, 4800, 0), water_material(kit), ground=True)
+    # The ground intersects the water everywhere around the tapered, closed basin.
+    length = LAKE_FAR_END - LAKE_NEAR_END + 300
+    kit.plane('Lake surface', (2200, length), (0, (LAKE_NEAR_END + LAKE_FAR_END) / 2, 0),
+              water_material(kit), ground=True)
 
     # --- forest: pines on gentle shore slopes, denser near the water ------------------------
     needles = pine_material(kit)
@@ -340,10 +345,11 @@ def build(kit):
 
     # --- camera: low skim toward the massif, gently rising, slight drift right --------------
     # Hug the left (shaded) shore so its pines read as silhouettes; aim between the summits.
-    cam = kit.camera((CAM_X, -160, CAM_HEIGHT), (100, MASSIF_Y, -60), lens=26, clip=(.1, 20000))
+    # The ultrawide frame needs vertical breathing room for both the summit and its reflection.
+    cam = kit.camera((CAM_X, -160, CAM_HEIGHT), (100, MASSIF_Y, 5), lens=22, clip=(.1, 20000))
     kit.path(cam, [(CAM_X, -160, CAM_HEIGHT), (CAM_X + 12, -160 + CAM_TRAVEL * .5, CAM_HEIGHT + .3),
                    (CAM_X + 30, -160 + CAM_TRAVEL, CAM_HEIGHT + .9)],
-             targets=[(60, MASSIF_Y, -60), (200, MASSIF_Y, -40)], ease_kind='in_out', power=1.6)
+             targets=[(60, MASSIF_Y, 5), (200, MASSIF_Y, 25)], ease_kind='in_out', power=1.6)
     kit.handheld(cam, amount=.25, cycles=1, seed=5)   # a whisper of drone wobble
 
     kit.render(exposure=1.1, look='AgX - Medium High Contrast', volume_step=4, motion_blur=True, shutter=.35)

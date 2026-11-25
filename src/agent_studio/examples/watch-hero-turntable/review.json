@@ -1,0 +1,75 @@
+{
+  "job_id": "55391a63bd9c4e73af312b8e9a87193e",
+  "drafts": 2,
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: brushed steel watch case (0.58)",
+        "element: a moving second hand (0.62)",
+        "defect: interpenetration (0.47)",
+        "defect: noisy (0.59)",
+        "defect: set_unfinished (0.35)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "mechanical wristwatch on a dark stand": 0.9,
+      "brushed steel watch case": 0.58,
+      "clear crystal over a dial": 0.93,
+      "raised hour indices": 0.75,
+      "a moving second hand": 0.62
+    },
+    "defects": {
+      "floating": 0.1,
+      "interpenetration": 0.47,
+      "too_dark": 0.07,
+      "blown_out": 0.21,
+      "noisy": 0.59,
+      "clipping": 0.23,
+      "placeholder": 0.03,
+      "empty": 0.1,
+      "set_unfinished": 0.35
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.21,
+      "2": 0.52,
+      "3": 0.26
+    }
+  },
+  "notes": {
+    "probe": "The revised crystal lets the blue dial and moving red hand read through the strip reflections from opposite sides of the stand.",
+    "timeline": "The orbit exposes the steel case, lugs, knurled crown, raised pale hour batons, stitched strap and curved suede display pillow. Grazing light moves across the steel and the red seconds needle changes position from frame to frame. A broader pale reflection briefly lowers dial contrast near the back of the orbit.",
+    "angles": "The widened shot shows the watch seated on the curved pillow and the pillow on the circular plinth. The three-quarter proof reveals the pool of studio light around the small display. The overhead shows the full circular camera path.",
+    "seam": "Across the final two and opening two frames, the stand and watch silhouette line up and the reflection keeps moving through the boundary. The extra-frame pixel difference is 0.00605 versus 0.04147 typical sampled change.",
+    "jev_look_items": "Jev scored the brushed case at 0.58. The narrow mid-case catches a softer highlight than the polished lip, and the brushing is subtle at 360 pixels. The red needle takes different positions against the fixed indices despite the 0.62 moving-hand score. The 0.47 interpenetration score picks up the case seating into its suede support and the strap following the pillow. The 0.59 noise score picks up reflection patches and preview grain in their falloff. The 0.35 unfinished-set score picks up the dark continuous studio stage around the lit plinth."
+  },
+  "qc": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 360,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 433802
+    },
+    "warnings": [],
+    "loop_seam": {
+      "first_vs_extra_frame": 0.00605,
+      "typical_sampled_change": 0.04147
+    }
+  }
+}

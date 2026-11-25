@@ -1,0 +1,31 @@
+{
+  "slug": "watch-hero-turntable",
+  "title": "Watch Hero Turntable",
+  "category": "product",
+  "prompt": "A luxury mechanical wristwatch on a dark stand: brushed steel case, sapphire crystal, applied indices, a sweeping second hand. The camera orbits it in a seamless loop against a dark gradient.",
+  "description": "Model a watch at true scale and use directional steel, a sapphire crystal and moving reflections to distinguish its finishes.",
+  "brief": {
+    "prompt": "A luxury mechanical wristwatch on a dark stand: brushed steel case, sapphire crystal, applied indices, a sweeping second hand. The camera orbits it in a seamless loop against a dark gradient.",
+    "orientation": "square",
+    "seconds": 6,
+    "fps": 24,
+    "loop": true,
+    "seed": 11,
+    "budget_minutes": {
+      "draft": 16
+    }
+  },
+  "tags": {
+    "camera": "360 degree orbit around the watch",
+    "lighting": "dark studio three-point with rim",
+    "style": "photoreal metal and sapphire glass",
+    "motion": "ticking hand and camera orbit"
+  },
+  "techniques": [
+    "metre-scale case and macro lens",
+    "radial anisotropic grain",
+    "sapphire with shadow-ray transmission",
+    "articulated band",
+    "whole-turn orbit with loop-safe ticks"
+  ]
+}

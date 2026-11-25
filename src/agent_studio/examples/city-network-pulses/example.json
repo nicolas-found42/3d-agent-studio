@@ -1,0 +1,31 @@
+{
+  "slug": "city-network-pulses",
+  "title": "City Network Pulses",
+  "category": "data",
+  "prompt": "An abstract city transit network: glowing nodes for stations on a dark map, edges as tubes, light pulses travelling along routes with busier routes brighter; the camera tilts from oblique to top-down.",
+  "description": "Turn station and ridership data into layered route geometry and animate moving pulses by distance along each line.",
+  "brief": {
+    "prompt": "An abstract city transit network: glowing nodes for stations on a dark map, edges as tubes, light pulses travelling along routes with busier routes brighter; the camera tilts from oblique to top-down.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "tilt-down from oblique to top view",
+    "lighting": "dark blue night with emissive data",
+    "style": "stylized data viz, clean",
+    "motion": "light pulses travel along edges"
+  },
+  "techniques": [
+    "octilinear filleted route geometry",
+    "arc-length pulse motion",
+    "ridership-weighted thickness and intensity",
+    "batched street block meshes"
+  ]
+}

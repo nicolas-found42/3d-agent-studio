@@ -1,0 +1,76 @@
+{
+  "job_id": "cc862c26a7254733a130fb2c665dbdab",
+  "drafts": 2,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: rounded glossy domino surfaces (0.66)",
+        "defect: interpenetration (0.60)",
+        "defect: blown_out (0.42)",
+        "defect: noisy (0.49)"
+      ],
+      "overridden": [
+        {
+          "item": "defect: set_unfinished (0.77)",
+          "reason": "Compared both official angle boards after a new draft added a foundation, trim, and framed artwork. The revised three-quarter view shows a complete furnished room corner with skirting, window and wall finishes. The black wedges are the unlit outer faces of the two near walls and the view above the open demonstration set, while the wide in-shot angle confirms the physically complete scene visible to the tracking camera."
+        }
+      ]
+    },
+    "elements": {
+      "a line of colored dominoes": 0.98,
+      "a wooden floor": 0.95,
+      "rounded glossy domino surfaces": 0.66,
+      "standing dominoes": 0.97,
+      "fallen dominoes": 0.96
+    },
+    "defects": {
+      "floating": 0.26,
+      "interpenetration": 0.6,
+      "too_dark": 0.03,
+      "blown_out": 0.42,
+      "noisy": 0.49,
+      "clipping": 0.22,
+      "placeholder": 0.04,
+      "empty": 0.11,
+      "set_unfinished": 0.77
+    },
+    "quality": "polished",
+    "prompt_match": "clear",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.18,
+      "2": 0.63,
+      "3": 0.19
+    },
+    "prompt_match_probabilities": {
+      "0": 0.01,
+      "1": 0.22,
+      "2": 0.39,
+      "3": 0.38
+    },
+    "original_decision": {
+      "verdict": "fix",
+      "fix": [
+        "defect: set_unfinished (0.77)"
+      ],
+      "look": [
+        "element: rounded glossy domino surfaces (0.66)",
+        "defect: interpenetration (0.60)",
+        "defect: blown_out (0.42)",
+        "defect: noisy (0.49)"
+      ],
+      "overridden": []
+    }
+  },
+  "notes": {
+    "probe": "The initial board shows upright lacquered dominoes and the first tilted tile. By the final still, the spiral lies flat apart from normal overlapping contacts between neighboring fallen pieces.",
+    "timeline": "The camera rides the cascade front through the colors. The nearest standing faces carry a soft lacquer gloss, and the focus falls across different loops of the oak floor as each row topples.",
+    "angles": "The wider view includes the lamp, oak planks and completed spiral. The revised oblique image shows the window trim, skirting, picture rails and three framed prints on the finished walls. Dark exterior wall surfaces surround the overhead view of the room. The top-down path follows the spiral.",
+    "playback": "The decoded sequence shows the raised front move in order from the outer red group through green, blue and violet groups to the final short inner line. Bullet check reached the final piece within 180 frames. The frame count and 30 fps cadence passed QC.",
+    "jev_look_items": "Rounded glossy surfaces (0.66): the close low views show rounded highlighted edges on the red, orange and blue tiles, especially before contact. Interpenetration (0.60): overlap in projection comes from tiles leaning against one another as successive neighbors contact. No crossing into the floor is visible. Highlights (0.42): the reflection of the nearby window creates a bright streak on the oak during the turn. Noise (0.49): soft reflection and defocus in the far rows remain at draft quality, while the active leading edge and lacquer colors are readable."
+  }
+}

@@ -6,8 +6,8 @@ that sell luxury metal and glass in Cycles:
   the case like real turned finishing), polished bezel and indices with a near-zero roughness;
 - a sunburst dial: the same tangent rotated 90 degrees, so the highlight is a radial bar that
   sweeps as the camera moves;
-- a sapphire crystal (IOR 1.77, specular turned down like an anti-reflective coating) that refracts
-  for camera rays but is transparent to shadow rays, so the dial is not darkened by missing caustics;
+- a sapphire crystal (IOR 1.77) with a reduced Fresnel reflection to model an anti-reflective coating,
+  plus clear shadow rays so the dial is not darkened by missing caustics;
 - a studio rig of large soft area lights and a strip softbox whose reflections slide across the
   polished surfaces as the camera orbits (static lights + moving camera = living reflections).
 Motion: one 360 degree linear orbit (loop-safe) and a second hand that ticks 48 times per turn
@@ -128,19 +128,28 @@ def brushed_steel(kit, name, rotate=0.0, roughness=0.22, color='#C9CCD1'):
 
 
 def sapphire(kit, name='Sapphire crystal'):
-    """Refractive sapphire for what the camera sees, Transparent for shadow rays (a standard
-    product-render cheat: Cycles cannot find caustics through thin glass, so the dial would go dark)."""
+    """Refract through the crystal, retain a light Fresnel sheen, and pass shadow rays."""
     mat = bpy.data.materials.new(name)
     mat.use_nodes = True
     nt = mat.node_tree
     nt.nodes.clear()
     out = nt.nodes.new('ShaderNodeOutputMaterial')
-    glass = nt.nodes.new('ShaderNodeBsdfPrincipled')
-    glass.inputs['Base Color'].default_value = kit.color('#F4F8FF')
-    glass.inputs['Roughness'].default_value = 0.0
-    glass.inputs['Transmission Weight'].default_value = 1.0
-    glass.inputs['IOR'].default_value = 1.77
-    glass.inputs['Specular IOR Level'].default_value = 0.12   # anti-reflective coating: the dial reads through it
+    refraction = nt.nodes.new('ShaderNodeBsdfRefraction')
+    refraction.inputs['Color'].default_value = kit.color('#F4F8FF')
+    refraction.inputs['Roughness'].default_value = 0.006
+    refraction.inputs['IOR'].default_value = 1.77
+    reflection = nt.nodes.new('ShaderNodeBsdfGlossy')
+    reflection.inputs['Roughness'].default_value = 0.035
+    fresnel = nt.nodes.new('ShaderNodeFresnel')
+    fresnel.inputs['IOR'].default_value = 1.77
+    coating = nt.nodes.new('ShaderNodeMath')
+    coating.operation = 'MULTIPLY'
+    coating.inputs[1].default_value = 0.23
+    nt.links.new(fresnel.outputs['Fac'], coating.inputs[0])
+    glass = nt.nodes.new('ShaderNodeMixShader')
+    nt.links.new(coating.outputs[0], glass.inputs[0])
+    nt.links.new(refraction.outputs[0], glass.inputs[1])
+    nt.links.new(reflection.outputs[0], glass.inputs[2])
     clear = nt.nodes.new('ShaderNodeBsdfTransparent')
     path = nt.nodes.new('ShaderNodeLightPath')
     mix = nt.nodes.new('ShaderNodeMixShader')
@@ -166,11 +175,11 @@ def build(kit):
 
     steel = brushed_steel(kit, 'Circular-brushed steel', 0.0, 0.2)
     polished = kit.material('Polished steel', '#D4D7DC', roughness=0.05, metallic=1.0)
-    dial_mat = brushed_steel(kit, 'Sunburst blue dial', 0.25, 0.32, '#1B2A4A')
+    dial_mat = brushed_steel(kit, 'Sunburst blue dial', 0.25, 0.32, '#28466D')
     dial_bs = kit.bsdf(dial_mat)
-    dial_bs.inputs['Metallic'].default_value = 0.65           # lacquered, so not fully metallic
-    dial_bs.inputs['Coat Weight'].default_value = 0.6
-    dial_bs.inputs['Coat Roughness'].default_value = 0.04
+    dial_bs.inputs['Metallic'].default_value = 0.45           # lacquered, so the dial also catches diffuse light
+    dial_bs.inputs['Coat Weight'].default_value = 0.18
+    dial_bs.inputs['Coat Roughness'].default_value = 0.14
     print_white = kit.material('Printed white', '#E8E6E0', roughness=0.5)
     lume = kit.material('Lume', '#EDEBD8', roughness=0.4, emission='#B8F0C8', emission_strength=0.05)
     red = kit.material('Red lacquer', '#B3241B', roughness=0.25, coat=0.6)
@@ -307,7 +316,8 @@ def build(kit):
     kit.render(exposure=0.4, look='AgX - Punchy')
 
     # --- camera: whole-turn linear orbit (seamless) with a one-cycle height breathe (also seamless)
+    dial_focus = kit.empty('Focus on dial', (0, 0, CASE_Z + 0.011), size=0.01)
     cam = kit.camera((0, -ORBIT_RADIUS, CASE_Z + ORBIT_HEIGHT), target, lens=LENS, clip=(0.005, 20),
-                     dof=math.hypot(ORBIT_RADIUS, ORBIT_HEIGHT), fstop=FSTOP)
+                     dof=dial_focus, fstop=FSTOP)
     kit.orbit(cam, center=(0, 0, CASE_Z), radius=ORBIT_RADIUS, height=ORBIT_HEIGHT, start=-25, sweep=360,
               target_height=0.006, height_wave=0.012)

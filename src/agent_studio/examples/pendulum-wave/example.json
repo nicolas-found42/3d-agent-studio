@@ -1,0 +1,31 @@
+{
+  "slug": "pendulum-wave",
+  "title": "Pendulum Wave",
+  "category": "abstract",
+  "prompt": "A pendulum wave machine: fifteen brass bobs on fine wires from a walnut frame swing with slightly different periods, forming traveling waves and realigning exactly at the loop point.",
+  "description": "Use distinct integer cycle counts to animate a bifilar pendulum wave that locks back into alignment at the seam.",
+  "brief": {
+    "prompt": "A pendulum wave machine: fifteen brass bobs on fine wires from a walnut frame swing with slightly different periods, forming traveling waves and realigning exactly at the loop point.",
+    "orientation": "portrait",
+    "seconds": 6,
+    "loop": true,
+    "fps": 60,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "slow overhead tilt",
+    "lighting": "museum spot lighting on dark wood",
+    "style": "photoreal brass and walnut",
+    "motion": "pendulum wave pattern"
+  },
+  "techniques": [
+    "integer-cycle pendulum wave",
+    "bifilar suspension pivots",
+    "stretched procedural walnut grain",
+    "cosine camera arc"
+  ]
+}

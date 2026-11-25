@@ -1,0 +1,87 @@
+{
+  "job_id": "b986115786444d98ba8a34368eff3ad8",
+  "drafts": 1,
+  "scene_sha256": "7c41db25e901ed7a0ee7f7ed74f10fd77684aa28f0933dd09bbec9dae1366f5a",
+  "review_hashes": {
+    "timeline.jpg": "d3a7a36a7678742938a13df465796ec3c813411404d22f13a5a9009b6173e9df",
+    "angles.jpg": "5b662127097238aed8d1abf430b68e1087e223180a1900226ac3157e03ee958f"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "a hexagonal crystal seed": 0.95,
+      "six radial ice-crystal arms": 0.92,
+      "small side branches": 0.93,
+      "a dark blue background": 0.98
+    },
+    "defects": {
+      "floating": 0.08,
+      "interpenetration": 0.09,
+      "too_dark": 0.04,
+      "blown_out": 0.05,
+      "noisy": 0.64,
+      "clipping": 0.05,
+      "placeholder": 0.03,
+      "empty": 0.44,
+      "set_unfinished": 0.39
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.16,
+      "2": 0.68,
+      "3": 0.16
+    },
+    "look": [
+      "defect: noisy (0.64)",
+      "defect: empty (0.44)",
+      "defect: set_unfinished (0.39)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "defect: noisy (0.64)": "The blue mottling is the deliberate procedural backdrop, visible as the same restrained texture in each frame. The distinct ridge planes look stable. Fine diagonal twigs have only slight draft antialiasing.",
+      "defect: empty (0.44)": "The earliest frames require negative space for the growth. The mature crystal occupies most of the composition and stays centered.",
+      "defect: set_unfinished (0.39)": "This is a macro illustration built from one complete crystal, a blue field, and dispersed strays. The camera never reveals the outer edge of that field."
+    }
+  },
+  "notes": {
+    "probe": "The isolated hexagonal plate grows into six raised ridges and then a fine, regular branching silhouette. Cold side light catches planes across the near and far ridges. Small specks and the coarse blue background are intentionally subordinate.",
+    "timeline": "The first frame shows an isolated faceted hexagonal core. The primary ridges elongate, then their twigs fill outward symmetrically. The finished crystal occupies most of the square with no cropped arm tips. Side highlights move across individual raised ridges as the model rotates.",
+    "angles": "The wide proof backs off the lens to show the shooting field. The three-quarter proof confirms that the ice ridges stand off the backdrop, and the overhead proof shows the six arms laid out uniformly around the seed."
+  },
+  "render": {
+    "video": {
+      "frames": 180,
+      "duration_seconds": 6.0,
+      "fps": 30,
+      "width": 360,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 525818
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 180,
+      "predicted_minutes": 2.08,
+      "budget_minutes": 10,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 2.08,
+      "actual_minutes": 1.13,
+      "budget_minutes": 10.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.84
+    },
+    "warnings": []
+  }
+}

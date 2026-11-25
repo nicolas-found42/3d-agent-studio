@@ -1,0 +1,50 @@
+{
+  "job_id": "b35782bcbb0541678b4bb92243c17f59",
+  "drafts": 1,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: noisy (0.73)",
+        "defect: set_unfinished (0.49)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "an illuminated transit network": 0.98,
+      "station markers": 0.81,
+      "colored route lines": 0.89,
+      "glowing pulses within routes": 0.89,
+      "an overhead dark city map": 0.71
+    },
+    "defects": {
+      "floating": 0.23,
+      "interpenetration": 0.22,
+      "too_dark": 0.05,
+      "blown_out": 0.05,
+      "noisy": 0.73,
+      "clipping": 0.1,
+      "placeholder": 0.22,
+      "empty": 0.14,
+      "set_unfinished": 0.49
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.36,
+      "2": 0.51,
+      "3": 0.12
+    }
+  },
+  "notes": {
+    "probe": "The oblique view shows the tubes and city-block relief. The camera rises until the full schematic reads overhead, with distinct amber, red, cyan, teal, green and violet routes.",
+    "timeline": "Station rings stay fixed while smaller bright beads change positions along the tubes. The busy red and cyan routes carry more frequent pulses. The teal route starts partly beyond the near corner and is fully framed in the final overhead plan.",
+    "angles": "The wide and oblique views read as a deliberately dark raised map, and the overhead proof reveals the blocks and river beneath it. The pink camera trace runs from the approach toward the overhead position.",
+    "playback": "Decoded frames sampled twice a second show the evenly paced tilt and repeated movement of the brightest beads between fixed station nodes. The endpoint holds an overhead view with each route endpoint visible.",
+    "jev_look_items": "Noise (0.73): the emissive edge lighting produces visible mottling on some small city blocks at draft quality. Tube edges, station rings and pulses remain clear. Set unfinished (0.49): the wide views leave the night periphery dark by design. The overhead proof shows modeled blocks and the river around the whole network."
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "slug": "street-walker-tracking",
+  "title": "Street Walker Tracking Shot",
+  "category": "character",
+  "prompt": "A stylized clay-like figure walks along a sunny old-town street past shopfronts and lamp posts at golden hour; the camera tracks alongside at walking pace.",
+  "description": "Build a clay street with layered storefronts and use a tracked camera and analytic leg IK to keep the character\u2019s feet planted as it walks.",
+  "brief": {
+    "prompt": "A stylized clay-like figure walks along a sunny old-town street past shopfronts and lamp posts at golden hour; the camera tracks alongside at walking pace.",
+    "orientation": "ultrawide",
+    "seconds": 6,
+    "fps": 24,
+    "loop": false,
+    "seed": 11,
+    "budget_minutes": {
+      "draft": 20
+    }
+  },
+  "tags": {
+    "camera": "side tracking shot following the walker",
+    "lighting": "golden-hour sun down the street",
+    "style": "warm stylized clay",
+    "motion": "planted walking cycle with translation"
+  },
+  "techniques": [
+    "procedural two-bone leg IK",
+    "planted stance and rolling heel strike",
+    "recessed facade generator",
+    "shop signs and lantern practicals",
+    "offset side tracking at walking pace"
+  ]
+}

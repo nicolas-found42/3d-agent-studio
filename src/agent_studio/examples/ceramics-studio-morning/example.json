@@ -1,0 +1,29 @@
+{
+  "slug": "ceramics-studio-morning",
+  "title": "Ceramics Studio Morning",
+  "category": "still-life",
+  "prompt": "A pottery studio in the morning: wooden shelves of handmade bowls and vases in varied glazes, a potter's wheel, tools, sunbeams through a window with dust motes drifting.",
+  "description": "Throw varied hollow vessels from return profiles and establish the workshop with a lateral slide.",
+  "brief": {
+    "prompt": "A pottery studio in the morning: wooden shelves of handmade bowls and vases in varied glazes, a potter's wheel, tools, sunbeams through a window with dust motes drifting.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "fps": 24,
+    "loop": false,
+    "budget_minutes": {
+      "draft": 18
+    }
+  },
+  "tags": {
+    "camera": "slow lateral slide along shelves",
+    "lighting": "morning window light and dust motes",
+    "style": "soft photoreal",
+    "motion": "dust drifts in light"
+  },
+  "techniques": [
+    "closed profiles with return walls",
+    "varied glaze recipes",
+    "procedurally dressed shelves",
+    "small drifting emissive dust motes"
+  ]
+}

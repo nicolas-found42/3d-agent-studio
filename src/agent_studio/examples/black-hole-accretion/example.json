@@ -1,0 +1,26 @@
+{
+  "slug": "black-hole-accretion",
+  "title": "Black Hole Accretion",
+  "category": "space",
+  "prompt": "A black hole with a swirling, glowing orange-white accretion disk and a thin photon ring, stars around it, seen at a slight tilt as the disk rotates in a seamless loop.",
+  "description": "Animate concentric accretion materials and illustrative lensing arcs with a loop-safe camera.",
+  "brief": {
+    "prompt": "A black hole with a swirling, glowing orange-white accretion disk and a thin photon ring, stars around it, seen at a slight tilt as the disk rotates in a seamless loop.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "fps": 24,
+    "loop": true
+  },
+  "tags": {
+    "camera": "slow tilt orbit",
+    "lighting": "accretion disc as sole key",
+    "style": "cinematic emissive",
+    "motion": "disc swirls"
+  },
+  "techniques": [
+    "concentric annular emissive meshes",
+    "independent turbulent texture speeds",
+    "illustrative photon ring and lensed arcs",
+    "closed camera azimuth motion"
+  ]
+}
