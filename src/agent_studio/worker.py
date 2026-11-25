@@ -1,23 +1,47 @@
 """Bounded local renderer, encoder, and media verifier. Run only through pipeline/CLI."""
+from contextvars import ContextVar
 from fractions import Fraction
 import json
+from math import ceil, sqrt
 from pathlib import Path
 import shutil
 import struct
 import subprocess
 import sys
+from tempfile import TemporaryDirectory
 import time
 
 from . import pipeline as p
 from .formats import stage_size
 
 BG = '0x141920'
+STAGE_DEADLINE = ContextVar('stage_deadline', default=None)
+
+
+class StageBudgetExceeded(RuntimeError):
+    pass
+
+
+def remaining_budget():
+    deadline = STAGE_DEADLINE.get()
+    if deadline is None:
+        return float('inf')
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise StageBudgetExceeded
+    return remaining
 
 
 def run(argv, *, capture=False, timeout=120):
     print('RUN', list(map(str, argv)), flush=True)
-    r = subprocess.run(list(map(str, argv)), stdin=subprocess.DEVNULL, check=False,
-                       capture_output=capture, text=capture, timeout=timeout, env=p.render_env())
+    remaining = remaining_budget()
+    try:
+        r = subprocess.run(list(map(str, argv)), stdin=subprocess.DEVNULL, check=False,
+                           capture_output=capture, text=capture, timeout=min(timeout, remaining), env=p.render_env())
+    except subprocess.TimeoutExpired as exc:
+        if remaining <= timeout:
+            raise StageBudgetExceeded from exc
+        raise
     if r.returncode:
         suffix = ': ' + r.stderr[-850:].strip() if capture else '; see run.log'
         raise RuntimeError(f'{Path(argv[0]).name} exited {r.returncode}' + suffix)
@@ -114,23 +138,44 @@ def strip(bins, paths, target, height=360):
     ff(bins, *flags, '-filter_complex_threads', '1', '-filter_complex', chain, '-frames:v', '1', '-update', '1', target)
 
 
-def reference_board(bins, pairs, target, rows=8):
-    """Each reference (left) beside the render frame that looks most like it (right), two pairs per row."""
-    limit = rows * 2
-    if len(pairs) > limit:
-        pairs = [pairs[round(i * (len(pairs) - 1) / (limit - 1))] for i in range(limit)]
-    flags, chain = [], ''
-    box = 'scale=300:168:force_original_aspect_ratio=decrease,pad=300:168:(ow-iw)/2:(oh-ih)/2:color=' + BG + ',setsar=1'
+def reference_tiles(bins, pairs, target, cols, width, height, suffix):
+    flags, filters = [], []
+    cell_w, cell_h = 2 * width + 24, height + 12
+    box = (f'scale={width}:{height}:force_original_aspect_ratio=decrease,'
+           f'pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color={BG},setsar=1')
     for i, pair in enumerate(pairs):
-        flags += ['-i', pair['reference_path'], '-i', pair['frame_path']]
-        chain += f'[{2 * i}:v]{box}[r{i}];[{2 * i + 1}:v]{box}[f{i}];[r{i}][f{i}]hstack=inputs=2,pad=iw+24:ih+12:12:6:color={BG}[p{i}];'
-    cols = 1 if len(pairs) == 1 else 2
+        flags.extend(('-i', pair['reference_path'], '-i', pair['frame_path']))
+        filters.append(f'[{2 * i}:v]{box}[r{i}];[{2 * i + 1}:v]{box}[f{i}];'
+                       f'[r{i}][f{i}]hstack=inputs=2,pad=iw+24:ih+12:12:6:color={BG}[p{i}]')
     if len(pairs) == 1:
-        chain += f'[p0]{FIT}'
+        filters.append(f'[p0]{suffix}')
     else:
-        layout = '|'.join(f'{(i % cols) * 624}_{(i // cols) * 180}' for i in range(len(pairs)))
-        chain += ''.join(f'[p{i}]' for i in range(len(pairs))) + f'xstack=inputs={len(pairs)}:layout={layout}:fill={BG},{FIT}'
-    ff(bins, *flags, '-filter_complex_threads', '1', '-filter_complex', chain, '-frames:v', '1', '-update', '1', target)
+        layout = '|'.join(f'{(i % cols) * cell_w}_{(i // cols) * cell_h}' for i in range(len(pairs)))
+        pieces = ''.join(f'[p{i}]' for i in range(len(pairs)))
+        filters.append(f'{pieces}xstack=inputs={len(pairs)}:layout={layout}:fill={BG},{suffix}')
+    ff(bins, *flags, '-filter_complex_threads', '1', '-filter_complex', ';'.join(filters),
+       '-frames:v', '1', '-update', '1', target)
+
+
+def reference_board(bins, pairs, target):
+    """Place every reference beside its nearest render frame, within the vision board dimensions."""
+    if len(pairs) <= 16:
+        reference_tiles(bins, pairs, target, 2, 300, 168, FIT)
+        return
+    cols = max(3, ceil(sqrt(len(pairs) / 3.5)))
+    rows = ceil(len(pairs) / cols)
+    width = (1560 // cols - 24) // 4 * 2
+    height = (min(width * 9 // 16, 1560 // rows - 12)) // 2 * 2
+    board_width = cols * (2 * width + 24)
+    with TemporaryDirectory(prefix='.reference-rows-', dir=target.parent) as temp:
+        strips = [Path(temp) / f'row-{row:03d}.png' for row in range(rows)]
+        for row, strip in enumerate(strips):
+            tiles = pairs[row * cols:(row + 1) * cols]
+            reference_tiles(bins, tiles, strip, cols, width, height, f'pad={board_width}:ih:0:0:color={BG}')
+        flags = [arg for strip in strips for arg in ('-i', strip)]
+        inputs = ''.join(f'[{i}:v]' for i in range(rows))
+        ff(bins, *flags, '-filter_complex_threads', '1', '-filter_complex', f'{inputs}vstack=inputs={rows},{FIT}',
+           '-frames:v', '1', '-update', '1', target)
 
 
 def encode(bins, stage, count, fps, size, target):
@@ -198,7 +243,7 @@ def export(bins, stage, brief, kind):
                   'frame': Path(pr['frame_path']).name} for pr in pairs],
               render=stats, loop_seam=seam, warnings=warnings,
               notes='Machine checks verify files, timing and coarse pixel statistics only. They are not a visual review.')
-    p.write(stage / 'qc.json', qc)
+    return qc
 
 
 def frame_warnings(stats):
@@ -218,26 +263,31 @@ def frame_warnings(stats):
 def probe_outputs(bins, job, stage, brief):
     timing = json.loads((stage / 'timing.json').read_text())
     mp = timing['width'] * timing['height'] / 1e6
-    hi = sum(timing['seconds_high']) / len(timing['seconds_high'])
+    high_times = timing['seconds_high']
+    hi = high_times[len(high_times) // 2]
     lo = timing['seconds_low']
     k = max(1e-4, (hi - lo) / ((timing['samples_high'] - timing['samples_low']) * mp))
-    overhead = max(0.02, lo - k * mp * timing['samples_low'])
+    overhead = max(0.02, sum(high_times) / len(high_times) - k * mp * timing['samples_high'])
     blend_mb = (job / 'scene.blend').stat().st_size / 1e6
     estimate = {'device': timing['device'], 'engine': timing['engine'],
                 'seconds_per_megapixel_sample': round(k, 6), 'overhead_seconds': round(overhead, 3),
                 'scene_load_seconds': round(5 + 0.08 * blend_mb + 0.2 * timing['build_seconds'], 1),
                 'measured': {k2: timing[k2] for k2 in ('width', 'height', 'samples_high', 'samples_low', 'seconds_high', 'seconds_low', 'build_seconds')}}
+    if 'preview_throughput' in timing:
+        estimate['preview_throughput'] = {**timing['preview_throughput'], 'pixels': timing['width'] * timing['height']}
+    if 'master_calibration' in timing:
+        estimate['master_calibration'] = timing['master_calibration']
     frames = brief['fps'] * brief['seconds'] + (1 if brief['loop'] else 0)
     pw, ph = stage_size(brief['orientation'], 'preview')
     preview_samples = brief['samples'].get('preview', p.DEFAULT_SAMPLES['preview'])
-    draft = p.predict(estimate, pw * ph, preview_samples, frames) + 60  # proofs and encoding
-    estimate['draft'] = {'samples': preview_samples, 'frames': frames, 'predicted_minutes': round(draft / 60, 1),
+    draft = p.predict(estimate, pw * ph, preview_samples, frames, loop=brief['loop'])
+    estimate['draft'] = {'samples': preview_samples, 'frames': frames, 'predicted_minutes': round(draft / 60, 2),
                          'budget_minutes': brief['budget_minutes']['draft'],
-                         'fits': draft <= brief['budget_minutes']['draft'] * 60}
+                         'fits': draft <= brief['budget_minutes']['draft'] * 60 * .9}
     mw, mh = stage_size(brief['orientation'], 'master')
     ms = brief['samples'].get('master', p.DEFAULT_SAMPLES['master'])
-    master = p.predict(estimate, mw * mh, ms, frames)
-    estimate['master'] = {'samples': ms, 'predicted_minutes': round(master / 60, 1),
+    master = p.predict(estimate, mw * mh, ms, frames, loop=brief['loop'], prores='prores' in brief['extras'])
+    estimate['master'] = {'samples': ms, 'predicted_minutes': round(master / 60, 2),
                           'budget_minutes': brief['budget_minutes']['master'],
                           'fits': master <= brief['budget_minutes']['master'] * 60 * .9}
     p.write(stage / 'estimate.json', estimate)
@@ -273,6 +323,7 @@ def work(job, kind):
     def state(value, **extra):
         p.write(state_file, {**original, **extra, 'state': value, 'updated_at': time.time()})
 
+    budget_token = None
     try:
         manifest_path = job / 'job.json'
         identity = p.digest(manifest_path)
@@ -295,13 +346,14 @@ def work(job, kind):
         if kind == 'probe':
             cmd = [b, '-b', '--factory-startup', '--disable-autoexec', *runner, 'probe', job]
         else:
-            probe_state, _ = p.checked_stage(job, 'probe')
+            p.checked_stage(job, 'probe')
             estimate = p.read(job / 'probe' / 'estimate.json')
             if kind == 'preview':
                 samples = brief['samples'].get('preview', p.DEFAULT_SAMPLES['preview'])
                 if not estimate['draft']['fits']:
-                    raise ValueError('Draft predicted to take {predicted_minutes} min, over its {budget_minutes} min budget. '
-                                     'Raise budget_minutes.draft, lower samples.preview, shorten the shot or simplify the scene.'
+                    raise ValueError('Draft predicted to take {predicted_minutes} min. The {budget_minutes} min budget '
+                                     'reserves 10% for estimation uncertainty. Raise budget_minutes.draft, lower '
+                                     'samples.preview, shorten the shot or simplify the scene.'
                                      .format(**estimate['draft']))
             else:
                 approved, _ = p.checked_stage(job, 'preview')
@@ -315,23 +367,33 @@ def work(job, kind):
             cmd = [b, '-b', job / 'scene.blend', '--disable-autoexec', *runner, 'render', job, kind, samples]
         state('running', step='waiting for the GPU lock')
         with p.GpuLock(root):
-            state('running', step='running scene script and probe renders' if kind == 'probe' else 'rendering frames and proofs')
+            started = time.monotonic()
+            budget_token = STAGE_DEADLINE.set(started + budget)
+            deadline_at = time.time() + budget
+            state('running', deadline_at=deadline_at,
+                  step='running scene script and probe renders' if kind == 'probe' else 'rendering frames and proofs')
             try:
-                run(cmd, timeout=budget + 60)
-            except subprocess.TimeoutExpired as exc:
-                raise ValueError(f'{kind} exceeded its {budget / 60:g} min budget; raise budget_minutes or simplify') from exc
+                run(cmd, timeout=budget)
+            except StageBudgetExceeded:
+                raise
             except RuntimeError as exc:
                 err = stage / 'script-error.txt'
                 if err.is_file():
                     raise ValueError('Scene script failed:\n' + err.read_text()[-2500:]) from exc
                 raise
-        state('running', step='assembling review evidence')
+        state('running', step='assembling review evidence', deadline_at=deadline_at)
         if kind == 'probe':
             probe_outputs(bins, job, stage, brief)
         else:
-            export(bins, stage, brief, kind)
+            qc = export(bins, stage, brief, kind)
             if kind == 'master' and 'png' not in brief['extras']:
                 shutil.rmtree(stage / 'frames')
+            predicted = estimate['draft']['predicted_minutes'] if kind == 'preview' else original['plan']['predicted_minutes']
+            actual = (time.monotonic() - started) / 60
+            qc['timing'] = {'predicted_minutes': predicted, 'actual_minutes': round(actual, 3),
+                            'budget_minutes': budget / 60, 'excludes_gpu_queue': True,
+                            'relative_error': round((predicted - actual) / actual, 3)}
+            p.write(stage / 'qc.json', qc)
         scene_hash = p.digest(job / 'scene.blend')
         if identity != p.digest(manifest_path) or manifest['code'] != p.code_identity():
             raise ValueError('Manifest or studio code changed during the render')
@@ -339,13 +401,21 @@ def work(job, kind):
             raise ValueError('Saved scene changed during the render')
         names = p.evidence(kind, brief, p.has_image_refs(job))
         checksums = {name: p.digest(stage / name) for name in names}
+        remaining_budget()
         state('ready', sha256=checksums, scene_sha256=scene_hash, job_sha256=identity, blender_version=version)
         print('STAGE_READY', kind, job.name, flush=True)
         if kind == 'probe' and original.get('then') == 'preview':
             p.launch(job, 'preview')
+    except StageBudgetExceeded as exc:
+        error = f'{budget_key} exceeded its {budget / 60:g} min budget; raise budget_minutes or simplify'
+        state('failed', error=error)
+        raise ValueError(error) from exc
     except (OSError, RuntimeError, ValueError, KeyError, subprocess.TimeoutExpired) as e:
         state('failed', error=str(e))
         raise
+    finally:
+        if budget_token is not None:
+            STAGE_DEADLINE.reset(budget_token)
 
 
 if __name__ == '__main__':

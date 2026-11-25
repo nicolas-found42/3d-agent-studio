@@ -66,7 +66,8 @@ Conventions the studio relies on:
 
 - `kit.collection(name)`
 - `kit.empty(name='Empty', location=(0, 0, 0), display='PLAIN_AXES', size=0.5, collection=None)`
-- `kit.parent(child, parent, keep_transform=True)`
+- `kit.parent(child, parent, keep_transform=True)`  
+  Parent an object, preserving its current world transform by default.
 - `kit.look_at(obj, target, up='Y')`
 
 ## Materials
@@ -80,6 +81,8 @@ Conventions the studio relies on:
   Unlit flat color (holdout of lighting): graphic, poster and data-viz looks.
 - `kit.gradient_material(name, colors, axis='Z', low=0.0, high=1.0, roughness=0.5, emission_strength=0.0)`  
   Color ramp along an object-space axis between `low` and `high`.
+- `kit.color_ramp(nt, colors, interpolation='LINEAR')`  
+  Add a color-ramp node to a shader tree from colors or (position, color) pairs.
 - `kit.procedural(name, kind='stone', colors=None, scale=1.0, roughness=None, bump=0.3)`  
   Procedural surfaces: stone, marble, wood, concrete, brushed_metal, rust, fabric, ground, sand, plastic, ceramic, terrazzo, bark, leaf, snow, lava, water.
 - `kit.image(source, index=0, non_color=False)`  
@@ -112,11 +115,11 @@ Conventions the studio relies on:
 - `kit.extrude(name, polygon, height=1.0, material=None, location=(0, 0, 0), rotation=(0, 0, 0), bevel=0.0, collection=None)`  
   Prism from a 2D (x, y) outline (counter-clockwise) extruded up by `height`.
 - `kit.arch_profile(span, rise=None, kind='gothic', steps=24)`  
-  Intrados of an arch as [(x, z, cx, cz)]: points from left to right springing, each with the centre of the arc it lies on. kind: gothic (two-centred, pointed), round, segmental.
+  Intrados of an arch as [(x, z, cx, cz)]: points from left to right springing, each with the centre of the arc it lies on. kind: gothic (two-centred, pointed), round, segmental. A gothic rise near or below half the span is replaced by the equilateral rise.
 - `kit.arch(name='Arch', span=2.0, rise=None, kind='gothic', depth=0.5, thickness=0.3, location=(0, 0, 0), rotation=(0, 0, 0), material=None, pier_height=0.0, pier_width=None, collection=None, steps=24)`  
   An arch ring in the XZ plane (depth along Y), springing at z=pier_height, with optional square piers below. Returns the ring object (piers are parented to it).
-- `kit.tube(name, points, radius=0.05, material=None, closed=False, resolution=12, collection=None, taper=None, smooth=True)`  
-  Swept circular tube along points (a curve object with bevel). Good for cables, ribs, paths.
+- `kit.tube(name, points, radius=0.05, material=None, closed=False, resolution=12, collection=None, taper=None, smooth=True, spline=None)`  
+  Sweep a circular tube along control points. Use spline='POLY' for exact corners or 'NURBS' for smooth movable control points. The default uses Bézier for up to 64 points.
 - `kit.text(body, size=1.0, location=(0, 0, 0), rotation=(90, 0, 0), material=None, extrude=0.0, bevel=0.0, align='CENTER', font=None, name=None, collection=None, spacing=1.0)`  
   3D text. font is a reference ID, a fontsource:/asset ID, or None for Blender's default.
 - `kit.font(source)`
@@ -185,7 +188,7 @@ Conventions the studio relies on:
 - `kit.import_model(source, location=(0, 0, 0), rotation=(0, 0, 0), size=None, scale=1.0, on_ground=True, name=None)`  
   Import a model reference or asset (glb/gltf/obj/fbx/usd/stl/ply/blend). Returns a parent empty. size=metres fits the largest dimension; on_ground puts its lowest point at z=location.z.
 - `kit.play_animation(root, speed=1.0, action=None, start=0.0)`  
-  Loop an imported model's embedded animation (e.g. a rigged glTF walk) over the whole shot. root is what kit.import_model returned; speed scales playback; action picks one by name substring. Returns the animated objects. Whole repeats keep loops seamless only if the clip length divides the shot; otherwise prefer non-looping shots.
+  Repeat an imported model's embedded action. `action` filters action names on this model, `start` is shot progress, and `speed` multiplies the source frame rate. For a seamless loop the speed-adjusted clip duration must divide the shot duration.
 - `kit.blend_material(source)`  
   Append the first material from a .blend asset (e.g. a BlenderKit material).
 - `kit.image_plane(source, height=2.0, location=(0, 0, 1), rotation=(90, 0, 0), index=0, emission=0.0, name=None)`  
@@ -217,6 +220,8 @@ Conventions the studio relies on:
 
 ## Render
 
+- `kit.glow(strength=0.35, size=0.25, threshold=1.0)`  
+  Add fog glow to bright pixels in a new scene compositor and return its Glare node. For a custom compositor, configure the Glare node in that graph directly.
 - `kit.render(engine=None, motion_blur=None, shutter=None, exposure=None, look=None, bounces=None, transparent=None, film_filter=None, view_transform=None, gamma=None, freestyle=None, line_thickness=1.5, line_color='#111111', volume_step=None)`  
   Override render defaults. engine='EEVEE' for toon/stylized looks; look is an AgX look such as 'AgX - Punchy' or 'AgX - Base Contrast'. Samples are controlled by the studio stage.
 

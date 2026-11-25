@@ -11,7 +11,7 @@ Use one local job root across all calls. In the CLI examples `3d-agent-studio` i
 | — | — | `check SCRIPT` | Static script check only |
 | `studio_probe` | `brief`, `script` (source text) | `probe JSON SCRIPT.py [--wait]` | New job; resolves assets, runs the script, saves `scene.blend`, renders 3 timed stills |
 | `studio_draft` | `job_id` of a probed job, or `brief` + `script` | `draft --job ID` or `draft JSON SCRIPT.py` `[--wait]` | Full preview sequence and review boards |
-| `studio_status` | `job_id` | `status ID` | Brief, script path, references, assets, credits, `.blend`, and per-stage state, artifacts, estimates, QC, review hashes |
+| `studio_status` | `job_id` | `status ID` | Brief, parent job, script path, references, assets, credits, `.blend`, and per-stage state, artifacts, estimates, QC, review hashes |
 | `studio_view` | `job_id`, `stage`, `board` | open the path from `status` | One board as an image plus its path |
 | `studio_compare` | `before`, `after` | `compare A B` | Matching boards stacked, before on top |
 | `studio_finalize` | `job_id`, `hashes`, `notes`, optional `budget_minutes`, `quality`, `samples` | `finalize ID REVIEW_JSON [--budget-minutes N] [--quality fast] [--samples N] [--wait]` | Queued master and its render plan |
@@ -69,16 +69,18 @@ Asset IDs are resolved before Blender runs, cached under `<root>/assets-cache`, 
 | BlenderKit | `blenderkit:<asset uuid>` | Free CC0 materials and models (`.blend`) |
 | Direct CC0 host | `url:https://…` on kenney.nl, sharetextures.com, cgbookcase.com, 3dtextures.me, quaternius.com, polyhaven.org, ambientcg.com | Files or zips from those hosts |
 
-Downloads retry rate limits (HTTP 429/5xx) with backoff, and large Wikimedia originals are fetched as 3000 px thumbnails. Kenney pages load, but their zip links are not in the static HTML: pass the zip's direct URL. Smithsonian 3D and NIH 3D were evaluated and left out: the former exposes no license field without a key, the latter no reachable API. Sketchfab, Poly Pizza and Europeana require keys.
+Downloads retry HTTP 429, 502, 503 and 504 with bounded backoff and honor `Retry-After` up to 30 seconds. The resolver prefers 3000 px thumbnails for large Wikimedia Commons originals. Kenney file requests can redirect to a landing page in a script. In that case, download the CC0 pack in the browser and ingest the extracted model. For mirrors on itch.io or OpenGameArt, check the specific pack's CC0 license first. Verify the original pack's license on its page, such as the [Kenney Space Kit](https://kenney.nl/assets/space-kit). Smithsonian 3D lacks a keyless license field, NIH 3D has no reachable API, and Sketchfab, Poly Pizza and Europeana require keys.
 
 ## Stages and evidence
 
 - **probe**: `probe.jpg` (first, middle, last frame), `references.jpg` (with image references), `estimate.json` (fitted render cost and predicted draft and master minutes), `checks.json` (scene stats and `warnings`). The saved `scene.blend` comes from this stage.
-- **preview** (draft) and **master**: `reel.mp4`, `timeline.jpg` (six decoded frames), `angles.jpg` (wide, three-quarter, overview with camera path), `references.jpg`, `seam.jpg` and `two-cycles.mp4` for loops, `cover.png`, `qc.json` (video checks, frame statistics, reference pairs, `warnings`). Master adds `master.mov` with `extras: ["prores"]`.
+- **preview** (draft) and **master**: `reel.mp4`, `timeline.jpg` (six decoded frames), `angles.jpg` (wide, three-quarter, overview with camera path), `references.jpg` when visual references exist, `seam.jpg` and `two-cycles.mp4` for loops, `cover.png`, and `qc.json`. QC records video checks, frame statistics, reference pairs, warnings, and predicted and actual minutes. Master adds `master.mov` with `extras: ["prores"]` and retains numbered plates with `extras: ["png"]`.
+
+The probe measures short sequences at preview and master resolution to forecast render time. Draft and master plans reserve 10% of the budget for estimation uncertainty. The active deadline covers rendering and packaging after the job acquires the GPU lock.
 - Review hashes are the preview's board JPEGs; finalize must quote them exactly with 12–4000 characters of notes.
-- States: `queued`, `running` (with `step`; `waiting for the GPU lock` means another render in this root is using the GPU), `ready`, `failed` (read `error` and `run.log`), `stalled` (no update for 30 minutes). Stages never resume or overwrite; start a new job.
+- Stage budgets cover work after the GPU lock is acquired, including encoding and review evidence. Time waiting for the lock is excluded. Read `error` and `run.log` if a stage fails or has no result after its deadline. Start a new job to retry a failed stage.
 - Edited scripts, scenes or evidence, or changed studio code, invalidate a job: make a new one.
 
 ## Script contract
 
-`build(kit)` must create a camera (`kit.camera`) and renderable geometry, and animate with keyframes. Imports are limited to `bpy`, `bmesh`, `mathutils`, `math`, `random`, `colorsys`, `itertools`, `functools`, `statistics`, `numpy`, `dataclasses`, `typing`, `enum`, `collections`, `string`, `textwrap`. File I/O, `exec`/`eval`, dunder access, handlers, text blocks, saving and rendering are the studio's. This check catches mistakes; it is not a sandbox, so scripts still run as the local user.
+`build(kit)` must create a camera (`kit.camera`) and renderable geometry. Use keyframes for scripted motion. Imports are limited to `bpy`, `bmesh`, `mathutils`, `math`, `random`, `colorsys`, `itertools`, `functools`, `statistics` and `numpy`. Use the kit for file inputs and the studio for rendering and saving. The static check catches mistakes. Scripts still execute with the permissions of the local user.

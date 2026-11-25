@@ -15,24 +15,28 @@ You write the scene. The studio has no presets: you author a Blender Python scri
 
 ## 2. Study examples, then design
 
-Call `studio_examples` with words from the request and read at least three scripts from **different** categories (`include_script: true`). Borrow techniques (a camera rig, a material recipe, a lighting rig), never a composition. Then decide deliberately, and vary from what you made last time:
+Search `studio_examples` with words from the request. Read scripts from at least three categories with `include_script: true`. If one category dominates the results, search the others by category. Borrow a technique, such as a camera rig or a material recipe, and design the shot around the new brief.
 
 - **Camera:** dolly, orbit, crane, path flythrough, push-in, rack focus, locked-off with subject motion, handheld. Pick the move that reveals the idea; give it a start and an end frame worth stopping on.
-- **Light:** physical sky, HDRI, studio three-point, practicals, single hard key, silhouette, night with emissives, volumetric shafts (`kit.haze`). Light the subject, then the room.
+- **Light:** physical sky, HDRI, studio three-point, practicals, single hard key, silhouette, night with emissives, volumetric shafts (`kit.haze`). Light the subject, then the room. Start at sky strength `0.12` outdoors. For a window-lit interior, start near `0.08` with `kit.render(exposure=1)` and judge the probe highlights and shadows.
 - **Material look:** photoreal scans (`kit.textured`), procedural (`kit.procedural`), stylized/toon (`kit.toon` + EEVEE), flat graphic (`kit.flat`), ink lines (`kit.render(freestyle=True)`, `kit.outline`).
 - **Scale and detail:** real-world metres; secondary detail at three scales (silhouette, mid forms, surface). Bevel hard edges. Avoid floating objects and empty voids around the subject.
 - **Abstract requests** (a system, an idea, a dataset): find a physical metaphor with moving parts that map to the real thing, and drive motion from `kit.data(...)` where data exists.
 
+For a data animation with one visible label per step, compute each label's last visible frame before the next label's first frame. `kit.visible` includes both endpoints. Search for Population Bars Time to see this with a camera-mounted legend.
+
+Use `kit.glow()` for compositor fog glow and `kit.tube(spline='POLY')` when a route must pass exactly through its control points. Scene-specific Blender features can use raw `bpy`. The marble, rigid-body, and walk examples show how to author mechanisms that need custom geometry, simulation settings, or planted steps.
+
 ## 3. Probe, iterate, draft
 
-1. `studio_brief` to validate. Optionally `check` the script in the CLI.
+1. Validate the brief with `studio_brief`. Use the CLI `check` when you want feedback on the script before Blender starts.
 2. `studio_probe(brief, script)`: runs the script, saves the scene, renders three timed stills. Poll `studio_status`; read `probe.checks.warnings` and `probe.estimate`. Open `probe.jpg` (and `references.jpg`) with `studio_view`. Fix composition, exposure and scale here; each probe is a new job and costs about a minute.
-3. `studio_draft(job_id=...)` on a good probe (or `studio_draft(brief, script)` to do both). The draft renders every frame at preview size. If it is predicted to exceed `budget_minutes.draft` (default 10), it refuses with the estimate: simplify, lower `samples.preview`, or raise the budget.
+3. Call `studio_draft(job_id=...)` once the probe shows the intended subject, framing and exposure. The draft renders every frame at preview size. If the estimate exceeds `budget_minutes.draft` (default 10), simplify, lower `samples.preview`, or raise the budget.
 4. A failed script returns its traceback in `error`; fix and start a new job. Never edit files inside a job.
 
 ## 4. Review honestly
 
-Open every board with `studio_view`: `timeline.jpg` (six frames), `angles.jpg` (wider lens from the shot camera, three-quarter set view, top-down overview with the camera path in pink), `references.jpg` (each reference beside the most similar frame) and `seam.jpg` for loops. Play `reel.mp4` (or `two-cycles.mp4`). Check, and write down:
+Open `timeline.jpg` and `angles.jpg` with `studio_view`. Open `references.jpg` for visual inputs and `seam.jpg` for loops. Play `reel.mp4` or the loop's `two-cycles.mp4`. Record what you observed on each board and in the clip:
 
 - Does each element of the prompt appear, recognisably? Does each subject reference read as itself, each style reference as the look?
 - Framing at the target aspect; nothing important clipped; horizon and verticals intended.

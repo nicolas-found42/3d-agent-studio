@@ -11,7 +11,9 @@ next to the verdict so any answer can be replayed.
 """
 import argparse
 import base64
+import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -80,6 +82,11 @@ REFERENCE_LEVELS = {
 SOFT_AT_PREVIEW = {'noisy'}
 DIAGRAM_QUESTION = ('Are the main elements of `render` arranged in the same overall layout as the diagram in `reference` '
                     '(same order and relative positions), even though one is a 3D render and the other a flat diagram?')
+DIVERSITY_QUESTION = (
+    'Do `image A` and `image B` show both the same main subject and the same overall shot composition?',
+    'They show the same main subject with similar scale, framing, viewpoint and arrangement.',
+    'Either the main subject or the overall shot composition differs. A shared palette, style or genre is insufficient.',
+)
 ROLE_QUESTION = {
     'subject': 'How closely does the subject in `render` resemble the subject of `reference`?',
     'style': 'How closely does the visual style of `render` (rendering look, materials, color, light) match `reference`?',
@@ -141,16 +148,54 @@ def level(answer, levels):
     """Index of the most probable level (the score position can hide two-peaked answers)."""
     probs = answer.get('probabilities')
     if isinstance(probs, list) and probs:
-        return max(range(len(probs)), key=probs.__getitem__)
-    if isinstance(probs, dict) and probs:
+        index = max(range(len(probs)), key=probs.__getitem__)
+    elif isinstance(probs, dict) and probs:
         best = max(probs, key=probs.get)
         descriptions = list(levels.values())
-        return int(best) if str(best).isdigit() else descriptions.index(best) if best in descriptions else list(levels).index(best)
-    return round(answer['score'])
+        index = int(best) if str(best).isdigit() else descriptions.index(best) if best in descriptions else list(levels).index(best)
+    else:
+        index = round(answer['score'])
+    if not 0 <= index < len(levels):
+        raise ValueError(f'Jev score index {index} is outside the range for {list(levels)}')
+    return index
+
+
+def probability(answer):
+    value = answer.get('noul')
+    if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 1:
+        raise ValueError(f'Invalid Jev probability {value!r}')
+    return value
 
 
 def band(p):
     return 'yes' if p > YES else 'no' if p < NO else 'unsure'
+
+
+def reference_sample(pairs, limit=8):
+    """Prefer a distinct render frame per reference before spending calls on repeated frames."""
+    seen, digests = set(), {}
+    by_reference = {}
+    for pair in pairs:
+        path = pair['reference_path']
+        if path not in digests:
+            digests[path] = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+        key = (pair['role'], digests[path], pair['frame_path'])
+        if key in seen:
+            continue
+        seen.add(key)
+        by_reference.setdefault(pair['reference'], {}).setdefault(pair['frame_path'], pair)
+    groups = [iter(group.values()) for group in by_reference.values()]
+    selected = []
+    while groups and len(selected) < limit:
+        remaining = []
+        for group in groups:
+            if (pair := next(group, None)) is not None:
+                selected.append(pair)
+                remaining.append(group)
+                if len(selected) == limit:
+                    break
+        groups = remaining
+    return selected
 
 
 def review(job, stage, prompt, elements, expect_text=False, diagrams=()):
@@ -171,34 +216,30 @@ def review(job, stage, prompt, elements, expect_text=False, diagrams=()):
     state = [f'description: {prompt}', f'frames: {BOARD_INTRO[main]}', {'image': stage_dir / main}]
     answers = call(state, questions, log)
     for i, e in enumerate(elements):
-        findings['elements'][e] = answers[f'el{i}']['noul']
+        findings['elements'][e] = probability(answers[f'el{i}'])
     for key in DEFECTS:
-        findings['defects'][key] = answers[f'defect_{key}']['noul']
-    findings['control'] = answers['control']['noul']
+        findings['defects'][key] = probability(answers[f'defect_{key}'])
+    findings['control'] = probability(answers['control'])
     if expect_text:
-        findings['text_readable'] = answers['text_readable']['noul']
+        findings['text_readable'] = probability(answers['text_readable'])
     findings['quality'] = list(QUALITY_LEVELS)[level(answers['quality'], QUALITY_LEVELS)]
     findings['quality_probabilities'] = answers['quality'].get('probabilities')
     findings['prompt_match'] = list(MATCH_LEVELS)[level(answers['prompt_match'], MATCH_LEVELS)]
+    findings['prompt_match_probabilities'] = answers['prompt_match'].get('probabilities')
     # Request 2: the angles board, only for set completeness (cheap, separate image).
     if stage != 'probe':
         a = call(['frames: ' + BOARD_INTRO['angles.jpg'], {'image': stage_dir / 'angles.jpg'}],
                  {'set_unfinished': noul('In the three-quarter view in `frames`, does the scene look like a thin '
                                          'facade with obviously missing or unfinished parts?')}, log)
-        findings['defects']['set_unfinished'] = a['set_unfinished']['noul']
+        findings['defects']['set_unfinished'] = probability(a['set_unfinished'])
     # Request 3+: one request per reference pair (each needs its own two images).
     pairs_file = stage_dir / 'pairs.json'
     pairs = json.loads(pairs_file.read_text()) if pairs_file.is_file() else []
-    seen = set()
-    for pr in pairs:
-        key = (pr['reference'], pr.get('index', 0) if pr['reference'] not in diagrams else 0, pr['frame_path'])
-        if key in seen or len(seen) >= 8:
-            continue
-        seen.add(key)
+    for pr in reference_sample(pairs):
         if pr['reference'] in diagrams:
             ans = call(['reference:', {'image': pr['reference_path']}, 'render:', {'image': pr['frame_path']}],
                        {'layout': noul(DIAGRAM_QUESTION)}, log)
-            p = ans['layout']['noul']
+            p = probability(ans['layout'])
             lvl = 'close' if p > YES else 'unrelated' if p < NO else 'related'
         else:
             ans = call(['reference:', {'image': pr['reference_path']}, 'render:', {'image': pr['frame_path']}],
@@ -236,6 +277,8 @@ def decide(f, stage='preview', overrides=()):
         looks.append(f'control: "{CONTROL}" answered {f["control"]:.2f}; element answers are unreliable on this board')
     overridden = []
     for o in overrides:
+        if not isinstance(o, dict) or not all(isinstance(o.get(key), str) and o[key].strip() for key in ('item', 'reason')):
+            raise ValueError('Each reviewer override needs an item and a written reason')
         for bucket in (fixes, looks):
             for item in [i for i in bucket if i.startswith(o['item'])]:
                 bucket.remove(item)

@@ -13,6 +13,7 @@ Conventions the studio relies on:
 - Mark big floors with `ground=True` (or use `kit.ground`) and volumes with `kit.haze`, so the
   review overview frames the subject rather than the horizon.
 """
+from bisect import bisect_left
 import colorsys
 import csv
 import json
@@ -22,6 +23,7 @@ import random
 
 import bpy
 import bmesh
+from bpy_extras.anim_utils import action_get_channelbag_for_slot
 from mathutils import Euler, Matrix, Vector, noise
 from mathutils.bvhtree import BVHTree
 
@@ -241,33 +243,43 @@ class Kit:
 
         `target` is any animatable struct (object, light data, material node input, ...).
         """
-        prefs = bpy.context.preferences.edit
-        old = prefs.keyframe_new_interpolation_type
-        prefs.keyframe_new_interpolation_type = interpolation
-        try:
-            for f in self.key_frames(step):
-                value = fn(self.t(f))
-                if isinstance(value, Vector):
-                    value = tuple(value)
-                setattr(target, path, value) if index < 0 else getattr(target, path).__setitem__(index, value)
-                target.keyframe_insert(path, index=index, frame=f)
-        finally:
-            prefs.keyframe_new_interpolation_type = old
-        return target
+        return self._keyframes(target, path, ((f, fn(self.t(f))) for f in self.key_frames(step)),
+                               interpolation, index)
 
     def key(self, target, path, keys, interpolation='BEZIER', index=-1):
         """Explicit keys: [(t or frame, value), ...]. Floats <= 1 are shot progress; ints are frames."""
-        prefs = bpy.context.preferences.edit
-        old = prefs.keyframe_new_interpolation_type
-        prefs.keyframe_new_interpolation_type = interpolation
-        try:
-            for when, value in keys:
-                f = when if isinstance(when, int) else self.frame(when)
-                setattr(target, path, tuple(value) if isinstance(value, Vector) else value) if index < 0 \
-                    else getattr(target, path).__setitem__(index, value)
-                target.keyframe_insert(path, index=index, frame=f)
-        finally:
-            prefs.keyframe_new_interpolation_type = old
+        frames = ((when if isinstance(when, int) or when > 1 else self.frame(when), value) for when, value in keys)
+        return self._keyframes(target, path, frames, interpolation, index)
+
+    def _keyframes(self, target, path, keys, interpolation, index):
+        inserted = []
+        for frame, value in keys:
+            if index < 0:
+                setattr(target, path, tuple(value) if isinstance(value, Vector) else value)
+            else:
+                getattr(target, path)[index] = value
+            if target.keyframe_insert(path, index=index, frame=frame):
+                inserted.append(frame)
+        if not inserted:
+            return target
+
+        # Headless keyframe_insert always creates default Bezier points. Set the new keys on
+        # the owner's action channel, including when the target is a socket or pose bone.
+        owner = target.id_data
+        animation = owner.animation_data
+        bag = action_get_channelbag_for_slot(animation.action, animation.action_slot)
+        data_path = target.path_from_id(path)
+        frames = sorted(set(inserted))
+        for curve in bag.fcurves:
+            if curve.data_path != data_path or index >= 0 and curve.array_index != index:
+                continue
+            for point in curve.keyframe_points:
+                frame = point.co.x
+                tolerance = max(1e-5, abs(frame) * 1e-7)
+                pos = bisect_left(frames, frame - tolerance)
+                if pos < len(frames) and abs(frames[pos] - frame) <= tolerance:
+                    point.interpolation = interpolation
+            curve.update()
         return target
 
     def spin(self, obj, axis='Z', turns=1.0, ease_kind='linear', offset_deg=0.0):
@@ -338,7 +350,10 @@ class Kit:
         return self._link(obj, collection)
 
     def parent(self, child, parent, keep_transform=True):
-        matrix = child.matrix_world.copy()
+        """Parent an object, preserving its current world transform by default."""
+        if keep_transform:
+            bpy.context.view_layer.update()
+            matrix = child.matrix_world.copy()
         child.parent = parent
         if keep_transform:
             child.matrix_world = matrix
@@ -382,13 +397,14 @@ class Kit:
         return mat
 
     def bsdf(self, mat):
-        node = next((n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+        nodes = mat.node_tree.nodes if mat.node_tree else ()
+        node = next((n for n in nodes if n.type == 'BSDF_PRINCIPLED'), None)
         if node is None:
-            raise ValueError(f'Material {mat.name} has no Principled BSDF (kit.emissive, kit.flat and kit.toon '
-                             'materials have none); use kit.material for this helper')
+            raise ValueError(f'Material {mat.name} has no Principled BSDF; use kit.material for this helper')
         return node
 
     def _noise_bump(self, mat, scale, strength, detail=6.0):
+        bs = self.bsdf(mat)
         nt = mat.node_tree
         tex = nt.nodes.new('ShaderNodeTexNoise')
         tex.inputs['Scale'].default_value = scale
@@ -396,7 +412,7 @@ class Kit:
         bump = nt.nodes.new('ShaderNodeBump')
         bump.inputs['Strength'].default_value = strength
         nt.links.new(tex.outputs['Fac'], bump.inputs['Height'])
-        nt.links.new(bump.outputs['Normal'], self.bsdf(mat).inputs['Normal'])
+        nt.links.new(bump.outputs['Normal'], bs.inputs['Normal'])
         return bump
 
     def glass(self, name='Glass', color='#FFFFFF', roughness=0.0, ior=1.45):
@@ -429,7 +445,7 @@ class Kit:
         rng = nt.nodes.new('ShaderNodeMapRange')
         rng.inputs['From Min'].default_value, rng.inputs['From Max'].default_value = low, high
         nt.links.new(sep.outputs['XYZ'.index(axis)], rng.inputs['Value'])
-        ramp = self._ramp(nt, colors)
+        ramp = self.color_ramp(nt, colors)
         nt.links.new(rng.outputs['Result'], ramp.inputs['Fac'])
         bs = self.bsdf(mat)
         nt.links.new(ramp.outputs['Color'], bs.inputs['Base Color'])
@@ -438,17 +454,24 @@ class Kit:
             bs.inputs['Emission Strength'].default_value = emission_strength
         return mat
 
-    def _ramp(self, nt, colors, interpolation='LINEAR'):
+    def color_ramp(self, nt, colors, interpolation='LINEAR'):
+        """Add a color-ramp node to a shader tree from colors or (position, color) pairs."""
+        if not colors:
+            raise ValueError('A color ramp needs at least one color')
         ramp = nt.nodes.new('ShaderNodeValToRGB')
         ramp.color_ramp.interpolation = interpolation
         els = ramp.color_ramp.elements
         stops = [(i / max(1, len(colors) - 1), c) for i, c in enumerate(colors)] if not isinstance(colors[0], tuple) \
             or len(colors[0]) != 2 else colors
+        if len(stops) == 1:
+            stops = [(0.0, stops[0][1]), (1.0, stops[0][1])]
         while len(els) < len(stops):
             els.new(0.5)
-        for el, (pos, col) in zip(els, stops):
+        for el, (pos, col) in zip(list(els), stops):
             el.position, el.color = pos, rgba(col)
         return ramp
+
+    _ramp = color_ramp
 
     def procedural(self, name, kind='stone', colors=None, scale=1.0, roughness=None, bump=0.3):
         """Procedural surfaces: stone, marble, wood, concrete, brushed_metal, rust, fabric, ground,
@@ -525,10 +548,10 @@ class Kit:
         if pattern == 'terrazzo':
             sep = nt.nodes.new('ShaderNodeSeparateColor')
             nt.links.new(fac, sep.inputs[0])
-            ramp = self._ramp(nt, colors, 'CONSTANT')
+            ramp = self.color_ramp(nt, colors, 'CONSTANT')
             nt.links.new(sep.outputs[0], ramp.inputs['Fac'])
         else:
-            ramp = self._ramp(nt, colors)
+            ramp = self.color_ramp(nt, colors)
             nt.links.new(fac, ramp.inputs['Fac'])
         nt.links.new(ramp.outputs['Color'], bs.inputs['Base Color'])
         if kind == 'lava':
@@ -828,7 +851,8 @@ class Kit:
 
     def arch_profile(self, span, rise=None, kind='gothic', steps=24):
         """Intrados of an arch as [(x, z, cx, cz)]: points from left to right springing, each with
-        the centre of the arc it lies on. kind: gothic (two-centred, pointed), round, segmental."""
+        the centre of the arc it lies on. kind: gothic (two-centred, pointed), round, segmental.
+        A gothic rise near or below half the span is replaced by the equilateral rise."""
         h = span / 2
         if kind == 'round':
             return [(-h * math.cos(math.pi * i / steps), h * math.sin(math.pi * i / steps), 0.0, 0.0)
@@ -892,14 +916,18 @@ class Kit:
         return obj
 
     def tube(self, name, points, radius=0.05, material=None, closed=False, resolution=12, collection=None,
-             taper=None, smooth=True):
-        """Swept circular tube along points (a curve object with bevel). Good for cables, ribs, paths."""
+             taper=None, smooth=True, spline=None):
+        """Sweep a circular tube along control points. Use spline='POLY' for exact corners or
+        'NURBS' for smooth movable control points. The default uses Bézier for up to 64 points."""
+        kind = spline or ('POLY' if len(points) > 64 else 'BEZIER')
+        if kind not in ('POLY', 'BEZIER', 'NURBS') or len(points) < 2:
+            raise ValueError('A tube needs two points and a POLY, BEZIER or NURBS spline')
         cu = bpy.data.curves.new(name, 'CURVE')
         cu.dimensions = '3D'
         cu.bevel_depth = radius
         cu.bevel_resolution = max(1, resolution // 4)
         cu.use_fill_caps = True
-        sp = cu.splines.new('POLY' if len(points) > 64 else 'BEZIER')
+        sp = cu.splines.new(kind)
         if sp.type == 'BEZIER':
             sp.bezier_points.add(len(points) - 1)
             for bp, pt in zip(sp.bezier_points, points):
@@ -909,6 +937,9 @@ class Kit:
             sp.points.add(len(points) - 1)
             for bp, pt in zip(sp.points, points):
                 bp.co = (*pt, 1)
+            if kind == 'NURBS':
+                sp.order_u = min(4, len(points))
+                sp.use_endpoint_u = not closed
         sp.use_cyclic_u = closed
         if taper:
             for bp, r in zip(sp.bezier_points if sp.type == 'BEZIER' else sp.points, taper):
@@ -1186,7 +1217,7 @@ class Kit:
             coord = nt.nodes.new('ShaderNodeTexCoord')
             sep = nt.nodes.new('ShaderNodeSeparateXYZ')
             nt.links.new(coord.outputs['Generated'], sep.inputs[0])
-            ramp = self._ramp(nt, [color, top])
+            ramp = self.color_ramp(nt, [color, top])
             nt.links.new(sep.outputs['Z'], ramp.inputs['Fac'])
             nt.links.new(ramp.outputs['Color'], bg.inputs['Color'])
         return world
@@ -1451,30 +1482,40 @@ class Kit:
         return root
 
     def play_animation(self, root, speed=1.0, action=None, start=0.0):
-        """Loop an imported model's embedded animation (e.g. a rigged glTF walk) over the whole shot.
-        root is what kit.import_model returned; speed scales playback; action picks one by name
-        substring. Returns the animated objects. Whole repeats keep loops seamless only if the
-        clip length divides the shot; otherwise prefer non-looping shots."""
+        """Repeat an imported model's embedded action. `action` filters action names on this
+        model, `start` is shot progress, and `speed` multiplies the source frame rate. For a
+        seamless loop the speed-adjusted clip duration must divide the shot duration."""
+        if not math.isfinite(speed) or speed <= 0 or not 0 <= start < 1:
+            raise ValueError('Animation speed must be positive and start must be in [0, 1)')
+        first_frame = round(self.frame(start))
+        end_frame = self.frames + 1
         animated = []
         for obj in [root, *root.children_recursive]:
             ad = obj.animation_data
-            acts = [a for a in bpy.data.actions if action and action.lower() in a.name.lower()] if action else []
-            act = acts[0] if acts else (ad.action if ad and ad.action else None)
-            if act is None:
+            if not ad:
                 continue
-            ad = ad or obj.animation_data_create()
-            first, last = act.frame_range
+            clips = [(ad.action, ad.action_slot)] if ad.action else []
+            strips = [strip for track in ad.nla_tracks for strip in track.strips if strip.action]
+            clips.extend((strip.action, strip.action_slot) for strip in strips)
+            selected = next(((clip, slot) for clip, slot in clips
+                             if not action or action.lower() in clip.name.lower()), None)
+            if not selected:
+                continue
+            clip, slot = selected
+            first, last = clip.frame_range
             length = max(1.0, last - first)
             ad.action = None
+            for track in ad.nla_tracks:
+                track.mute = True
             track = ad.nla_tracks.new()
-            strip = track.strips.new(act.name, int(self.frame(start)), act)
+            strip = track.strips.new(clip.name, first_frame, clip)
+            if slot:
+                strip.action_slot = slot
             strip.scale = 1.0 / speed
-            strip.repeat = max(1.0, (self.frames + 2) / (length / speed))
-            if hasattr(ad, 'action_slot') and hasattr(strip, 'action_slot') and act.slots:
-                strip.action_slot = act.slots[0]
+            strip.repeat = max(1.0, (end_frame - first_frame + 1) / (length / speed))
             animated.append(obj)
         if not animated:
-            raise ValueError('No embedded animation found under this model')
+            raise ValueError('No matching embedded animation found under this model')
         return animated
 
     def _model_path(self, source):
@@ -1537,19 +1578,35 @@ class Kit:
         path = self.file(source, kinds=('vector',))
         before = set(bpy.data.objects)
         bpy.ops.import_curve.svg(filepath=str(path))
-        new = [o for o in bpy.data.objects if o not in before]
+        curves = [obj for obj in bpy.data.objects if obj not in before and obj.type == 'CURVE']
         root = self.empty(f'Logo {path.stem}', (0, 0, 0))
-        for o in new:
-            o.parent = root
-            if o.type == 'CURVE':
-                o.data.extrude = extrude / max(1e-6, size)
-                if material:
-                    o.data.materials.clear()
-                    o.data.materials.append(material)
+        for curve in curves:
+            curve.parent = root
+            if material:
+                curve.data.materials.clear()
+                curve.data.materials.append(material)
+
+        # Measure the filled geometry. A freshly imported curve can report placeholder bounds.
         bpy.context.view_layer.update()
-        lo, hi = self.bounds(new)
-        width = max(1e-6, hi.x - lo.x)
+        deps = bpy.context.evaluated_depsgraph_get()
+        points = []
+        for curve in curves:
+            evaluated = curve.evaluated_get(deps)
+            mesh = evaluated.to_mesh()
+            try:
+                points.extend(evaluated.matrix_world @ v.co for v in mesh.vertices)
+            finally:
+                evaluated.to_mesh_clear()
+        if not points:
+            raise ValueError(f'SVG {path.name} has no filled curve geometry')
+        axes = tuple(zip(*points))
+        lo, hi = Vector(map(min, axes)), Vector(map(max, axes))
+        width = hi.x - lo.x
+        if width <= 0 or size <= 0:
+            raise ValueError('SVG geometry and target size must have positive width')
         s = size / width
+        for curve in curves:
+            curve.data.extrude = extrude / s
         root.scale = (s, s, s)
         centre = (lo + hi) / 2
         root.rotation_euler = [math.radians(a) for a in rotation]
@@ -1687,6 +1744,25 @@ class Kit:
         return rb
 
     # --------------------------------------------------------------- render
+    def glow(self, strength=0.35, size=0.25, threshold=1.0):
+        """Add fog glow to bright pixels in a new scene compositor and return its Glare node.
+        For a custom compositor, configure the Glare node in that graph directly."""
+        if self.scene.compositing_node_group:
+            raise ValueError('The scene already has a compositor')
+        tree = bpy.data.node_groups.new('Studio glow', 'CompositorNodeTree')
+        self.scene.compositing_node_group = tree
+        tree.interface.new_socket(name='Image', in_out='OUTPUT', socket_type='NodeSocketColor')
+        source = tree.nodes.new('CompositorNodeRLayers')
+        glare = tree.nodes.new('CompositorNodeGlare')
+        glare.inputs['Type'].default_value = 'Fog Glow'
+        glare.inputs['Strength'].default_value = strength
+        glare.inputs['Size'].default_value = size
+        glare.inputs['Threshold'].default_value = threshold
+        result = tree.nodes.new('NodeGroupOutput')
+        tree.links.new(source.outputs['Image'], glare.inputs['Image'])
+        tree.links.new(glare.outputs['Image'], result.inputs['Image'])
+        return glare
+
     def render(self, engine=None, motion_blur=None, shutter=None, exposure=None, look=None, bounces=None,
                transparent=None, film_filter=None, view_transform=None, gamma=None, freestyle=None,
                line_thickness=1.5, line_color='#111111', volume_step=None):

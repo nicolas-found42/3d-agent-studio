@@ -9,7 +9,7 @@ import ast
 MAX_BYTES = 400_000
 ALLOWED_IMPORTS = frozenset({
     'bpy', 'bmesh', 'mathutils', 'math', 'random', 'colorsys', 'itertools', 'functools',
-    'statistics', 'numpy', 'dataclasses', 'typing', 'enum', 'collections', 'string', 'textwrap',
+    'statistics', 'numpy',
 })
 BANNED_CALLS = frozenset({
     'open', 'exec', 'eval', 'compile', '__import__', 'input', 'breakpoint', 'globals', 'locals',
@@ -22,6 +22,11 @@ BANNED_PREFIXES = (
     'bpy.data.libraries.write', 'bpy.context.preferences', 'bpy.ops.image.save',
     'bpy.ops.export_', 'bpy.ops.ptcache.free',
 )
+
+
+def reserved(path):
+    return any(path == prefix or path.startswith(prefix + '.') or (prefix.endswith('_') and path.startswith(prefix))
+               for prefix in BANNED_PREFIXES)
 
 
 def dotted(node):
@@ -57,12 +62,18 @@ def check(source):
             for name in node.names:
                 if name.name.split('.')[0] not in ALLOWED_IMPORTS:
                     say(node, f'import of {name.name!r} is not allowed')
-                aliases[name.asname or name.name.split('.')[0]] = name.name
+                if reserved(name.name):
+                    say(node, f'{name.name} is reserved for the studio')
+                if name.asname:
+                    aliases[name.asname] = name.name
         elif isinstance(node, ast.ImportFrom):
             if node.level or (node.module or '').split('.')[0] not in ALLOWED_IMPORTS:
                 say(node, f'import from {node.module!r} is not allowed')
             for name in node.names:
-                aliases[name.asname or name.name] = f'{node.module}.{name.name}'
+                full = f'{node.module}.{name.name}'
+                if reserved(full):
+                    say(node, f'{full} is reserved for the studio')
+                aliases[name.asname or name.name] = full
         elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in BANNED_CALLS:
             say(node, f'{node.func.id}() is not allowed; use kit helpers for data and references')
         elif isinstance(node, ast.Attribute) and node.attr.startswith('__') and node.attr.endswith('__'):
@@ -76,8 +87,7 @@ def check(source):
             if chain:
                 head, _, rest = chain.partition('.')
                 full = aliases.get(head, head) + ('.' + rest if rest else '')
-                if any(full == p or full.startswith(p + '.') or (p.endswith('_') and full.startswith(p))
-                       for p in BANNED_PREFIXES):
+                if reserved(full):
                     say(node, f'{full} is reserved for the studio')
     if not has_build:
         problems.append('Script must define a top-level function build(kit)')

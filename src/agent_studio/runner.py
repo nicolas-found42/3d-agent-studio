@@ -4,11 +4,14 @@ Invoked only by the worker:
   blender -b --factory-startup --disable-autoexec --python runner.py -- probe JOB
   blender -b JOB/scene.blend --disable-autoexec --python runner.py -- render JOB STAGE SAMPLES
 """
+from itertools import product
 import json
 import math
 from pathlib import Path
 import random
 import sys
+from statistics import median
+from tempfile import TemporaryDirectory
 import time
 import traceback
 
@@ -86,11 +89,15 @@ def configure(scene, brief, stage, samples):
     scene.render.use_placeholder = False
     scene.render.film_transparent = False
     scene.render.use_persistent_data = True
-    scene.cycles.samples = samples
     scene.cycles.use_denoising = True
+    set_samples(scene, samples)
+    return gpu(scene)
+
+
+def set_samples(scene, samples):
+    scene.cycles.samples = samples
     if hasattr(scene, 'eevee'):
         scene.eevee.taa_render_samples = max(16, samples * 2)
-    return gpu(scene)
 
 
 def clean_factory_scene():
@@ -149,13 +156,24 @@ def scene_stats(scene):
         obj = inst.object
         if obj.type == 'MESH':
             polys += len(obj.data.polygons)
-    animated = [o.name for o in scene.objects if o.animation_data and (o.animation_data.action or len(o.animation_data.nla_tracks))]
-    for data in list(bpy.data.materials) + list(bpy.data.lights) + list(bpy.data.cameras):
-        if data.animation_data and data.animation_data.action:
+    def has_animation(data):
+        ad = getattr(data, 'animation_data', None)
+        return ad and (ad.action or any(not track.mute and track.strips for track in ad.nla_tracks))
+
+    animated = [o.name for o in scene.objects if has_animation(o)]
+    data_blocks = {o.data for o in scene.objects if o.data}
+    data_blocks.update(bpy.data.materials)
+    if scene.world:
+        data_blocks.add(scene.world)
+    if scene.compositing_node_group:
+        data_blocks.add(scene.compositing_node_group)
+    for data in data_blocks:
+        if has_animation(data):
             animated.append(data.name)
-        tree = getattr(data, 'node_tree', None)
-        if tree and tree.animation_data and tree.animation_data.action:
+        if has_animation(getattr(data, 'node_tree', None)):
             animated.append(data.name + ' (nodes)')
+        if has_animation(getattr(data, 'shape_keys', None)):
+            animated.append(data.name + ' (shape keys)')
     lights = [o for o in scene.objects if o.type == 'LIGHT' and not o.hide_render]
     emissive = any(n.type == 'EMISSION' or (n.type == 'BSDF_PRINCIPLED' and n.inputs['Emission Strength'].default_value > 0)
                    for m in bpy.data.materials if m.node_tree for n in m.node_tree.nodes)
@@ -206,7 +224,7 @@ def frame_stats(paths):
     return out
 
 
-def pair_references(kit, candidates):
+def pair_references(kit, candidates, stage):
     """For each image reference, the candidate render frame that looks most like it."""
     import numpy as np
 
@@ -225,7 +243,18 @@ def pair_references(kit, candidates):
             continue
         for i, rpath in enumerate(ref.paths):
             if rpath.suffix.lower() in ('.exr', '.hdr'):
-                continue
+                # Put the display rendering in the stage. Keep the scene's original HDR input intact.
+                folder = stage / 'reference-previews'
+                folder.mkdir(exist_ok=True)
+                img = bpy.data.images.load(str(rpath))
+                try:
+                    w, h = img.size
+                    scale = min(1, 960 / max(w, h))
+                    img.scale(max(1, round(w * scale)), max(1, round(h * scale)))
+                    rpath = folder / f'{ref.id}-{i}.png'
+                    img.save_render(str(rpath), scene=kit.scene)
+                finally:
+                    bpy.data.images.remove(img)
             rh, rg = features(rpath)
             best = None
             for path, (h, g) in cand:
@@ -245,6 +274,25 @@ def run_script(kit, job):
     if not callable(build):
         raise RuntimeError('scene.py defines no build(kit)')
     build(kit)
+
+
+def animation_throughput(scene, stage_dir, middle, samples, count):
+    """Measure contiguous animation frames, where Blender can reuse per-render state."""
+    start, end, path = scene.frame_start, scene.frame_end, scene.render.filepath
+    set_samples(scene, samples)
+    try:
+        with TemporaryDirectory(prefix='.timing-', dir=stage_dir) as scratch:
+            scene.frame_start = min(middle, end - count + 1)
+            scene.frame_end = scene.frame_start + count - 1
+            scene.render.filepath = str(Path(scratch) / 'frame-####')
+            bpy.ops.render.render(animation=True)
+            times = [path.stat().st_mtime_ns for path in sorted(Path(scratch).glob('frame-*.png'))]
+    finally:
+        scene.frame_start, scene.frame_end, scene.render.filepath = start, end, path
+    if len(times) != count:
+        raise RuntimeError(f'Animation timing needs {count} contiguous PNG frames')
+    seconds = median((b - a) / 1e9 for a, b in zip(times, times[1:]))
+    return {'per_frame_seconds': max(0.02, seconds), 'samples': samples}
 
 
 def probe(job):
@@ -283,10 +331,12 @@ def probe(job):
     # Warm-up: the first render on a GPU compiles kernels; keep that out of the timing fit.
     warm = stage / 'warmup.png'
     res = scene.render.resolution_percentage
-    scene.render.resolution_percentage, scene.cycles.samples = 10, 1
+    scene.render.resolution_percentage = 10
+    set_samples(scene, 1)
     log('warm-up', round(render_still(scene, 1, warm), 2))
     warm.unlink()
-    scene.render.resolution_percentage, scene.cycles.samples = res, 16
+    scene.render.resolution_percentage = res
+    set_samples(scene, 16)
     n = scene.frame_end
     frames = sorted({1, max(1, (n + 1) // 2), n})
     times = []
@@ -296,18 +346,34 @@ def probe(job):
         times.append(render_still(scene, f, p))
         paths.append(p)
         log('still', f, round(times[-1], 2))
-    scene.cycles.samples = PROBE_LOW_SAMPLES
+    set_samples(scene, PROBE_LOW_SAMPLES)
     low = render_still(scene, frames[len(frames) // 2], stage / 'timing-low.png')
     (stage / 'timing-low.png').unlink()
     w, h = stage_size(brief['orientation'], 'probe')
     stats = frame_stats(paths)
+    middle = frames[len(frames) // 2]
+    throughput = animation_throughput(scene, stage, middle, brief['samples'].get('preview', 16), 4)
+    log('preview animation seconds per frame', round(throughput['per_frame_seconds'], 3))
+
+    # Measure at master resolution. Extrapolating the small-preview sample slope is very noisy.
+    render = scene.render
+    mw, mh = stage_size(brief['orientation'], 'master')
+    render.resolution_x, render.resolution_y = mw, mh
+    try:
+        master_low = animation_throughput(scene, stage, middle, 16, 3)
+        master_high = animation_throughput(scene, stage, middle, 64, 3)
+    finally:
+        render.resolution_x, render.resolution_y = w, h
+    calibration = {'pixels': mw * mh, 'low': master_low, 'high': master_high}
+    log('master animation seconds per frame', json.dumps(calibration))
     timing = {'device': device, 'engine': scene.render.engine, 'width': w, 'height': h,
               'samples_high': 16, 'samples_low': PROBE_LOW_SAMPLES, 'seconds_high': times,
-              'seconds_low': low, 'build_seconds': round(build_seconds, 2), 'frames': frames}
+              'seconds_low': low, 'build_seconds': round(build_seconds, 2), 'frames': frames,
+              'preview_throughput': throughput, 'master_calibration': calibration}
     (stage / 'timing.json').write_text(json.dumps(timing, indent=2))
     checks = {'scene': scene_stats(scene), 'stills': stats}
     (stage / 'checks-raw.json').write_text(json.dumps(checks, indent=2))
-    pairs = pair_references(kit, paths)
+    pairs = pair_references(kit, paths, stage)
     (stage / 'pairs.json').write_text(json.dumps(pairs, indent=2))
     log('probe done')
 
@@ -350,11 +416,39 @@ def proof_camera(name, location, target, lens=35.0, ortho=None):
 
 
 def camera_path(scene, step):
+    frames = list(range(scene.frame_start, scene.frame_end + 1, step))
+    if frames[-1] != scene.frame_end:
+        frames.append(scene.frame_end)
     pts = []
-    for f in range(scene.frame_start, scene.frame_end + 1, step):
-        scene.frame_set(f)
+    for frame in frames:
+        scene.frame_set(frame)
         pts.append(scene.camera.matrix_world.translation.copy())
     return pts
+
+
+def frame_proof(scene, cam, lo, hi):
+    """Fit the entire bounding box into the proof camera at the render's actual aspect ratio."""
+    centre = (lo + hi) / 2
+    basis = cam.rotation_euler.to_matrix()
+    inverse = basis.transposed()
+    corners = [inverse @ (Vector(corner) - centre) for corner in product(*zip(lo, hi))]
+    if cam.data.type == 'ORTHO':
+        cam.data.ortho_scale = 1.0
+    viewport = cam.data.view_frame(scene=scene)
+    half_x = max(abs(v.x) for v in viewport)
+    half_y = max(abs(v.y) for v in viewport)
+    margin = 0.86
+    if cam.data.type == 'ORTHO':
+        cam.data.ortho_scale = max(0.5, max(max(abs(v.x) / half_x, abs(v.y) / half_y) for v in corners) / margin)
+        distance = max(1.0, max(v.z for v in corners) + 1.0)
+    else:
+        depth = abs(viewport[0].z)
+        horizontal, vertical = half_x / depth, half_y / depth
+        distance = max(1.0, max(v.z + max(2 * cam.data.clip_start,
+                                         max(abs(v.x) / horizontal, abs(v.y) / vertical) / margin) for v in corners))
+    cam.data.clip_end = max(cam.data.clip_end, distance - min(v.z for v in corners) + 1.0)
+    cam.location = centre + basis @ Vector((0, 0, distance))
+    return cam
 
 
 def proofs(job, stage_dir, brief):
@@ -375,11 +469,13 @@ def proofs(job, stage_dir, brief):
     pts = camera_path(scene, max(1, n // 120))
     scene.frame_set(pose)
     lo, hi = bbox_subject(scene)
-    for p in pts:
-        lo = Vector(map(min, lo, p))
-        hi = Vector(map(max, hi, p))
     centre = (lo + hi) / 2
-    radius = max((hi - lo).length / 2, 0.5)
+    path_lo, path_hi = lo.copy(), hi.copy()
+    for point in pts:
+        path_lo = Vector(map(min, path_lo, point))
+        path_hi = Vector(map(max, path_hi, point))
+    path_centre = (path_lo + path_hi) / 2
+    radius = max((path_hi - path_lo).length / 2, 0.5)
 
     # 1. Wide: same camera transform, half the focal length (or double ortho scale).
     wide = bpy.data.objects.new('Proof wide', shot.data.copy())
@@ -392,16 +488,22 @@ def proofs(job, stage_dir, brief):
     wide.data.dof.use_dof = False
     views = [('angle-01-wide', wide)]
     # 2. Three-quarter outside view of the set.
-    d = radius * 1.7
-    views.append(('angle-02-three-quarter', proof_camera('Proof three-quarter', centre + Vector((d * .62, -d * .62, d * .55)), centre)))
+    oblique = proof_camera('Proof three-quarter', centre + Vector((1, -1, .9)), centre)
+    views.append(('angle-02-three-quarter', frame_proof(scene, oblique, lo, hi)))
     # 3. Overview: top-down orthographic with the camera path.
-    top = proof_camera('Proof overview', centre + Vector((0, 0, radius * 4 + 10)), centre, ortho=max(hi.x - lo.x, hi.y - lo.y) * 1.25 + .5)
-    views.append(('angle-03-overview', top))
+    top = proof_camera('Proof overview', path_centre + Vector((0, 0, 1)), path_centre, ortho=1.0)
+    views.append(('angle-03-overview', frame_proof(scene, top, path_lo, path_hi)))
     for name, cam in views:
         scene.camera = cam
         engine = scene.render.engine
         if name == 'angle-03-overview':
-            path_obj = draw_path(scene, pts, radius)
+            # Project the camera track onto the review plane above occluding roofs and set pieces.
+            path_width = max(radius * 0.01, 0.02)
+            height = path_hi.z + 2 * path_width
+            lift = max(0.0, height + path_width + 1.0 - top.location.z)
+            top.location.z += lift
+            top.data.clip_end += lift
+            path_obj = draw_path(scene, [Vector((point.x, point.y, height)) for point in pts], radius)
             hidden = [o for o in scene.objects if (o.get('studio_volume') or o.type == 'VOLUME'
                                                    or o.name == 'Title overlay') and not o.hide_render]
             for o in hidden:
@@ -453,7 +555,7 @@ def render(job, stage_name, samples):
     sample = frames[::max(1, len(frames) // 48)]
     stats = frame_stats(sample)
     kit = Kit({'job': str(job), 'brief': brief, 'size': stage_size(brief['orientation'], stage_name)})
-    pairs = pair_references(kit, frames[:n][::max(1, n // 36)])
+    pairs = pair_references(kit, frames[:n][::max(1, n // 36)], stage)
     seam = None
     if brief['loop']:
         import numpy as np

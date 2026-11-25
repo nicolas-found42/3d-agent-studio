@@ -202,6 +202,7 @@ def doctor(root):
             'brief_schema': {'type': 'object', 'required': ['prompt'], 'additionalProperties': False, 'properties': FIELDS},
             'defaults': DEFAULTS, 'samples': DEFAULT_SAMPLES,
             'reference_kinds': {k: {'extensions': list(v), 'roles': list(ingest.ROLES[k])} for k, v in ingest.KINDS.items()},
+            'gif_handling': 'Animated GIFs are videos and use the scene-frame cap. Single-frame GIFs are images.',
             'asset_sources': assets.SOURCES, 'examples': len(example_index()),
             'script_contract': 'Python defining build(kit); see the skill and studio_examples.'}
 
@@ -270,6 +271,9 @@ def checked_stage(job, kind, *, require_current_code=True):
     paths = artifacts(stage, s['sha256'], evidence(kind, manifest['brief'], has_image_refs(job)))
     if digest(job / 'job.json') != s.get('job_sha256'):
         raise ValueError('Job manifest changed; start a new draft')
+    script = job / 'scene.py'
+    if not script.is_file() or script.is_symlink() or digest(script) != manifest['script_sha256']:
+        raise ValueError('Scene script changed; start a new draft')
     blend = job / 'scene.blend'
     if not blend.is_file() or blend.is_symlink() or digest(blend) != s['scene_sha256']:
         raise ValueError('Saved scene changed; start a new draft')
@@ -363,10 +367,23 @@ def start_draft(root, raw=None, script=None, job_id=None):
     return launch(create_job(root, raw, script), 'probe', then='preview')
 
 
-def predict(estimate, pixels, samples, frames):
-    """Seconds to render `frames` at `pixels` and `samples`, from the probe's two-point fit."""
-    per = estimate['overhead_seconds'] + estimate['seconds_per_megapixel_sample'] * pixels / 1e6 * samples
-    return frames * per + estimate['scene_load_seconds']
+def predict(estimate, pixels, samples, frames, *, loop=False, prores=False):
+    """Seconds for rendering and exports, from the probe's two-point fit."""
+    mp = pixels / 1e6
+    per = estimate['overhead_seconds'] + estimate['seconds_per_megapixel_sample'] * mp * samples
+    # Allow for three additional proof cameras and encode/decode of each requested export.
+    encoding = mp * frames * (0.10 + 0.04 * loop + 0.08 * prores)
+    measured = estimate.get('preview_throughput')
+    master = estimate.get('master_calibration')
+    if master and master['pixels'] == pixels:
+        low, high = master['low'], master['high']
+        slope = max(0, (high['per_frame_seconds'] - low['per_frame_seconds']) / (high['samples'] - low['samples']))
+        per_frame = max(0.02, low['per_frame_seconds'] + slope * (samples - low['samples']))
+        proof_seconds = 3 * measured['per_frame_seconds']
+        return frames * per_frame + proof_seconds + estimate['scene_load_seconds'] + encoding
+    if measured and measured['pixels'] == pixels and measured['samples'] == samples:
+        return frames * measured['per_frame_seconds'] + 3 * per + estimate['scene_load_seconds'] + encoding
+    return (frames + 3) * per + estimate['scene_load_seconds'] + encoding
 
 
 def master_plan(job, budget_minutes=None, quality=None, samples=None):
@@ -378,18 +395,22 @@ def master_plan(job, budget_minutes=None, quality=None, samples=None):
     budget = 60 * (budget_minutes or brief['budget_minutes']['master'])
     quality = quality or brief['quality']
     target = samples or brief['samples'].get('master', DEFAULT_SAMPLES['master'])
-    floor = FAST_FLOOR if quality == 'fast' else target
+    floor = min(target, FAST_FLOOR) if quality == 'fast' else target
+
+    def estimate_seconds(spp):
+        return predict(estimate, w * h, spp, frames, loop=brief['loop'], prores='prores' in brief['extras'])
+
     chosen = None
     s = target
     while s >= floor:
-        if predict(estimate, w * h, s, frames) <= budget * .9:
+        if estimate_seconds(s) <= budget * .9:
             chosen = s
             break
         s = max(floor, s // 2) if s > floor else floor - 1
     plan = {'width': w, 'height': h, 'frames': frames, 'budget_minutes': budget / 60, 'quality': quality,
             'samples': chosen, 'requested_samples': target,
-            'predicted_minutes': round(predict(estimate, w * h, chosen or target, frames) / 60, 1),
-            f'predicted_minutes_at_{STANDARD_FLOOR}_spp': round(predict(estimate, w * h, STANDARD_FLOOR, frames) / 60, 1)}
+            'predicted_minutes': round(estimate_seconds(chosen or target) / 60, 2),
+            f'predicted_minutes_at_{STANDARD_FLOOR}_spp': round(estimate_seconds(STANDARD_FLOOR) / 60, 2)}
     return plan
 
 
@@ -414,8 +435,9 @@ def finalize(root, job_id, review, budget_minutes=None, quality=None, samples=No
     plan = master_plan(job, budget_minutes, quality, samples)
     if plan['samples'] is None:
         raise ValueError(
-            'Master is predicted to take about {predicted_minutes} min at {requested_samples} spp, over the '
-            '{budget_minutes:g} min budget. Pass a larger budget_minutes, fewer samples, or quality "fast".'.format(**plan))
+            'Master is predicted to take about {predicted_minutes} min at {requested_samples} spp. The '
+            '{budget_minutes:g} min budget reserves 10% for estimation uncertainty. '
+            'Pass a larger budget_minutes, fewer samples, or quality "fast".'.format(**plan))
     try:
         return {**launch(job, 'master', preview_review={'hashes': hashes, 'notes': notes.strip()}, plan=plan),
                 'plan': plan}
@@ -442,8 +464,9 @@ def stage_info(job, kind):
         info['rendered_frames'] = sum(1 for f in files.glob('frame-*.png') if f.is_file() and f.stat().st_size) \
             if files.is_dir() else 0
         info['step'] = value.get('step', 'launch')
-        if time.time() - value['updated_at'] > 1800 and value.get('step') != 'waiting for the GPU lock':
-            info.update(state='stalled', error='No stage update in 30 minutes; inspect the log and start a new job if needed')
+        if time.time() > value.get('deadline_at', value['updated_at'] + 1800) + 30 and \
+                value.get('step') != 'waiting for the GPU lock':
+            info.update(state='stalled', error='No stage result after its deadline; inspect the log')
     elif value['state'] == 'ready':
         brief = job_manifest(job)['brief']
         info['artifacts'] = artifacts(path, value['sha256'], evidence(kind, brief, has_image_refs(job)))
@@ -464,7 +487,8 @@ def stage_info(job, kind):
 def status(root, job_id):
     job = job_path(root, job_id)
     manifest = job_manifest(job)
-    info = {'job_id': job_id, 'brief': manifest['brief'], 'script': str(job / 'scene.py'),
+    info = {'job_id': job_id, 'brief': manifest['brief'], 'parent': manifest['brief'].get('parent'),
+            'script': str(job / 'scene.py'),
             'references': manifest['references'], 'assets': manifest['assets'],
             'credits': str(job / 'CREDITS.txt'), 'editable_blend': None}
     info.update((kind, stage_info(job, kind)) for kind in ('probe', 'preview', 'master'))
@@ -492,7 +516,9 @@ def compare(root, before, after):
             continue
         out = target / name
         r = subprocess.run([bins['ffmpeg'], '-nostdin', '-loglevel', 'error', '-i', x[name], '-i', y[name],
-                            '-filter_complex', '[0:v]scale=1600:-2[a];[1:v]scale=1600:-2[b];[a][b]vstack=inputs=2',
+                            '-filter_complex', '[0:v]scale=1560:-2,setsar=1[a];[1:v]scale=1560:-2,setsar=1[b];'
+                            '[a][b]vstack=inputs=2,scale=1560:1560:force_original_aspect_ratio=decrease,'
+                            'pad=max(iw\\,280):max(ih\\,280):(ow-iw)/2:(oh-ih)/2:0x141920',
                             '-frames:v', '1', '-update', '1', str(out)],
                            capture_output=True, text=True, timeout=60, env=render_env())
         if r.returncode or not out.is_file() or not out.stat().st_size:

@@ -4,6 +4,8 @@ Every asset is fetched over HTTPS from a keyless source, checked against the lic
 cached by ID under the job root, hash-pinned and credited. Scene scripts never touch the network;
 they ask the kit for an asset ID that the brief declared.
 """
+from email.utils import parsedate_to_datetime
+import errno
 import hashlib
 import io
 import json
@@ -70,6 +72,17 @@ def spdx(raw):
     raise LicenseError(f'License {raw!r} is not on the allowlist (CC0, public domain, CC-BY, OFL, Apache, MIT)')
 
 
+def retry_delay(value, attempt):
+    if value.isdigit():
+        return min(30, int(value))
+    if value:
+        try:
+            return min(30, max(0, parsedate_to_datetime(value).timestamp() - time.time()))
+        except (TypeError, ValueError, OverflowError):
+            pass
+    return min(30, 2.0 * 2 ** attempt)
+
+
 def http(url, *, max_bytes=MAX_BYTES, attempts=4):
     """GET over HTTPS with bounded retries on rate limits and transient server errors."""
     parsed = urllib.parse.urlsplit(url)
@@ -84,13 +97,12 @@ def http(url, *, max_bytes=MAX_BYTES, attempts=4):
             break
         except urllib.error.HTTPError as exc:
             if exc.code in (429, 502, 503, 504) and attempt < attempts - 1:
-                wait = exc.headers.get('Retry-After', '')
-                time.sleep(min(30.0, float(wait) if wait.isdigit() else 2.0 * 2 ** attempt))
+                time.sleep(retry_delay(exc.headers.get('Retry-After', ''), attempt))
                 continue
             raise ValueError(f'Download failed ({exc.code}) for {url}') from exc
         except urllib.error.URLError as exc:
             if attempt < attempts - 1:
-                time.sleep(2.0 * 2 ** attempt)
+                time.sleep(retry_delay('', attempt))
                 continue
             raise ValueError(f'Download failed for {url}: {exc.reason}') from exc
     if len(data) > max_bytes:
@@ -225,6 +237,7 @@ def resolve_fontsource(name, f):
     font, _, rest = name.partition('@')
     weight, _, style = rest.partition(':')
     data = get_json(f'https://api.fontsource.org/v1/fonts/{urllib.parse.quote(font)}')
+    license = spdx(data.get('license'))
     weight = weight or ('400' if 400 in data['weights'] else str(data['weights'][0]))
     style = style or 'normal'
     variant = data['variants'][weight][style]
@@ -233,7 +246,7 @@ def resolve_fontsource(name, f):
     if not url.endswith('.ttf'):
         raise ValueError(f'Fontsource has no TTF for {name}')
     f.download(f'{font}-{weight}-{style}.ttf', url)
-    return dict(kind='font', title=data['family'], author=data.get('family'), license=data.get('license'),
+    return dict(kind='font', title=data['family'], author=data.get('family'), license=license,
                 source_url=f'https://fontsource.org/fonts/{font}')
 
 
@@ -283,13 +296,27 @@ def resolve_wikimedia(name, f):
 
 def resolve_openverse(name, f):
     data = get_json(f'https://api.openverse.org/v1/images/{urllib.parse.quote(name)}/')
-    license = spdx(data.get('license') + (f'-{data["license_version"]}' if data.get('license') == 'by' else ''))
+    label = data.get('license') or ''
+    if label == 'by' and data.get('license_version'):
+        label += f'-{data["license_version"]}'
+    license = spdx(label)
     url = data['url']
-    ext = url.rsplit('.', 1)[-1].lower()[:4] if '.' in url[-6:] else 'jpg'
-    try:
-        f.download('image.' + ext, commons_thumb(url) if (data.get('width') or 0) > 3000 else url)
-    except ValueError:
-        f.download('image.' + ext, url)
+    ext = PurePosixPath(urllib.parse.urlsplit(url).path).suffix.lower().removeprefix('.') or 'jpg'
+    wiki = host_ok(url, ('upload.wikimedia.org',))
+    if wiki and (thumb := data.get('thumbnail')):
+        try:
+            f.download('image.jpg', thumb)
+        except ValueError:
+            pass
+    if not f.files:
+        preferred = commons_thumb(url) if wiki and (data.get('width') or 0) > 3000 else url
+        if preferred != url:
+            try:
+                f.download('image.' + ext, preferred)
+            except ValueError:
+                f.download('image.' + ext, url)
+        else:
+            f.download('image.' + ext, url)
     return dict(kind='image', title=data.get('title') or name, author=data.get('creator') or '',
                 license=license, source_url=data.get('foreign_landing_url'))
 
@@ -337,14 +364,19 @@ def resolve_url(name, f):
     data, final = http(name)
     if not host_ok(final, CC0_HOSTS):
         raise LicenseError(f'Download redirected off the CC0 hosts to {urllib.parse.urlsplit(final).hostname}')
-    filename = PurePosixPath(urllib.parse.urlsplit(final).path).name or 'download'
-    if filename.lower().endswith('.zip'):
+    if re.search(br'<!doctype\s+html\b|<html[\s>]', data[:4096], re.I):
+        raise ValueError(f'{name} returned a web page instead of an asset file; use a direct file download')
+    filename = PurePosixPath(urllib.parse.urlsplit(final).path).name
+    if '.' not in filename:
+        filename = PurePosixPath(urllib.parse.urlsplit(name).path).name or 'download'
+    if filename.lower().endswith('.zip') or zipfile.is_zipfile(io.BytesIO(data)):
         f.unzip(data)
+        kind = 'archive'
     else:
         f.save(filename, data)
-    ext = filename.rsplit('.', 1)[-1].lower()
-    kind = {'hdr': 'hdri', 'exr': 'hdri', 'blend': 'blend', 'ttf': 'font', 'otf': 'font',
-            'jpg': 'image', 'jpeg': 'image', 'png': 'image'}.get(ext, 'model' if ext in ('glb', 'gltf', 'obj', 'fbx') else 'archive')
+        ext = filename.rsplit('.', 1)[-1].lower()
+        kind = {'hdr': 'hdri', 'exr': 'hdri', 'blend': 'blend', 'ttf': 'font', 'otf': 'font',
+                'jpg': 'image', 'jpeg': 'image', 'png': 'image'}.get(ext, 'model' if ext in ('glb', 'gltf', 'obj', 'fbx') else 'archive')
     return dict(kind=kind, title=filename, author=urllib.parse.urlsplit(final).hostname, license='CC0-1.0', source_url=name)
 
 
@@ -385,10 +417,15 @@ def resolve(root, asset_id):
             raise ValueError(f'{asset_id} produced no files')
         info = {'id': asset_id, 'source': source, **meta, 'files': f.files}
         p.write(temp / 'asset.json', info)
-        temp.rename(final)
-    except BaseException:
+        try:
+            temp.rename(final)
+        except OSError as exc:
+            if exc.errno not in (errno.EEXIST, errno.ENOTEMPTY) or not (final / 'asset.json').is_file():
+                raise
+            # A concurrent job resolved this ID first. Both jobs use the same checked cache entry.
+            return resolve(root, asset_id)
+    finally:
         shutil.rmtree(temp, ignore_errors=True)
-        raise
     return info, final
 
 
