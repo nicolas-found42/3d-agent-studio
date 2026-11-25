@@ -69,6 +69,6 @@ uv lock --check
 uv build
 ```
 
-See the [agent verification matrix](docs/compatibility.md#verified-on-local-macos) and the [render verification](docs/render-verification.md). Media checks validate decoded frame order, constant cadence, format, and the two-cycle repeat; they do not establish playback smoothness on a phone or approval by a social platform.
+See the [agent verification matrix](docs/compatibility.md#verified-on-local-macos), the [example contact sheet and review](docs/example-library-review.md), the [acceptance scenes](acceptance/), and [render verification](docs/render-verification.md). Media checks validate decoded frame order, constant cadence, format, and the two-cycle repeat. See [v0.3.0 migration notes](docs/v0.3.0.md) if you have older briefs or jobs.
 
 [MIT license](LICENSE).

@@ -1,105 +1,548 @@
 {
- "job_id": "38d9289c4bda457d97eaaf39858dc821",
- "stage": "preview",
- "brief": {
-  "prompt": "My society simulation (~/Documents/github/society) as a living miniature village: seven places in a ring around the parish commons, in the observer window's clockwise order (granary at the top, market, well, hut, shrine, woods, field), connected by a ring path. Twelve villagers walk between the places following the moves recorded in the sim's journal, one recorded turn per second, each with a small gem over the head colored by the motive behind the action (fear, duty, hunger, thirst, kinship, promise). Late afternoon turns into a lantern-lit dusk while the camera cranes down from a high oblique view, tilt-shift like a model village.",
-  "orientation": "horizontal",
-  "seconds": 12,
-  "fps": 24,
-  "seed": 7,
-  "assets": [
-   "fontsource:cinzel@700"
-  ],
-  "references": [
-   {
-    "id": "ref-3143493d6d4bb146",
-    "role": "composition",
-    "note": "The sim's observer window: seven places in a ring around the commons, villagers as colored dots."
-   },
-   {
-    "id": "ref-70cdc59da7a3fb69",
-    "role": "data",
-    "note": "24 recorded turns: turn, day, agent, place after the action, action, motive."
-   }
-  ]
- },
- "jev": {
-  "decision": {
-   "verdict": "fix",
-   "fix": [
-    "reference ref-3143493d6d4bb146 (composition): related",
-    "reference ref-3143493d6d4bb146 (composition): related"
-   ],
-   "look": [
-    "defect: interpenetration (0.34)",
-    "defect: noisy (0.49)",
-    "defect: set_unfinished (0.34)"
-   ]
+  "job_id": "f160b9d3080f4e4ca9d59abb8716b560",
+  "stage": "preview",
+  "brief": {
+    "references": [
+      {
+        "id": "ref-2a4bed391def69d2",
+        "role": "composition",
+        "note": "The sim's observer window: seven places in a ring around the commons, villagers as colored dots."
+      },
+      {
+        "id": "ref-70cdc59da7a3fb69",
+        "role": "data",
+        "note": "24 recorded turns: turn, day, agent, place after the action, action, motive."
+      }
+    ],
+    "assets": [
+      "fontsource:cinzel@700"
+    ],
+    "orientation": "horizontal",
+    "seconds": 12,
+    "loop": false,
+    "fps": 24,
+    "seed": 7,
+    "title": "",
+    "show_title": false,
+    "quality": "standard",
+    "budget_minutes": {
+      "probe": 5,
+      "draft": 25,
+      "master": 10
+    },
+    "samples": {},
+    "extras": [],
+    "parent": "f45949d3b311420181e229fdb892802c",
+    "max_references": 40,
+    "prompt": "The society simulation as a living miniature village: seven places in a ring around the parish commons, in the observer window's clockwise order (granary at the top, market, well, hut, shrine, woods, field), connected by a ring path. Twelve villagers walk between the places following the moves recorded in the sim's journal, one recorded turn per second, each with a small gem over the head colored by the motive behind the action (fear, duty, hunger, thirst, kinship, promise). Late afternoon turns into a lantern-lit dusk while the camera cranes down from a high oblique view, tilt-shift like a model village."
   },
-  "quality": "polished",
-  "prompt_match": "clear",
-  "elements": {
-   "a ring of small village buildings around a central plaza": 0.91,
-   "a large tree on a round plaza": 0.78,
-   "small figures standing or walking around the village": 0.97,
-   "market stalls with colored awnings": 0.93,
-   "a stone well": 0.86,
-   "lanterns or glowing lights": 0.94
+  "board_hashes": {
+    "timeline.jpg": "08c3cb57a2146d40c9d4f94c778c565f172589f699f42dbe108b54442d2b4bad",
+    "angles.jpg": "714761719a6a7cffc6f6e27c44250b3e534414e7375da7fad6fc39f0b600c984",
+    "references.jpg": "ce9cd4477cf6887d1d6fe6e6ca9d0181dae30bf07365198e8ff01e6ec3893a2c"
   },
-  "defects": {
-   "floating": 0.24,
-   "interpenetration": 0.34,
-   "too_dark": 0.22,
-   "blown_out": 0.05,
-   "noisy": 0.49,
-   "clipping": 0.28,
-   "placeholder": 0.1,
-   "empty": 0.17,
-   "set_unfinished": 0.34
+  "script_sha256": "6700aa09e8b8094099f4893f25801cb79baef80459c6126476166e644bfa7027",
+  "render_code": {
+    "pipeline.py": "a1501a47d0a21b4f188d215aaa7c919b48119d5d0b61207aeaa7562b3fc16717",
+    "worker.py": "853b4dad1b69d213eb35e7635e0188684a0352152ac6c233eb79a020e8c84bcc",
+    "runner.py": "eb7a9d61d680a0645e0cf6cb9ef812fcc37c97cdad60889ddefd832f00743aed",
+    "kit.py": "1c541688aefcb7830967312bd12b52d5c874a7e7e1f383e0841bc74d09343ebe",
+    "formats.py": "796ff77c70997522ceef827ff58dc9ea4f23a5f8484f459bf2300ed1c948c59f",
+    "scriptcheck.py": "9bcba8293decc59cc511f9243c61b1a7f54e8c3f07fddcf7a277f9a38af36ff6"
   },
-  "references": [
-   {
-    "reference": "ref-3143493d6d4bb146",
-    "role": "composition",
-    "frame": "frame-0281.png",
-    "level": "clearly_related"
-   },
-   {
-    "reference": "ref-3143493d6d4bb146",
-    "role": "composition",
-    "frame": "frame-0281.png",
-    "level": "clearly_related"
-   },
-   {
-    "reference": "ref-3143493d6d4bb146",
-    "role": "composition",
-    "frame": "frame-0281.png",
-    "level": "related"
-   },
-   {
-    "reference": "ref-3143493d6d4bb146",
-    "role": "composition",
-    "frame": "frame-0281.png",
-    "level": "clearly_related"
-   },
-   {
-    "reference": "ref-3143493d6d4bb146",
-    "role": "composition",
-    "frame": "frame-0281.png",
-    "level": "clearly_related"
-   },
-   {
-    "reference": "ref-3143493d6d4bb146",
-    "role": "composition",
-    "frame": "frame-0281.png",
-    "level": "related"
-   },
-   {
-    "reference": "ref-3143493d6d4bb146",
-    "role": "composition",
-    "frame": "frame-0281.png",
-    "level": "clearly_related"
-   }
-  ]
- }
+  "reviewer_notes": {
+    "probe": "The seven landmarks surround the commons in every sampled pose. The first view shows the roof shapes and raised plinth, and the final near-overhead still shows the layout with warm lanterns around its darker ring.",
+    "timeline": "Villagers change places and gem colors while the camera descends from 49 to 44 metres and becomes more overhead. The stone well is the open round basin at the right. The hut roof reaches the lower edge of the shot while its building and place on the ring stay recognizable. Lanterns and the two window rows turn on as the table and radial paths darken.",
+    "angles": "The wide view shows the model surface and the grounding of its ring buildings. The oblique proof shows the exposed plinth above the table. This draft predates the proof-camera fit correction, so the top-down image trims the plinth at the top and the path at the bottom. The narrower shots and reference board still show all seven landmarks clearly.",
+    "references": "All five GIF frames appear on the board. Their closest shot is frame 281. The granary at twelve o'clock starts the clockwise order of market, well, hut, shrine, woods, and field. The spokes point in to the parish commons around the tree. The dusk frame preserves the positions shown in the source diagram.",
+    "clip": "Sampled one decoded frame per second across the twelve-second clip. Figure positions change along the paths, shadows lengthen across the table, and the secondary window and lantern lights become visible. The darkest interval retains the ring and silhouette landmarks. The scene was also checked directly against the journal: all twelve villagers have matching colors and settled locations in turns 325\u2013336.",
+    "jev_look_items": "The well's opening reads on the right at full frame size and the lanterns become prominent in the last third. Apparent overlaps are the roof fittings, market awnings and villager clusters at stops. Fine draft grain is most visible in the shaded miniature grass and does not obscure any landmark."
+  },
+  "qc": {
+    "passed": true,
+    "stage": "preview",
+    "orientation": "horizontal",
+    "video": {
+      "frames": 288,
+      "duration_seconds": 12.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 1366746
+    },
+    "timeline_frames": [
+      1,
+      58,
+      116,
+      173,
+      231,
+      288
+    ],
+    "cover_frame": 97,
+    "proof_frame": 96,
+    "angle_order": [
+      "wide (same camera, half focal length)",
+      "three-quarter set view",
+      "top-down overview with camera path"
+    ],
+    "reference_pairs": [
+      {
+        "reference": "ref-2a4bed391def69d2",
+        "role": "composition",
+        "name": "village-observer.gif",
+        "index": 0,
+        "similarity": 0.614,
+        "frame": "frame-0281.png"
+      },
+      {
+        "reference": "ref-2a4bed391def69d2",
+        "role": "composition",
+        "name": "village-observer.gif",
+        "index": 1,
+        "similarity": 0.548,
+        "frame": "frame-0281.png"
+      },
+      {
+        "reference": "ref-2a4bed391def69d2",
+        "role": "composition",
+        "name": "village-observer.gif",
+        "index": 2,
+        "similarity": 0.601,
+        "frame": "frame-0281.png"
+      },
+      {
+        "reference": "ref-2a4bed391def69d2",
+        "role": "composition",
+        "name": "village-observer.gif",
+        "index": 3,
+        "similarity": 0.615,
+        "frame": "frame-0281.png"
+      },
+      {
+        "reference": "ref-2a4bed391def69d2",
+        "role": "composition",
+        "name": "village-observer.gif",
+        "index": 4,
+        "similarity": 0.616,
+        "frame": "frame-0281.png"
+      }
+    ],
+    "render": {
+      "device": "METAL",
+      "samples": 16,
+      "seconds": 328.2,
+      "seconds_per_frame": 1.14,
+      "frames": 288,
+      "frame_stats": [
+        {
+          "file": "frame-0001.png",
+          "mean_luminance": 0.4377,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0
+        },
+        {
+          "file": "frame-0007.png",
+          "mean_luminance": 0.4371,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00099
+        },
+        {
+          "file": "frame-0013.png",
+          "mean_luminance": 0.4361,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00188
+        },
+        {
+          "file": "frame-0019.png",
+          "mean_luminance": 0.4347,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00264
+        },
+        {
+          "file": "frame-0025.png",
+          "mean_luminance": 0.4331,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00362
+        },
+        {
+          "file": "frame-0031.png",
+          "mean_luminance": 0.4316,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00604
+        },
+        {
+          "file": "frame-0037.png",
+          "mean_luminance": 0.4292,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00706
+        },
+        {
+          "file": "frame-0043.png",
+          "mean_luminance": 0.4268,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00836
+        },
+        {
+          "file": "frame-0049.png",
+          "mean_luminance": 0.4244,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00591
+        },
+        {
+          "file": "frame-0055.png",
+          "mean_luminance": 0.4216,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00692
+        },
+        {
+          "file": "frame-0061.png",
+          "mean_luminance": 0.4186,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00769
+        },
+        {
+          "file": "frame-0067.png",
+          "mean_luminance": 0.4155,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00768
+        },
+        {
+          "file": "frame-0073.png",
+          "mean_luminance": 0.4119,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00769
+        },
+        {
+          "file": "frame-0079.png",
+          "mean_luminance": 0.4084,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00854
+        },
+        {
+          "file": "frame-0085.png",
+          "mean_luminance": 0.4047,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00951
+        },
+        {
+          "file": "frame-0091.png",
+          "mean_luminance": 0.4005,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00938
+        },
+        {
+          "file": "frame-0097.png",
+          "mean_luminance": 0.3963,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0091
+        },
+        {
+          "file": "frame-0103.png",
+          "mean_luminance": 0.3917,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01046
+        },
+        {
+          "file": "frame-0109.png",
+          "mean_luminance": 0.3867,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01126
+        },
+        {
+          "file": "frame-0115.png",
+          "mean_luminance": 0.3817,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01105
+        },
+        {
+          "file": "frame-0121.png",
+          "mean_luminance": 0.3765,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00988
+        },
+        {
+          "file": "frame-0127.png",
+          "mean_luminance": 0.3709,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0117
+        },
+        {
+          "file": "frame-0133.png",
+          "mean_luminance": 0.3659,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0122
+        },
+        {
+          "file": "frame-0139.png",
+          "mean_luminance": 0.3597,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01169
+        },
+        {
+          "file": "frame-0145.png",
+          "mean_luminance": 0.3536,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01098
+        },
+        {
+          "file": "frame-0151.png",
+          "mean_luminance": 0.3478,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01215
+        },
+        {
+          "file": "frame-0157.png",
+          "mean_luminance": 0.3409,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01227
+        },
+        {
+          "file": "frame-0163.png",
+          "mean_luminance": 0.3343,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01125
+        },
+        {
+          "file": "frame-0169.png",
+          "mean_luminance": 0.3278,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01024
+        },
+        {
+          "file": "frame-0175.png",
+          "mean_luminance": 0.321,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01102
+        },
+        {
+          "file": "frame-0181.png",
+          "mean_luminance": 0.3141,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01125
+        },
+        {
+          "file": "frame-0187.png",
+          "mean_luminance": 0.3067,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01083
+        },
+        {
+          "file": "frame-0193.png",
+          "mean_luminance": 0.2991,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01035
+        },
+        {
+          "file": "frame-0199.png",
+          "mean_luminance": 0.2913,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01116
+        },
+        {
+          "file": "frame-0205.png",
+          "mean_luminance": 0.2831,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0114
+        },
+        {
+          "file": "frame-0211.png",
+          "mean_luminance": 0.2747,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01067
+        },
+        {
+          "file": "frame-0217.png",
+          "mean_luminance": 0.2663,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01044
+        },
+        {
+          "file": "frame-0223.png",
+          "mean_luminance": 0.2578,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01142
+        },
+        {
+          "file": "frame-0229.png",
+          "mean_luminance": 0.2484,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0121
+        },
+        {
+          "file": "frame-0235.png",
+          "mean_luminance": 0.2386,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01198
+        },
+        {
+          "file": "frame-0241.png",
+          "mean_luminance": 0.2282,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01146
+        },
+        {
+          "file": "frame-0247.png",
+          "mean_luminance": 0.2174,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01247
+        },
+        {
+          "file": "frame-0253.png",
+          "mean_luminance": 0.2059,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01248
+        },
+        {
+          "file": "frame-0259.png",
+          "mean_luminance": 0.1944,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01203
+        },
+        {
+          "file": "frame-0265.png",
+          "mean_luminance": 0.182,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01207
+        },
+        {
+          "file": "frame-0271.png",
+          "mean_luminance": 0.1697,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01248
+        },
+        {
+          "file": "frame-0277.png",
+          "mean_luminance": 0.1567,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01305
+        },
+        {
+          "file": "frame-0283.png",
+          "mean_luminance": 0.1436,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01289
+        }
+      ],
+      "loop_seam": null
+    },
+    "loop_seam": null,
+    "warnings": [],
+    "notes": "Machine checks verify files, timing and coarse pixel statistics only. They are not a visual review.",
+    "timing": {
+      "predicted_minutes": 7.0,
+      "actual_minutes": 5.75,
+      "budget_minutes": 25.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.217
+    }
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: a stone well (0.70)",
+        "element: lanterns or glowing lights (0.55)",
+        "defect: interpenetration (0.39)",
+        "defect: noisy (0.50)"
+      ],
+      "overridden": [
+        {
+          "item": "reference ref-2a4bed391def69d2 (composition): related",
+          "reason": "The paired render at frame 281 preserves all seven clockwise landmark positions and the path to the central commons. The diagram uses labeled UI boxes and colored dots. The render uses roofs, stalls, trees and figures in those same positions."
+        }
+      ]
+    },
+    "elements": {
+      "a ring of small village buildings around a central plaza": 0.92,
+      "a large tree on a round plaza": 0.76,
+      "small figures standing or walking around the village": 0.96,
+      "market stalls with colored awnings": 0.88,
+      "a stone well": 0.7,
+      "lanterns or glowing lights": 0.55
+    },
+    "defects": {
+      "floating": 0.25,
+      "interpenetration": 0.39,
+      "too_dark": 0.1,
+      "blown_out": 0.05,
+      "noisy": 0.5,
+      "clipping": 0.18,
+      "placeholder": 0.1,
+      "empty": 0.19,
+      "set_unfinished": 0.27
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [
+      {
+        "reference": "ref-2a4bed391def69d2",
+        "role": "composition",
+        "frame": "frame-0281.png",
+        "diagram": true,
+        "level": "related"
+      }
+    ],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.37,
+      "2": 0.52,
+      "3": 0.11
+    }
+  }
 }

@@ -6,8 +6,8 @@
     {
       "name": "3d-agent-studio",
       "source": "./",
-      "description": "Render and review editable Blender animation in portrait or landscape.",
-      "version": "0.2.0",
+      "description": "Turn prompts and references into editable Blender animation.",
+      "version": "0.3.0",
       "category": "design"
     }
   ]

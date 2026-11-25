@@ -8,6 +8,7 @@ action. The light runs from late afternoon into a lantern-lit dusk, and the came
 from a high oblique view with a tilt-shift focus, like looking down on a model village.
 """
 import math
+import random
 
 import bpy
 from mathutils import Vector
@@ -39,13 +40,29 @@ def build(kit):
     kit.note(f'turns {turns[0]}-{turns[-1]}, villagers {names}')
 
     # ---------------------------------------------------------------- ground and commons
-    grass = kit.procedural('Meadow', 'leaf', colors=['#3F6B2A', '#5E8A36', '#86A64A'], scale=0.4, roughness=0.9)
-    kit.terrain('Meadow', size=110, resolution=120, height=0.18, scale=0.08, material=grass, flatten_center=24)
+    rng = random.Random(kit.brief['seed'])
+    grass = kit.procedural('Meadow', 'leaf', colors=['#2E4A30', '#4F673C', '#78854E'], scale=1.5, roughness=.91)
+    soil = kit.procedural('Cut soil', 'ground', colors=['#362824', '#584137', '#7D5946'], scale=1.8, roughness=.85)
+    base = kit.material('Fumed edge under the model', '#302923', .42, bump=(25, .12))
+    kit.ground(kit.material('Blue-grey display surface', '#2C404A', .69), z=-1.55, size=180, name='Studio table')
+    kit.cylinder('Machined plinth', 16.98, .42, (0, 0, -1.34), base, segments=144, bevel=.13)
+    kit.cylinder('Earth section of the model', 16.71, 1.17, (0, 0, -.62), soil, segments=144, bevel=.12)
+    kit.cylinder('Meadow cap', 16.71, .11, (0, 0, -.049), grass, segments=144, bevel=.046)
     path_mat = kit.procedural('Packed earth path', 'ground', colors=['#6B5338', '#866846', '#9C7F58'], scale=0.8)
-    kit.torus('Ring path', RING, 0.9, (0, 0, -0.78), path_mat, segments=128, sides=16).scale.z = 0.9
+    kit.torus('Ring path', RING, 0.93, (0, 0, -.20), path_mat, segments=128, sides=16).scale.z = .24
     stone = kit.procedural('Commons flagstones', 'stone', colors=['#8A8478', '#A49C8C', '#BDB4A2'], scale=0.7)
     kit.cylinder('Commons plaza', 4.2, 0.16, (0, 0, 0.05), stone, segments=64, bevel=0.03)
     kit.cylinder('Commons ring kerb', 4.35, 0.2, (0, 0, 0.04), kit.procedural('Kerb', 'stone', scale=1.4), segments=64)
+    gravel = kit.material('Sun-bleached path stones', '#9F9272', .89, bump=(37, .16))
+    for side in (-1, 1):
+        for i in range(71):
+            a = math.tau * i / 71 + rng.uniform(-.016, .016)
+            x, y, _ = on_ring(a, RING + side * (0.70 + rng.uniform(-.045, .045)))
+            kit.ico(f'Ring stone {side}.{i}', rng.uniform(.065, .16), (x, y, .027), gravel, subdivisions=1)
+    for i in range(60):
+        a = rng.uniform(0, math.tau)
+        x, y, _ = on_ring(a, rng.uniform(13.2, 16.05))
+        kit.rock(f'Meadow border stone {i}', rng.uniform(.06, .28), (x, y, .02), gravel, detail=1)
     kit.tree('Commons oak', 4.6, (0, 0.6, 0.1), 'broadleaf', seed=3)
     for i in range(6):
         a = math.radians(i * 60 + 15)
@@ -62,6 +79,8 @@ def build(kit):
     plaster = kit.material('Lime plaster', '#E4D9C3', 0.85, bump=(18, 0.08))
     thatch = kit.procedural('Thatch', 'sand', colors=['#8E6E3A', '#A8864A', '#C2A060'], scale=3, bump=0.6)
     roof_tile = kit.material('Red clay tiles', '#9E4B32', 0.7, bump=(30, 0.15))
+    ridge_clay = kit.material('Red clay ridge details', '#A35237', .70, bump=(36, .16))
+    sign_paint = kit.emissive('Painted location lettering', '#F2DEAE', 0.94)
     lanterns = []
 
     def lantern(name, pos):
@@ -87,6 +106,13 @@ def build(kit):
         # 0:(-,-) 1:(-,+) 2:(+,-) 3:(+,+) 4: ridge(-) 5: ridge(+)
         faces = [(0, 2, 5, 4), (3, 1, 4, 5), (0, 4, 1), (2, 3, 5), (0, 1, 3, 2)]
         kit.solidify(kit.mesh(f'{name} roof', verts, faces, roof), 0.12, 0)
+        for side in (-1, 1):
+            for tile in range(round(w / .18) + 2):
+                along_roof = -.96 * ew + 1.92 * ew * tile / (round(w / .18) + 1)
+                ridge = center + along * along_roof + Vector((0, 0, z + roof_h + .025))
+                eave = center + along * along_roof + out * side * ed + Vector((0, 0, z + .035))
+                kit.tube(f'{name} roof course {side}.{tile}', [tuple(ridge), tuple(eave)], .028,
+                         ridge_clay if roof == roof_tile else roof, resolution=3)
         door = center - out * (d / 2 + 0.03)
         kit.box(f'{name} door', (0.9, 0.08, 1.7), tuple(door + Vector((0, 0, 0.85))), timber, rotation=(0, 0, rot))
         for sx in (-1, 1):
@@ -118,8 +144,9 @@ def build(kit):
                                kit.material(f'Produce {k}{f}', ['#D8452E', '#E9A23B', '#6FA23C', '#8E3B63'][f], 0.5))
         elif p == 'well':
             well_stone = kit.procedural('Well stone', 'stone', scale=2.2)
-            kit.cylinder('Well wall', 0.9, 0.9, tuple(c + Vector((0, 0, 0.45))), well_stone, segments=40, bevel=0.03)
-            kit.cylinder('Well water', 0.75, 0.05, tuple(c + Vector((0, 0, 0.7))), kit.procedural('Well water', 'water'))
+            kit.lathe('Open well wall', [(.87, 0), (.87, .79), (.92, .85), (.91, .93), (.72, .93),
+                                       (.70, .87), (.70, .26)], 48, well_stone, location=tuple(c))
+            kit.cylinder('Well water', 0.72, 0.07, tuple(c + Vector((0, 0, 0.52))), kit.procedural('Well water', 'water'))
             for dx in (-0.8, 0.8):
                 kit.box(f'Well post {dx}', (0.15, 0.15, 2.0), tuple(c + Vector((dx, 0, 1.0))), timber)
             kit.extrude('Well roof', [(-1.2, 0), (1.2, 0), (0, 0.8)], 1.4, roof_tile, location=tuple(c + Vector((0, -0.7, 2.0))),
@@ -150,13 +177,12 @@ def build(kit):
                         rotation=(0, 0, math.degrees(a + 0.08 * (k - 2.5)) + 90), bevel=0.15)
             fence = on_ring(a, BUILD_R - 1.9)
             kit.box('Field fence rail', (0.08, 4.4, 0.08), tuple(fence + Vector((0, 0, 0.75))), timber, rotation=(0, 0, math.degrees(a)))
-        # A signboard on a post naming the place, facing the commons.
+        # The small flat signs can also be read from the overhead observer view.
         sign = on_ring(a, RING - 1.6)
-        kit.box(f'{p} sign post', (0.1, 0.1, 1.3), tuple(sign + Vector((0, 0, 0.65))), timber)
-        kit.box(f'{p} signboard', (1.5, 0.06, 0.42), tuple(sign + Vector((0, 0, 1.35))), timber, bevel=0.01)
-        kit.text(p.upper(), 0.24, tuple(sign + Vector((0, -0.05, 1.33))), rotation=(90, 0, 0),
-                 material=kit.material('Sign paint', '#F3E7C9', 0.6), extrude=0.01, font='fontsource:cinzel@700',
-                 name=f'{p} sign text')
+        kit.box(f'{p} sign post', (.16, .16, .56), tuple(sign + Vector((0, 0, .28))), timber, bevel=.027)
+        kit.box(f'{p} signboard', (2.28, .74, .13), tuple(sign + Vector((0, 0, .61))), timber, bevel=.038)
+        kit.text(p.upper(), .32, tuple(sign + Vector((0, 0, .684))), rotation=(0, 0, 0),
+                 material=sign_paint, extrude=.008, font='fontsource:cinzel@700', name=f'{p} sign text')
         lantern(p, on_ring(a + 0.12, RING + 1.3))
 
     # ---------------------------------------------------------------- villagers from the journal
@@ -227,10 +253,11 @@ def build(kit):
         kit.key(node.inputs['Color'], 'default_value', keys, interpolation='CONSTANT')
 
     # ---------------------------------------------------------------- light: afternoon into dusk
-    sky = kit.sky(sun_elevation=18, sun_rotation=210, strength=0.14)
+    sky = kit.sky(sun_elevation=18, sun_rotation=210, strength=0.12)
     kit.animate(sky, 'sun_elevation', lambda t: math.radians(kit.lerp(20, 1.5, kit.ease(t, 'in', 1.6))))
     world_bg = kit.scene.world.node_tree.nodes['Background']
-    kit.animate(world_bg.inputs['Strength'], 'default_value', lambda t: kit.lerp(0.14, 0.07, kit.ease(t, 'in', 1.4)))
+    kit.animate(world_bg.inputs['Strength'], 'default_value', lambda t: kit.lerp(0.12, 0.094, kit.ease(t, 'in', 1.4)))
+    kit.area('Cool dusk bounce', (8, -12, 16), (0, 0, 0), 1350, '#B7CDF8', 12)
     for mat in [m for m in bpy.data.materials if 'window glow' in m.name]:
         socket = mat.node_tree.nodes['Emission'].inputs['Strength']
         kit.animate(socket, 'default_value', lambda t: 12 * kit.ease(kit.segment(t, 0.4, 0.85), 'smooth'))
@@ -238,11 +265,12 @@ def build(kit):
         socket = glow.node_tree.nodes['Emission'].inputs['Strength']
         kit.animate(socket, 'default_value', lambda t: 30 * kit.ease(kit.segment(t, 0.3, 0.75), 'smooth'))
         kit.animate(light.data, 'energy', lambda t: 180 * kit.ease(kit.segment(t, 0.3, 0.75), 'smooth'))
-    kit.haze(0.006, '#FFD9B0', size=(70, 70, 14), location=(0, 0, 7))
+    kit.haze(0.002, '#FFD9B0', size=(42, 42, 12), location=(0, 0, 6))
 
     # ---------------------------------------------------------------- camera: crane down, tilt-shift
-    start, end = Vector((6, -36, 24)), Vector((0, -11, 38))
-    cam = kit.camera(tuple(start), (0, 1.5, 0), lens=40, dof=40, fstop=0.9)
-    kit.path(cam, [tuple(start), (3, -27, 33), tuple(end)], targets=[(0, 2.5, 0), (0, 0.5, 0)], ease_kind='in_out')
+    start, end = Vector((6, -43, 49)), Vector((0, -10, 44))
+    cam = kit.camera(tuple(start), (0, 1.5, 0), lens=51, dof=60, fstop=1.4)
+    kit.path(cam, [tuple(start), (3, -29, 47), tuple(end)], targets=[(0, 2.5, 0), (0, 0.5, 0)], ease_kind='in_out')
+    kit.animate(cam.data, 'lens', lambda t: kit.lerp(51, 35, kit.ease(t, 'in_out')))
     kit.animate(cam.data.dof, 'focus_distance', lambda t: (kit.lerp(start, end, kit.ease(t)) - Vector((0, 0, 0.5))).length)
     kit.render(look='AgX - Base Contrast')

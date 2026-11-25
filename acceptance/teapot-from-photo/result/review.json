@@ -1,0 +1,513 @@
+{
+  "job_id": "791a5ea64acc4be0bcbc87739e315ae7",
+  "stage": "preview",
+  "brief": {
+    "references": [
+      {
+        "id": "ref-9a5a7f74e0d6598e",
+        "role": "subject",
+        "note": "Match the silhouette, charcoal glaze, red rim, spout and handle."
+      }
+    ],
+    "assets": [],
+    "orientation": "horizontal",
+    "seconds": 4,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "title": "",
+    "show_title": false,
+    "quality": "standard",
+    "budget_minutes": {
+      "probe": 5,
+      "draft": 10,
+      "master": 10
+    },
+    "samples": {},
+    "extras": [],
+    "parent": "7c7539c10d974265adc598aca3ea14d8",
+    "max_references": 40,
+    "prompt": "A close product shot of the teapot in the reference: nearly spherical charcoal ceramic with a low foot, broad shallow domed lid with a glossy red lip and black knob, one short upturned spout and a generous round handle. Warm window light rakes the textured glaze. A slow rightward slide reveals the curve of the handle and keeps the entire silhouette in view."
+  },
+  "board_hashes": {
+    "timeline.jpg": "8a635be6d7798691654a98087e856facb2cced1f3a25bf856fbfcedef2d696a1",
+    "angles.jpg": "889a1d03ff8dbf5b2306fc1d0487e74f46c0bc3fe3049f2aa0a16e58f9ce4096",
+    "references.jpg": "56368b75d4e050ec0f7b2eb50b2d2feeec1fc93bc0d2a49343f8ec4e63a2ac0a"
+  },
+  "script_sha256": "cf4bf3d5074d230721d6af874830f45b9497dc8ef9204c4b02cb61877768e332",
+  "render_code": {
+    "pipeline.py": "eeadcd92bd99a958cee6e906b64af6742d98cbdd30a4b0e3c797f0f5f21dfefc",
+    "worker.py": "87ad6b2ba16a235ff664842b23d68a718d15ae955ef577c98688d832ee6b6ee2",
+    "runner.py": "44492c2758b93d18b5820a0a88150623c907025b1391cd28a3913ee3759db221",
+    "kit.py": "1c541688aefcb7830967312bd12b52d5c874a7e7e1f383e0841bc74d09343ebe",
+    "formats.py": "796ff77c70997522ceef827ff58dc9ea4f23a5f8484f459bf2300ed1c948c59f",
+    "scriptcheck.py": "0172c93008c43f5988032ef58dce9ab68000d184034c28bebd299b022ee35f5c"
+  },
+  "reviewer_notes": {
+    "probe": "The handle, red-rimmed lid and upward spout stay readable from both ends of the slide. The warm reflection on the dark body follows the camera angle.",
+    "timeline": "The teapot stays inside the frame throughout the rightward move. Parallax exposes more of the handle opening and moves the spout against the linen while the tabletop contact shadow remains fixed.",
+    "angles": "Wide and three-quarter views show the pot resting on limestone and the handle attaching at top and bottom. The top-down proof includes the entire body, spout, handle and pink camera track. The wide proof shows the workshop backdrop ending beyond the edges of the hero shot.",
+    "references": "The reference and final render share the charcoal spherical body, shallow lid and glossy red lip, black finial, upturned hollow spout and chunky round handle. The render stages it alone with linen and stronger controlled highlights.",
+    "clip": "Sampled the decoded four-second clip twice per second. The relative alignment of handle, lid, spout and background changes smoothly. The hero silhouette remains complete.",
+    "jev_look_items": "The glazed spout and handle meet the body where the fired clay parts join. Preview grain lives mostly on the counter and does not obscure the edges. The full subject sits on a finished tabletop, with the rear studio panel visible only in the angle proof."
+  },
+  "qc": {
+    "passed": true,
+    "stage": "preview",
+    "orientation": "horizontal",
+    "video": {
+      "frames": 96,
+      "duration_seconds": 4.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 635163
+    },
+    "timeline_frames": [
+      1,
+      20,
+      39,
+      58,
+      77,
+      96
+    ],
+    "cover_frame": 33,
+    "proof_frame": 32,
+    "angle_order": [
+      "wide (same camera, half focal length)",
+      "three-quarter set view",
+      "top-down overview with camera path"
+    ],
+    "reference_pairs": [
+      {
+        "reference": "ref-9a5a7f74e0d6598e",
+        "role": "subject",
+        "name": "teapot.jpg",
+        "index": 0,
+        "similarity": 0.607,
+        "frame": "frame-0081.png"
+      }
+    ],
+    "render": {
+      "device": "METAL",
+      "samples": 16,
+      "seconds": 45.0,
+      "seconds_per_frame": 0.469,
+      "frames": 96,
+      "frame_stats": [
+        {
+          "file": "frame-0001.png",
+          "mean_luminance": 0.3473,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0
+        },
+        {
+          "file": "frame-0003.png",
+          "mean_luminance": 0.3473,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00037
+        },
+        {
+          "file": "frame-0005.png",
+          "mean_luminance": 0.3472,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0007
+        },
+        {
+          "file": "frame-0007.png",
+          "mean_luminance": 0.3471,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00085
+        },
+        {
+          "file": "frame-0009.png",
+          "mean_luminance": 0.3471,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00107
+        },
+        {
+          "file": "frame-0011.png",
+          "mean_luminance": 0.3471,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00128
+        },
+        {
+          "file": "frame-0013.png",
+          "mean_luminance": 0.3469,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00153
+        },
+        {
+          "file": "frame-0015.png",
+          "mean_luminance": 0.3468,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00181
+        },
+        {
+          "file": "frame-0017.png",
+          "mean_luminance": 0.3467,
+          "dark_fraction": 0.0005,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0021
+        },
+        {
+          "file": "frame-0019.png",
+          "mean_luminance": 0.3465,
+          "dark_fraction": 0.0005,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00237
+        },
+        {
+          "file": "frame-0021.png",
+          "mean_luminance": 0.3463,
+          "dark_fraction": 0.0007,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00263
+        },
+        {
+          "file": "frame-0023.png",
+          "mean_luminance": 0.3461,
+          "dark_fraction": 0.0007,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.003
+        },
+        {
+          "file": "frame-0025.png",
+          "mean_luminance": 0.3458,
+          "dark_fraction": 0.001,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00331
+        },
+        {
+          "file": "frame-0027.png",
+          "mean_luminance": 0.3455,
+          "dark_fraction": 0.0007,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00372
+        },
+        {
+          "file": "frame-0029.png",
+          "mean_luminance": 0.3451,
+          "dark_fraction": 0.0007,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00407
+        },
+        {
+          "file": "frame-0031.png",
+          "mean_luminance": 0.3447,
+          "dark_fraction": 0.0007,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00456
+        },
+        {
+          "file": "frame-0033.png",
+          "mean_luminance": 0.3442,
+          "dark_fraction": 0.0005,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00499
+        },
+        {
+          "file": "frame-0035.png",
+          "mean_luminance": 0.3437,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00536
+        },
+        {
+          "file": "frame-0037.png",
+          "mean_luminance": 0.3434,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00559
+        },
+        {
+          "file": "frame-0039.png",
+          "mean_luminance": 0.3427,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00597
+        },
+        {
+          "file": "frame-0041.png",
+          "mean_luminance": 0.3422,
+          "dark_fraction": 0.001,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0064
+        },
+        {
+          "file": "frame-0043.png",
+          "mean_luminance": 0.3415,
+          "dark_fraction": 0.0007,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00693
+        },
+        {
+          "file": "frame-0045.png",
+          "mean_luminance": 0.3406,
+          "dark_fraction": 0.0007,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00734
+        },
+        {
+          "file": "frame-0047.png",
+          "mean_luminance": 0.3398,
+          "dark_fraction": 0.0012,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00797
+        },
+        {
+          "file": "frame-0049.png",
+          "mean_luminance": 0.3389,
+          "dark_fraction": 0.0012,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0082
+        },
+        {
+          "file": "frame-0051.png",
+          "mean_luminance": 0.338,
+          "dark_fraction": 0.0012,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0081
+        },
+        {
+          "file": "frame-0053.png",
+          "mean_luminance": 0.3372,
+          "dark_fraction": 0.0012,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00771
+        },
+        {
+          "file": "frame-0055.png",
+          "mean_luminance": 0.3364,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00735
+        },
+        {
+          "file": "frame-0057.png",
+          "mean_luminance": 0.3355,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00685
+        },
+        {
+          "file": "frame-0059.png",
+          "mean_luminance": 0.3347,
+          "dark_fraction": 0.0017,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00642
+        },
+        {
+          "file": "frame-0061.png",
+          "mean_luminance": 0.3341,
+          "dark_fraction": 0.002,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00612
+        },
+        {
+          "file": "frame-0063.png",
+          "mean_luminance": 0.3335,
+          "dark_fraction": 0.0017,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0057
+        },
+        {
+          "file": "frame-0065.png",
+          "mean_luminance": 0.3329,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00527
+        },
+        {
+          "file": "frame-0067.png",
+          "mean_luminance": 0.3324,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00502
+        },
+        {
+          "file": "frame-0069.png",
+          "mean_luminance": 0.3319,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00447
+        },
+        {
+          "file": "frame-0071.png",
+          "mean_luminance": 0.3315,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00421
+        },
+        {
+          "file": "frame-0073.png",
+          "mean_luminance": 0.3311,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00372
+        },
+        {
+          "file": "frame-0075.png",
+          "mean_luminance": 0.3308,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00341
+        },
+        {
+          "file": "frame-0077.png",
+          "mean_luminance": 0.3305,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0031
+        },
+        {
+          "file": "frame-0079.png",
+          "mean_luminance": 0.3303,
+          "dark_fraction": 0.0017,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00266
+        },
+        {
+          "file": "frame-0081.png",
+          "mean_luminance": 0.3301,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00235
+        },
+        {
+          "file": "frame-0083.png",
+          "mean_luminance": 0.3297,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00203
+        },
+        {
+          "file": "frame-0085.png",
+          "mean_luminance": 0.3296,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0018
+        },
+        {
+          "file": "frame-0087.png",
+          "mean_luminance": 0.3295,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00151
+        },
+        {
+          "file": "frame-0089.png",
+          "mean_luminance": 0.3294,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00121
+        },
+        {
+          "file": "frame-0091.png",
+          "mean_luminance": 0.3294,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00098
+        },
+        {
+          "file": "frame-0093.png",
+          "mean_luminance": 0.3294,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00079
+        },
+        {
+          "file": "frame-0095.png",
+          "mean_luminance": 0.3294,
+          "dark_fraction": 0.0015,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00055
+        }
+      ],
+      "loop_seam": null
+    },
+    "loop_seam": null,
+    "warnings": [],
+    "notes": "Machine checks verify files, timing and coarse pixel statistics only. They are not a visual review.",
+    "timing": {
+      "predicted_minutes": 1.55,
+      "actual_minutes": 0.915,
+      "budget_minutes": 10.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.693
+    }
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: interpenetration (0.36)",
+        "defect: noisy (0.48)",
+        "defect: set_unfinished (0.41)"
+      ],
+      "overridden": [
+        {
+          "item": "prompt match: loose",
+          "reason": "The full-size timeline and decoded sequence show the rightward reveal and unbroken silhouette. All five specified product features are visible, and the subject-specific comparison rated the paired photograph close. The reviewer can verify the shorter spout, matching red rim and dark ceramic against the side-by-side board."
+        }
+      ]
+    },
+    "elements": {
+      "a rounded black ceramic teapot": 0.95,
+      "a red ring around a shallow lidded top": 0.94,
+      "a black lid knob": 0.91,
+      "a curved upturned spout": 0.74,
+      "a large dark loop handle": 0.94
+    },
+    "defects": {
+      "floating": 0.13,
+      "interpenetration": 0.36,
+      "too_dark": 0.02,
+      "blown_out": 0.03,
+      "noisy": 0.48,
+      "clipping": 0.14,
+      "placeholder": 0.02,
+      "empty": 0.07,
+      "set_unfinished": 0.41
+    },
+    "quality": "polished",
+    "prompt_match": "loose",
+    "references": [
+      {
+        "reference": "ref-9a5a7f74e0d6598e",
+        "role": "subject",
+        "frame": "frame-0081.png",
+        "diagram": false,
+        "level": "close"
+      }
+    ],
+    "control": 0.01,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.21,
+      "2": 0.7,
+      "3": 0.09
+    },
+    "prompt_match_probabilities": {
+      "0": 0,
+      "1": 0.41,
+      "2": 0.38,
+      "3": 0.21
+    }
+  }
+}

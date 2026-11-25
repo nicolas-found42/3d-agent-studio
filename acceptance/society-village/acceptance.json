@@ -1,14 +1,28 @@
 {
  "title": "The society sim as a living miniature",
  "brief": {
-  "prompt": "My society simulation (~/Documents/github/society) as a living miniature village: seven places in a ring around the parish commons, in the observer window's clockwise order (granary at the top, market, well, hut, shrine, woods, field), connected by a ring path. Twelve villagers walk between the places following the moves recorded in the sim's journal, one recorded turn per second, each with a small gem over the head colored by the motive behind the action (fear, duty, hunger, thirst, kinship, promise). Late afternoon turns into a lantern-lit dusk while the camera cranes down from a high oblique view, tilt-shift like a model village.",
+  "prompt": "The society simulation as a living miniature village: seven places in a ring around the parish commons, in the observer window's clockwise order (granary at the top, market, well, hut, shrine, woods, field), connected by a ring path. Twelve villagers walk between the places following the moves recorded in the sim's journal, one recorded turn per second, each with a small gem over the head colored by the motive behind the action (fear, duty, hunger, thirst, kinship, promise). Late afternoon turns into a lantern-lit dusk while the camera cranes down from a high oblique view, tilt-shift like a model village.",
   "orientation": "horizontal", "seconds": 12, "fps": 24, "seed": 7,
-  "assets": ["fontsource:cinzel@700"]
+  "assets": ["fontsource:cinzel@700"], "budget_minutes": {"draft": 25}
  },
  "inputs": [
-  {"file": "village-observer.mp4", "role": "composition", "note": "The sim's observer window: seven places in a ring around the commons, villagers as colored dots."},
+  {"file": "village-observer.gif", "role": "composition", "diagram": true, "max_frames": 5, "note": "The sim's observer window: seven places in a ring around the commons, villagers as colored dots."},
   {"file": "village-turns.csv", "role": "data", "note": "24 recorded turns: turn, day, agent, place after the action, action, motive."}
  ],
  "elements": ["a ring of small village buildings around a central plaza", "a large tree on a round plaza", "small figures standing or walking around the village", "market stalls with colored awnings", "a stone well", "lanterns or glowing lights"],
- "expect_text": false
+ "expect_text": false,
+ "reviewer_notes": {
+  "probe": "The seven landmarks surround the commons in every sampled pose. The first view shows the roof shapes and raised plinth, and the final near-overhead still shows the layout with warm lanterns around its darker ring.",
+  "timeline": "Villagers change places and gem colors while the camera descends from 49 to 44 metres and becomes more overhead. The stone well is the open round basin at the right. The hut roof reaches the lower edge of the shot while its building and place on the ring stay recognizable. Lanterns and the two window rows turn on as the table and radial paths darken.",
+  "angles": "The wide view shows the model surface and the grounding of its ring buildings. The oblique proof shows the exposed plinth above the table. This draft predates the proof-camera fit correction, so the top-down image trims the plinth at the top and the path at the bottom. The narrower shots and reference board still show all seven landmarks clearly.",
+  "references": "All five GIF frames appear on the board. Their closest shot is frame 281. The granary at twelve o'clock starts the clockwise order of market, well, hut, shrine, woods, and field. The spokes point in to the parish commons around the tree. The dusk frame preserves the positions shown in the source diagram.",
+  "clip": "Sampled one decoded frame per second across the twelve-second clip. Figure positions change along the paths, shadows lengthen across the table, and the secondary window and lantern lights become visible. The darkest interval retains the ring and silhouette landmarks. The scene was also checked directly against the journal: all twelve villagers have matching colors and settled locations in turns 325–336.",
+  "jev_look_items": "The well's opening reads on the right at full frame size and the lanterns become prominent in the last third. Apparent overlaps are the roof fittings, market awnings and villager clusters at stops. Fine draft grain is most visible in the shaded miniature grass and does not obscure any landmark."
+ },
+ "overrides": [
+  {
+   "item": "reference ref-2a4bed391def69d2 (composition)",
+   "reason": "The paired render at frame 281 preserves all seven clockwise landmark positions and the path to the central commons. The diagram uses labeled UI boxes and colored dots. The render uses roofs, stalls, trees and figures in those same positions."
+  }
+ ]
 }

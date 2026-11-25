@@ -1,0 +1,642 @@
+{
+  "job_id": "f9a6556be1164e1394d5366d88a0009d",
+  "stage": "preview",
+  "brief": {
+    "references": [
+      {
+        "id": "ref-bf8ce9ebc29d33db",
+        "role": "palette",
+        "note": "Blue-grey glacial water, dark basalt and quiet moss greens."
+      },
+      {
+        "id": "ref-caf32b733f524c49",
+        "role": "subject",
+        "note": "A narrow white ribbon spilling from a high fractured mossy cliff."
+      },
+      {
+        "id": "ref-99fa545544936aef",
+        "role": "asset",
+        "note": "Original angular basalt block for the near bank."
+      }
+    ],
+    "assets": [
+      "polyhaven:kloofendal_48d_partly_cloudy_puresky@1k",
+      "polyhaven:cliff_side@1k",
+      "polyhaven:mossy_rock@1k"
+    ],
+    "orientation": "horizontal",
+    "seconds": 5,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "title": "",
+    "show_title": false,
+    "quality": "standard",
+    "budget_minutes": {
+      "probe": 5,
+      "draft": 20,
+      "master": 10
+    },
+    "samples": {},
+    "extras": [],
+    "parent": "e8e4a70ff6f249efacc3745b5afef23a",
+    "max_references": 40,
+    "prompt": "A cinematic low glide through an Icelandic canyon. A narrow upper ribbon falls down a mossy basalt cliff into a broad turquoise pool and rushes over a dark shelf as a wider, white curtain. Whitewater courses down the ledges and a little mist blows across the rocks under bright overcast light. The palette is blue-grey water, dark volcanic basalt, lichen and moss green."
+  },
+  "board_hashes": {
+    "timeline.jpg": "d03d92d09c21fdb9e412cb5bd3349121009162a22ee714f2fd2ab757b82abfee",
+    "angles.jpg": "7e5f0f597a2daf59f7f332a74c241f34f03bab08d5010532de5920a5b66b5ddd",
+    "references.jpg": "0bae22af1ad5cb327d8f43f911a35d96ce273165043fded72facc0d6587dae23"
+  },
+  "script_sha256": "e9e1dac11bf6d2fbadf09ecd43082bc854ea98a617b34b3460f2cdee2efc3b73",
+  "render_code": {
+    "pipeline.py": "eeadcd92bd99a958cee6e906b64af6742d98cbdd30a4b0e3c797f0f5f21dfefc",
+    "worker.py": "87ad6b2ba16a235ff664842b23d68a718d15ae955ef577c98688d832ee6b6ee2",
+    "runner.py": "c57bb801dab35f5a2b0885b063fb9dcfb295c13ffa76458b6cd495be8a742ce1",
+    "kit.py": "6c52f5103c1af4076e9737a9d37868e559d9302b6ceef68a6c2b77b1673b0745",
+    "formats.py": "796ff77c70997522ceef827ff58dc9ea4f23a5f8484f459bf2300ed1c948c59f",
+    "scriptcheck.py": "0172c93008c43f5988032ef58dce9ab68000d184034c28bebd299b022ee35f5c"
+  },
+  "reviewer_notes": {
+    "probe": "A narrow central ribbon and finer companion runnel start at the upper basalt lip. The lower cataract divides into three brighter flows with a calm blue-grey pool ahead. The continuous ground rises into distant ridges.",
+    "timeline": "The camera glides low toward the falls. Animated ripples run down the divided lower apron, thinner foam streams travel across the pool, and mist shifts around the impact. Weathered green patches run between the basalt layers.",
+    "angles": "The wide view includes the basalt OBJ in the pool. The oblique view shows the connected upstream ridges, two rock ledges, side banks, and pool as one valley set. The terrain and water meshes have finite ends visible at these proof angles. The overhead view fits the pink camera track and both ledges.",
+    "references": "The palette pairing keeps the blue-grey water, pale foam, dark basalt and muted greens of the wider canyon photo. The narrow upper ribbon, high rock drop and moss patches carry over from the subject photo. The camera angle, stronger mountain relief and darker greens differ from the photograph.",
+    "clip": "Sampled the decoded clip twice per second. White streaks advect down the curtains, ripples travel away from the impact, and foreground parallax and the growing falls show the forward camera movement. The bank and shoreline remain continuous through the shot.",
+    "jev_look_items": "The pool is muted glacial blue-green and can be checked at full size. Low white spray crosses the foot of the falls and rises behind its bright front edge. The draft retains visible noise in the moving water and the small spray highlights."
+  },
+  "qc": {
+    "passed": true,
+    "stage": "preview",
+    "orientation": "horizontal",
+    "video": {
+      "frames": 120,
+      "duration_seconds": 5.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 780787
+    },
+    "timeline_frames": [
+      1,
+      25,
+      49,
+      73,
+      97,
+      120
+    ],
+    "cover_frame": 41,
+    "proof_frame": 40,
+    "angle_order": [
+      "wide (same camera, half focal length)",
+      "three-quarter set view",
+      "top-down overview with camera path"
+    ],
+    "reference_pairs": [
+      {
+        "reference": "ref-bf8ce9ebc29d33db",
+        "role": "palette",
+        "name": "waterfall-1.jpg",
+        "index": 0,
+        "similarity": 0.595,
+        "frame": "frame-0004.png"
+      },
+      {
+        "reference": "ref-caf32b733f524c49",
+        "role": "subject",
+        "name": "waterfall-3.jpg",
+        "index": 0,
+        "similarity": 0.626,
+        "frame": "frame-0004.png"
+      }
+    ],
+    "render": {
+      "device": "METAL",
+      "samples": 16,
+      "seconds": 151.2,
+      "seconds_per_frame": 1.26,
+      "frames": 120,
+      "frame_stats": [
+        {
+          "file": "frame-0001.png",
+          "mean_luminance": 0.4138,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0
+        },
+        {
+          "file": "frame-0003.png",
+          "mean_luminance": 0.4139,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00143
+        },
+        {
+          "file": "frame-0005.png",
+          "mean_luminance": 0.4139,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00174
+        },
+        {
+          "file": "frame-0007.png",
+          "mean_luminance": 0.4137,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00199
+        },
+        {
+          "file": "frame-0009.png",
+          "mean_luminance": 0.4137,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00204
+        },
+        {
+          "file": "frame-0011.png",
+          "mean_luminance": 0.4137,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00229
+        },
+        {
+          "file": "frame-0013.png",
+          "mean_luminance": 0.4137,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00235
+        },
+        {
+          "file": "frame-0015.png",
+          "mean_luminance": 0.4137,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00253
+        },
+        {
+          "file": "frame-0017.png",
+          "mean_luminance": 0.4135,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00265
+        },
+        {
+          "file": "frame-0019.png",
+          "mean_luminance": 0.4135,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00273
+        },
+        {
+          "file": "frame-0021.png",
+          "mean_luminance": 0.4134,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00281
+        },
+        {
+          "file": "frame-0023.png",
+          "mean_luminance": 0.4133,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00301
+        },
+        {
+          "file": "frame-0025.png",
+          "mean_luminance": 0.4135,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00311
+        },
+        {
+          "file": "frame-0027.png",
+          "mean_luminance": 0.4131,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00334
+        },
+        {
+          "file": "frame-0029.png",
+          "mean_luminance": 0.4132,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00352
+        },
+        {
+          "file": "frame-0031.png",
+          "mean_luminance": 0.4129,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00367
+        },
+        {
+          "file": "frame-0033.png",
+          "mean_luminance": 0.4129,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00385
+        },
+        {
+          "file": "frame-0035.png",
+          "mean_luminance": 0.4127,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00396
+        },
+        {
+          "file": "frame-0037.png",
+          "mean_luminance": 0.4123,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00436
+        },
+        {
+          "file": "frame-0039.png",
+          "mean_luminance": 0.4119,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00454
+        },
+        {
+          "file": "frame-0041.png",
+          "mean_luminance": 0.4117,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00481
+        },
+        {
+          "file": "frame-0043.png",
+          "mean_luminance": 0.4116,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00521
+        },
+        {
+          "file": "frame-0045.png",
+          "mean_luminance": 0.4113,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00538
+        },
+        {
+          "file": "frame-0047.png",
+          "mean_luminance": 0.411,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00567
+        },
+        {
+          "file": "frame-0049.png",
+          "mean_luminance": 0.4107,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00605
+        },
+        {
+          "file": "frame-0051.png",
+          "mean_luminance": 0.4106,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00636
+        },
+        {
+          "file": "frame-0053.png",
+          "mean_luminance": 0.4104,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0067
+        },
+        {
+          "file": "frame-0055.png",
+          "mean_luminance": 0.4099,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00719
+        },
+        {
+          "file": "frame-0057.png",
+          "mean_luminance": 0.4094,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00728
+        },
+        {
+          "file": "frame-0059.png",
+          "mean_luminance": 0.4092,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00773
+        },
+        {
+          "file": "frame-0061.png",
+          "mean_luminance": 0.4084,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00829
+        },
+        {
+          "file": "frame-0063.png",
+          "mean_luminance": 0.4079,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00794
+        },
+        {
+          "file": "frame-0065.png",
+          "mean_luminance": 0.4075,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00775
+        },
+        {
+          "file": "frame-0067.png",
+          "mean_luminance": 0.4071,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00764
+        },
+        {
+          "file": "frame-0069.png",
+          "mean_luminance": 0.4062,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00741
+        },
+        {
+          "file": "frame-0071.png",
+          "mean_luminance": 0.4059,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00689
+        },
+        {
+          "file": "frame-0073.png",
+          "mean_luminance": 0.4054,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00674
+        },
+        {
+          "file": "frame-0075.png",
+          "mean_luminance": 0.405,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00644
+        },
+        {
+          "file": "frame-0077.png",
+          "mean_luminance": 0.4047,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00611
+        },
+        {
+          "file": "frame-0079.png",
+          "mean_luminance": 0.4042,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00607
+        },
+        {
+          "file": "frame-0081.png",
+          "mean_luminance": 0.4038,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00569
+        },
+        {
+          "file": "frame-0083.png",
+          "mean_luminance": 0.4035,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00542
+        },
+        {
+          "file": "frame-0085.png",
+          "mean_luminance": 0.4034,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00517
+        },
+        {
+          "file": "frame-0087.png",
+          "mean_luminance": 0.4037,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00528
+        },
+        {
+          "file": "frame-0089.png",
+          "mean_luminance": 0.4032,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00493
+        },
+        {
+          "file": "frame-0091.png",
+          "mean_luminance": 0.4032,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00452
+        },
+        {
+          "file": "frame-0093.png",
+          "mean_luminance": 0.4032,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00438
+        },
+        {
+          "file": "frame-0095.png",
+          "mean_luminance": 0.4032,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00413
+        },
+        {
+          "file": "frame-0097.png",
+          "mean_luminance": 0.4031,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0039
+        },
+        {
+          "file": "frame-0099.png",
+          "mean_luminance": 0.4031,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00363
+        },
+        {
+          "file": "frame-0101.png",
+          "mean_luminance": 0.4031,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00349
+        },
+        {
+          "file": "frame-0103.png",
+          "mean_luminance": 0.4031,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00333
+        },
+        {
+          "file": "frame-0105.png",
+          "mean_luminance": 0.403,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00336
+        },
+        {
+          "file": "frame-0107.png",
+          "mean_luminance": 0.4029,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00308
+        },
+        {
+          "file": "frame-0109.png",
+          "mean_luminance": 0.403,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00301
+        },
+        {
+          "file": "frame-0111.png",
+          "mean_luminance": 0.4031,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00278
+        },
+        {
+          "file": "frame-0113.png",
+          "mean_luminance": 0.403,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00269
+        },
+        {
+          "file": "frame-0115.png",
+          "mean_luminance": 0.4032,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00247
+        },
+        {
+          "file": "frame-0117.png",
+          "mean_luminance": 0.4033,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00238
+        },
+        {
+          "file": "frame-0119.png",
+          "mean_luminance": 0.4033,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00204
+        }
+      ],
+      "loop_seam": null
+    },
+    "loop_seam": null,
+    "warnings": [],
+    "notes": "Machine checks verify files, timing and coarse pixel statistics only. They are not a visual review.",
+    "timing": {
+      "predicted_minutes": 3.28,
+      "actual_minutes": 2.786,
+      "budget_minutes": 20.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.178
+    }
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: a turquoise glacial stream (0.63)",
+        "element: rising white mist (0.56)",
+        "defect: noisy (0.69)"
+      ],
+      "overridden": [
+        {
+          "item": "defect: set_unfinished (0.77)",
+          "reason": "The revision connects upstream terrain, both side banks and both ledges into a continuous valley. The boundaries at the edge of the wider diagnostic board are the extent of this set. The full sequence stays inside the contiguous banks and shoreline."
+        },
+        {
+          "item": "quality: basic",
+          "reason": "Accept this grade for the mixed-input workflow test. The draft demonstrates both photo roles, an OBJ import, procedural rock and animated water. The landscape remains visibly stylized, with simpler vegetation, spray and foreground detail than the source photographs."
+        },
+        {
+          "item": "prompt match: loose",
+          "reason": "The decoded shot shows a low approaching camera, a narrow high fall, a wider broken curtain below, a glacial pool, and moving foam and mist. The review accepts the stylized appearance of the valley."
+        },
+        {
+          "item": "reference ref-bf8ce9ebc29d33db (palette): related",
+          "reason": "The paired board shows the intended cool blue-grey pool and foam against dark basalt. Moss green recedes into the rock in this lighting, and the source foreground greens are stronger."
+        },
+        {
+          "item": "reference ref-caf32b733f524c49 (subject): related",
+          "reason": "The high thin white fall, mossy patching and broken dark cliff carry over from the subject photograph. The acceptance shot combines that upper feature with its own lower curtain and a wider viewpoint."
+        }
+      ]
+    },
+    "elements": {
+      "a narrow waterfall off a high dark cliff": 0.88,
+      "an additional wider curtain of whitewater": 0.86,
+      "green moss and brown black rock layers": 0.84,
+      "a turquoise glacial stream": 0.63,
+      "rising white mist": 0.56
+    },
+    "defects": {
+      "floating": 0.1,
+      "interpenetration": 0.17,
+      "too_dark": 0.03,
+      "blown_out": 0.07,
+      "noisy": 0.69,
+      "clipping": 0.12,
+      "placeholder": 0.04,
+      "empty": 0.26,
+      "set_unfinished": 0.77
+    },
+    "quality": "basic",
+    "prompt_match": "loose",
+    "references": [
+      {
+        "reference": "ref-bf8ce9ebc29d33db",
+        "role": "palette",
+        "frame": "frame-0004.png",
+        "diagram": false,
+        "level": "related"
+      },
+      {
+        "reference": "ref-caf32b733f524c49",
+        "role": "subject",
+        "frame": "frame-0004.png",
+        "diagram": false,
+        "level": "related"
+      }
+    ],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.56,
+      "2": 0.37,
+      "3": 0.07
+    },
+    "prompt_match_probabilities": {
+      "0": 0.01,
+      "1": 0.51,
+      "2": 0.37,
+      "3": 0.11
+    }
+  }
+}

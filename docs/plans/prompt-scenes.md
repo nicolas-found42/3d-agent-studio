@@ -1,6 +1,6 @@
 # Plan: prompt-driven scenes (v0.3.0)
 
-Status: agreed 2026-11-24 in a design interview; this file records the decisions and the build order. Implementation is in progress on branch `prompt-scenes`; see [Status and handoff](#status-and-handoff).
+Agreed in the November 24, 2026 design interview. Implementation and visual verification are complete on `prompt-scenes`. Publishing v0.3.0 requires the owner's go-ahead. See [status and handoff](#status-and-handoff).
 
 ## Goal
 
@@ -17,7 +17,7 @@ Replace the two fixed presets with scenes made from whatever the user supplies: 
 | Revisions | A revision is a new job with `parent`; the script, references and assets are the source of truth, not the `.blend`. |
 | Assets | Studio-resolved before Blender, by ID, cached and hash-pinned, SPDX license recorded, `CREDITS.txt` per job. Keyless sources only: Poly Haven, ambientCG, Fontsource, Khronos glTF samples, Wikimedia Commons, Openverse, NASA 3D Resources, Met Open Access, BlenderKit (CC0), plus direct files from the CC0 hosts Kenney, ShareTextures, cgbookcase, 3D Textures and Quaternius. Smithsonian 3D (no license field without a key) and NIH 3D (no reachable API) were evaluated and dropped. Allowed: CC0, public domain, CC-BY (attributed). NC, ND, SA and missing licenses are rejected. Sources that turn out to need a key are dropped and documented. |
 | Brief | `prompt` (required), `references`, `assets`, `orientation` (vertical 9:16, horizontal 16:9, square 1:1, portrait 4:5, ultrawide 21:9), `seconds` 2–30, `loop`, `fps` 24/30/60/120, `seed`, optional `title` drawn only with `show_title`, `quality` (`standard`/`fast`), `budget_minutes`, `extras` (`prores`, `png`), `parent`, `max_references`. |
-| Stages | **probe** (build + 3 timed stills, 5 min), **draft** (full sequence at preview size, Cycles 16 spp denoised, 10 min), **master** (full size, 128 spp, 10 min). Caps are overridable per brief. The probe's timing predicts the later stages; a stage predicted over budget refuses to start with the estimate. `quality: fast` instead lowers master samples (floor 16) to fit; `standard` refuses with an estimate instead of lowering samples. One GPU lock per job root serializes renders. |
+| Stages | **probe** (build, three review stills and short timing samples at preview and master resolution, 5 min), **draft** (full sequence at preview size, Cycles 16 spp denoised, 10 min), **master** (full size, 128 spp, 10 min). Each cap can be overridden. Plans reserve 10% of the budget for uncertainty. `quality: fast` lowers master samples to fit, with a default floor of 16. `standard` refuses with an estimate when the requested samples exceed the budget. The active deadline includes packaging. One GPU lock per job root serializes renders. |
 | Render defaults | Cycles on Metal GPU, denoised, AgX, motion blur, 35 mm-equivalent lens, fixed seed. Blender 5.2 or newer. Master MP4 H.264, plus `.blend`, script, poster, `CREDITS.txt`; ProRes 4444 and PNG frames on request. |
 | Review | Boards: `timeline.jpg`, `angles.jpg` (wide, three-quarter, top-down overview with camera path), `references.jpg` (each reference beside its closest render frame; only with image references), `seam.jpg` (loops only). Finalize stays hash-bound to the current boards with written notes. Every board fits 280–1568 px per side so vision judges such as Jev accept it unchanged. |
 | Judging | Dev-only `tools/review/` runs chained Jev judgments (OpenRouter `typesafe/jev-1.14`): per-element visibility Nouls, defect Nouls, reference Scores, diversity checks. Code decides: required elements > 0.7, defects < 0.3, references at least "clearly related"; the 0.3–0.7 band goes to manual review. End-user agents use Jev MCP tools when they have them. |
@@ -33,19 +33,16 @@ Replace the two fixed presets with scenes made from whatever the user supplies: 
 ## Acceptance
 
 - Unit tests: `uv run --locked --extra mcp python -m unittest discover -s tests -v`.
-- Each acceptance scenario and example has a ready draft whose boards were looked at and passed the Jev chain, with notes in `examples/<slug>/review.json` or `acceptance/<slug>/review.json`.
+- Every example and acceptance scenario has a ready draft with visual board notes and Jev results. Example evidence lives under `src/agent_studio/examples/<slug>/review.json`. Acceptance evidence lives under `acceptance/<slug>/result/review.json`.
 
 ## Status and handoff
 
-Snapshot at commit `4a551e9` (2026-11-25). A fresh agent can continue from this file, the GitHub issues and the code alone.
+- The CLI and stdio MCP use the brief, scene script, declared inputs and open assets to build and render a local job. The normal tests cover GIF frame selection, asset resolver behavior, review policy and the example index.
+- All 36 examples are indexed with scripts, posters, clips and visual notes. The independent critique includes the contact sheet, cover revisions, and Jev results for all 78 tag-neighbor pairs. [Example library review](../example-library-review.md)
+- All six scenarios have packaged draft evidence. Fox Asleep also has a 1080p master. The Iceland scene retains its basic Jev grade with written exceptions for the stylized finish and reference fidelity. [Acceptance scenes](../../acceptance/README.md) · [Render verification](../render-verification.md)
+- The opt-in Blender suite covers promotion, revisions and comparisons, exact board bytes through MCP, ProRes 4444, PNG plates and a one-minute timeout. The measured draft and master predictions are recorded separately from GPU queue time. [Render verification](../render-verification.md)
 
-**Done and verified**
-- Prompt + script contract, brief schema, script check, ingest (images, video frames, models, data, SVG, fonts, text), asset resolver with license policy, scene kit (~1,700 lines), Blender runner, probe/draft stages with predicted budgets and a GPU lock, review boards, CLI and MCP (`studio_ingest`, `studio_examples`, `studio_probe` added). 17 unit tests plus an opt-in real render test pass.
-- Dev tools: `tools/review/review.py` (Jev chain), `tools/kit_reference.py`, `tools/build_example_index.py`, `tools/run_acceptance.py`.
-- Example library: 4 of 36 complete and indexed.
-- Acceptance: `society-village` drafted and reviewed.
-
-**Remaining work (one issue each)**
+**GitHub acceptance checklist**
 
 | Issue | Work |
 |---|---|
@@ -53,14 +50,14 @@ Snapshot at commit `4a551e9` (2026-11-25). A fresh agent can continue from this 
 | [#10](https://github.com/nicolas-found42/3d-agent-studio/issues/10) | Art-direction and diversity review of the library (after #1) |
 | [#2](https://github.com/nicolas-found42/3d-agent-studio/issues/2) | Finish the 6 acceptance scenarios |
 | [#6](https://github.com/nicolas-found42/3d-agent-studio/issues/6) | Exercise master/finalize, compare, extras and budgets end to end |
-| [#3](https://github.com/nicolas-found42/3d-agent-studio/issues/3) | Ingest animated GIFs as video |
-| [#4](https://github.com/nicolas-found42/3d-agent-studio/issues/4) | Asset resolver robustness (429 retry, Kenney 403, offline tests) |
-| [#5](https://github.com/nicolas-found42/3d-agent-studio/issues/5) | Jev review chain policy and tests |
+| [#3](https://github.com/nicolas-found42/3d-agent-studio/issues/3) | Animated GIF ingest and society diagram coverage |
+| [#4](https://github.com/nicolas-found42/3d-agent-studio/issues/4) | Bounded retry, Kenney landing-page handling and resolver fixtures |
+| [#5](https://github.com/nicolas-found42/3d-agent-studio/issues/5) | Diagram judgments, duplicate pairs, draft noise and decision tests |
 | [#7](https://github.com/nicolas-found42/3d-agent-studio/issues/7) | Kit gaps |
 | [#8](https://github.com/nicolas-found42/3d-agent-studio/issues/8) | Docs for v0.3.0 |
 | [#9](https://github.com/nicolas-found42/3d-agent-studio/issues/9) | Release v0.3.0 (last) |
 
-**Suggested order:** #3, #4, #7 (code fixes; each changes `code_identity()`, so finish them before long renders) → #1 and #2 (renders; many agents can share one job root because the GPU lock serializes them) → #5, #6 → #10 → #8 → #9.
+The release is prepared as one pull request. Publish the tag with the owner's go-ahead and check installation from that tag. [Migration notes](../v0.3.0.md) · [Marketplace installs](../marketplace.md)
 
 **Environment notes**
 - Reference machine: Apple M5 Pro (20-core GPU, 48 GB), Blender 5.2.2 at `/Applications/Blender.app`, FFmpeg with libx264. A 640×360 draft frame at 16 spp takes about 0.6–2 s; the first GPU render after a Blender update compiles kernels (~2 min).

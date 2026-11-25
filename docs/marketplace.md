@@ -6,6 +6,8 @@ The public catalog is `nicolas-found42/3d-agent-studio`. The plugin is `3d-agent
 
 Install `uv` (including `uvx`), Git, Blender, and FFmpeg with `ffprobe` and `libx264` on the machine running your agent. The agent must be able to find `uvx` on its own `PATH`, which may differ from your shell's. The MCP launcher installs the tagged Python package on first use. Rendering happens locally and does not require a Blender add-on, model credentials, or a network listener.
 
+The Codex marketplace entry selects the repository's local plugin package. The portable `plugin.json` carries the version and `mcp.json` pins the Python launcher to the release tag.
+
 **Claude Code** — in a shell:
 
 ```sh
@@ -41,12 +43,12 @@ Approve the dependency and enable prompts after reviewing the package. Nonintera
 
 **OpenCode and other hosts** — use [local MCP and skill setup](agents.md). For a shell-capable host with no MCP, use the [standalone CLI](../README.md#use-from-a-terminal). A cloud-only host that cannot launch a process on the render machine cannot use this local renderer. Every host needs no more than one Studio MCP registration; remove or disable one path before switching to another.
 
-After installing, open a new agent session and call `studio_doctor`. It must report Blender, FFmpeg with `libx264`, FFprobe, and the intended job root. Then call `studio_brief` with `{"brief":{"orientation":"horizontal","seconds":2}}`. A plugin appearing in a list does not verify its MCP server or runtime. If the host can't find a renderer executable, use the explicit absolute-path options in [agent setup](agents.md).
+After installing, run the [host verification](agents.md#verification) from a fresh agent session. `studio_doctor` checks the runtime and `studio_draft` makes a short render. If the host cannot find a renderer executable, configure the absolute paths in [agent setup](agents.md).
 
 ## Develop against one checkout
 
 1. Clone the repo and run `uv sync --locked --extra mcp` in it. The install is editable.
-2. Use the host's [direct MCP registration](agents.md) with the checkout's `.venv/bin/3d-agent-studio-mcp` (Windows: `.venv\Scripts\3d-agent-studio-mcp.exe`). Pass `--output-root` and an absolute development job directory. Use the same directory across hosts if you want to inspect the same jobs.
+2. Use the host's [direct MCP registration](agents.md) with the checkout's `.venv/bin/3d-agent-studio-mcp`. Pass `--output-root` and an absolute development job directory. Use the same directory across hosts if you want to inspect the same jobs.
 3. Symlink the checkout's `skills/3d-agent-studio` directory into the host's user skill directory. Use the native or compatible skill location, not both when the host loads both. This keeps the skill and its references on the same source as the server.
 4. Restart the host or reload its MCP connection after a Python edit. Run `uv sync --locked --extra mcp` again after dependency changes. Open a new session to rediscover the skill. Call `studio_doctor` and the same `studio_brief` on each host; for image parity, call `studio_view` on the same ready job and board.
 

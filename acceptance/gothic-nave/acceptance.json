@@ -1,0 +1,20 @@
+{
+  "title": "Sun across the gothic nave",
+  "brief": {
+    "prompt": "A tall early Gothic cathedral nave, inspired by Laon. The camera dollies east past clustered limestone piers, pointed arcades, a recessed triforium and ribbed vaults. Low warm sunlight traverses a faint haze from the south clerestory to the north arcade and broad flagstone floor.",
+    "orientation": "horizontal", "seconds": 5, "fps": 24,
+    "assets": ["polyhaven:sandstone_blocks_05@1k", "ambientcg:PavingStones131@1K"],
+    "budget_minutes": {"probe": 10, "draft": 30}
+  },
+  "inputs": [],
+  "compare_with": "../../../resurrection-site/public/assets/cathedral/blender-nave-1920.webp",
+  "elements": ["pointed stone arcades", "columns with clustered shafts", "a gallery below the high windows", "diagonal ribs under the vault", "a flagstone floor", "warm light crossing the interior"],
+  "reviewer_notes": {
+    "probe": "The closer view still keeps the vault and the stained glass in the frame. Lower haze and optical shift reveal the clustered piers and the rose rim while the south light remains visible across the interior.",
+    "timeline": "Repeated pointed bays and clustered piers pass safely on both sides of the travelling camera. The upper gallery is the recessed band of smaller arches between the main arcade and the windows. Diagonal vault ribs cross the aisle in the first half and are clearest in the wide proof. The flagstone aisle runs between the pews and becomes more exposed as they fall behind.",
+    "angles": "The wide proof reveals the vault ribs and the floor down to the foreground. The oblique proof fits the whole slate-roofed shell and both ends. The overhead view carries the full pink dolly route over the roof. The exterior is a simplified shell with an aisle roof, buttresses and exposed gables that support the interior shot.",
+    "compare": "The Laon benchmark on the right gives more visual weight to the crossing, slender triforium piers, chair rows and vault moldings. The prompt-driven draft on the left reproduces the long central aisle, three levels of arches, clustered pillars, diagonal ribs, warm side lighting and east glazing. Its stone surfaces look softer in the draft haze and its seats and exterior are more simplified.",
+    "clip": "Sampled the five-second decoded dolly twice per second. The foreground piers move outward with parallax while the distant glass stays framed. The larger piers crop progressively at the sides while their edges remain intact. No camera intersection is visible.",
+    "jev_look_items": "The gallery, ribs and flagstones are present in the wide proof. The larger pier crops at either side are framing during the dolly. Shade on the rib surfaces carries slight draft grain. The fully visible exterior in the corrected proof is intentionally simpler than the interior."
+  }
+}

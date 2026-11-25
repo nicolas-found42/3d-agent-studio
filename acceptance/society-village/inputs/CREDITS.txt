@@ -1,0 +1,2 @@
+village-observer.gif — observer recording from the owner's society repository, docs/media/village.gif
+village-turns.csv — de-duplicated turns and motive records derived from the society simulation journal

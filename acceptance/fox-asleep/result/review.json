@@ -1,0 +1,512 @@
+{
+  "job_id": "db88edac90e947e894026e1bb97b6680",
+  "stage": "preview",
+  "brief": {
+    "references": [],
+    "assets": [],
+    "orientation": "horizontal",
+    "seconds": 4,
+    "loop": true,
+    "fps": 24,
+    "seed": 11,
+    "title": "",
+    "show_title": false,
+    "quality": "standard",
+    "budget_minutes": {
+      "probe": 5,
+      "draft": 10,
+      "master": 10
+    },
+    "samples": {},
+    "extras": [],
+    "parent": "c112788101204e2c9405c1fea91c9a6d",
+    "max_references": 40,
+    "prompt": "A red fox curled up asleep in a shallow bed of snow at blue hour. Its orange brush wraps around the black paws and ends in a pale tip near its nose. Closed eyes and pointed ears read clearly. The flank rises gently with each breath while snow falls in a seamless loop, framed at the fox's height amongst dark spruce and softly lit bokeh."
+  },
+  "board_hashes": {
+    "timeline.jpg": "ce1a36a48d8513e95343e04989fc445dd89a927071606fd4439bfe398c546d2a",
+    "angles.jpg": "6fb7bf5f6a91ef72bf230a7211b6c383cfc6fe6c3346854ea071da8edee66113",
+    "seam.jpg": "b12a14cd8bc6ce11b5240a2478c9495acc6641667daf350ad50ca54b4bf49623"
+  },
+  "script_sha256": "cc37a9a45023e11d74f34a0878402a6294210b312be247621ed6566d5686ef5a",
+  "render_code": {
+    "pipeline.py": "a1501a47d0a21b4f188d215aaa7c919b48119d5d0b61207aeaa7562b3fc16717",
+    "worker.py": "853b4dad1b69d213eb35e7635e0188684a0352152ac6c233eb79a020e8c84bcc",
+    "runner.py": "eb7a9d61d680a0645e0cf6cb9ef812fcc37c97cdad60889ddefd832f00743aed",
+    "kit.py": "1c541688aefcb7830967312bd12b52d5c874a7e7e1f383e0841bc74d09343ebe",
+    "formats.py": "796ff77c70997522ceef827ff58dc9ea4f23a5f8484f459bf2300ed1c948c59f",
+    "scriptcheck.py": "9bcba8293decc59cc511f9243c61b1a7f54e8c3f07fddcf7a277f9a38af36ff6"
+  },
+  "reviewer_notes": {
+    "probe": "The fox stays entirely in frame at the start, middle and end. The two ears, closed eye, pale muzzle and white tail tip read against the dark spruce.",
+    "timeline": "Cool snow surrounds a warm curled silhouette. The shoulder and flank rise and settle while the closed eye and paws hold. The brush wraps in front of the dark paws. The fur volumes meet at sculpted joins, with no visible pass-through in the shot.",
+    "angles": "The wider view shows the clearing, falling flakes, grass and spruce. The oblique and top views show the fox grounded in the snow. The simplified tree row is sufficient for this locked close shot. Draft grain stays on shaded surfaces and the small bright specks are snow.",
+    "seam": "The last two and first two images preserve the same snow, light and body alignment. The extra rendered frame matches the first in the seam statistic. No body or shadow jumps across the join.",
+    "clip": "Sampled both decoded cycles in order. The back expands smoothly, snow drifts downward, and the ears and snout hold still. The second cycle begins at the same pose and flake positions as the first."
+  },
+  "qc": {
+    "passed": true,
+    "stage": "preview",
+    "orientation": "horizontal",
+    "video": {
+      "frames": 96,
+      "duration_seconds": 4.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 132249
+    },
+    "two_cycles": {
+      "frames": 192,
+      "duration_seconds": 8.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 263604
+    },
+    "seam_frames": [
+      95,
+      96,
+      1,
+      2
+    ],
+    "timeline_frames": [
+      1,
+      20,
+      39,
+      58,
+      77,
+      96
+    ],
+    "cover_frame": 33,
+    "proof_frame": 32,
+    "angle_order": [
+      "wide (same camera, half focal length)",
+      "three-quarter set view",
+      "top-down overview with camera path"
+    ],
+    "reference_pairs": [],
+    "render": {
+      "device": "METAL",
+      "samples": 16,
+      "seconds": 47.8,
+      "seconds_per_frame": 0.492,
+      "frames": 97,
+      "frame_stats": [
+        {
+          "file": "frame-0001.png",
+          "mean_luminance": 0.4917,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0
+        },
+        {
+          "file": "frame-0003.png",
+          "mean_luminance": 0.491,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00284
+        },
+        {
+          "file": "frame-0005.png",
+          "mean_luminance": 0.4908,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00201
+        },
+        {
+          "file": "frame-0007.png",
+          "mean_luminance": 0.4905,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00154
+        },
+        {
+          "file": "frame-0009.png",
+          "mean_luminance": 0.4906,
+          "dark_fraction": 0.0032,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00129
+        },
+        {
+          "file": "frame-0011.png",
+          "mean_luminance": 0.4906,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00132
+        },
+        {
+          "file": "frame-0013.png",
+          "mean_luminance": 0.4909,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00148
+        },
+        {
+          "file": "frame-0015.png",
+          "mean_luminance": 0.4907,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00145
+        },
+        {
+          "file": "frame-0017.png",
+          "mean_luminance": 0.4906,
+          "dark_fraction": 0.0032,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00112
+        },
+        {
+          "file": "frame-0019.png",
+          "mean_luminance": 0.4905,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00078
+        },
+        {
+          "file": "frame-0021.png",
+          "mean_luminance": 0.4906,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00067
+        },
+        {
+          "file": "frame-0023.png",
+          "mean_luminance": 0.4906,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00079
+        },
+        {
+          "file": "frame-0025.png",
+          "mean_luminance": 0.4908,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00089
+        },
+        {
+          "file": "frame-0027.png",
+          "mean_luminance": 0.4907,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00094
+        },
+        {
+          "file": "frame-0029.png",
+          "mean_luminance": 0.4907,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00091
+        },
+        {
+          "file": "frame-0031.png",
+          "mean_luminance": 0.4911,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00139
+        },
+        {
+          "file": "frame-0033.png",
+          "mean_luminance": 0.4912,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00195
+        },
+        {
+          "file": "frame-0035.png",
+          "mean_luminance": 0.491,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00196
+        },
+        {
+          "file": "frame-0037.png",
+          "mean_luminance": 0.4909,
+          "dark_fraction": 0.0024,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00175
+        },
+        {
+          "file": "frame-0039.png",
+          "mean_luminance": 0.4908,
+          "dark_fraction": 0.0024,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00157
+        },
+        {
+          "file": "frame-0041.png",
+          "mean_luminance": 0.4907,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00142
+        },
+        {
+          "file": "frame-0043.png",
+          "mean_luminance": 0.4912,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0019
+        },
+        {
+          "file": "frame-0045.png",
+          "mean_luminance": 0.4911,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00235
+        },
+        {
+          "file": "frame-0047.png",
+          "mean_luminance": 0.4908,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00193
+        },
+        {
+          "file": "frame-0049.png",
+          "mean_luminance": 0.4905,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00136
+        },
+        {
+          "file": "frame-0051.png",
+          "mean_luminance": 0.4907,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00135
+        },
+        {
+          "file": "frame-0053.png",
+          "mean_luminance": 0.4912,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00211
+        },
+        {
+          "file": "frame-0055.png",
+          "mean_luminance": 0.4913,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00272
+        },
+        {
+          "file": "frame-0057.png",
+          "mean_luminance": 0.4914,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00295
+        },
+        {
+          "file": "frame-0059.png",
+          "mean_luminance": 0.4916,
+          "dark_fraction": 0.0022,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00337
+        },
+        {
+          "file": "frame-0061.png",
+          "mean_luminance": 0.4918,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00364
+        },
+        {
+          "file": "frame-0063.png",
+          "mean_luminance": 0.4918,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00359
+        },
+        {
+          "file": "frame-0065.png",
+          "mean_luminance": 0.4918,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00354
+        },
+        {
+          "file": "frame-0067.png",
+          "mean_luminance": 0.4919,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00362
+        },
+        {
+          "file": "frame-0069.png",
+          "mean_luminance": 0.4914,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0031
+        },
+        {
+          "file": "frame-0071.png",
+          "mean_luminance": 0.4918,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00304
+        },
+        {
+          "file": "frame-0073.png",
+          "mean_luminance": 0.4918,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00341
+        },
+        {
+          "file": "frame-0075.png",
+          "mean_luminance": 0.4914,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00302
+        },
+        {
+          "file": "frame-0077.png",
+          "mean_luminance": 0.4909,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00215
+        },
+        {
+          "file": "frame-0079.png",
+          "mean_luminance": 0.4905,
+          "dark_fraction": 0.0032,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00141
+        },
+        {
+          "file": "frame-0081.png",
+          "mean_luminance": 0.4904,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00102
+        },
+        {
+          "file": "frame-0083.png",
+          "mean_luminance": 0.4906,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00104
+        },
+        {
+          "file": "frame-0085.png",
+          "mean_luminance": 0.4909,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00156
+        },
+        {
+          "file": "frame-0087.png",
+          "mean_luminance": 0.491,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00205
+        },
+        {
+          "file": "frame-0089.png",
+          "mean_luminance": 0.4911,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00227
+        },
+        {
+          "file": "frame-0091.png",
+          "mean_luminance": 0.4913,
+          "dark_fraction": 0.0029,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0025
+        },
+        {
+          "file": "frame-0093.png",
+          "mean_luminance": 0.4908,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00235
+        },
+        {
+          "file": "frame-0095.png",
+          "mean_luminance": 0.4918,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00284
+        },
+        {
+          "file": "frame-0097.png",
+          "mean_luminance": 0.4917,
+          "dark_fraction": 0.0027,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00367
+        }
+      ],
+      "loop_seam": {
+        "first_vs_extra_frame": 0.0,
+        "typical_sampled_change": 0.00195
+      }
+    },
+    "loop_seam": {
+      "first_vs_extra_frame": 0.0,
+      "typical_sampled_change": 0.00195
+    },
+    "warnings": [],
+    "notes": "Machine checks verify files, timing and coarse pixel statistics only. They are not a visual review.",
+    "timing": {
+      "predicted_minutes": 1.86,
+      "actual_minutes": 0.848,
+      "budget_minutes": 10.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 1.195
+    }
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: interpenetration (0.37)",
+        "defect: noisy (0.44)",
+        "defect: set_unfinished (0.44)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "a curled orange fox": 0.97,
+      "two triangular fox ears": 0.96,
+      "a closed eye and black nose": 0.97,
+      "a bushy tail with a pale tip": 0.97,
+      "falling snow": 0.94,
+      "soft blue hour light": 0.89
+    },
+    "defects": {
+      "floating": 0.29,
+      "interpenetration": 0.37,
+      "too_dark": 0.03,
+      "blown_out": 0.1,
+      "noisy": 0.44,
+      "clipping": 0.14,
+      "placeholder": 0.07,
+      "empty": 0.07,
+      "set_unfinished": 0.44
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.01,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.29,
+      "2": 0.61,
+      "3": 0.1
+    }
+  }
+}

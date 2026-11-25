@@ -1,0 +1,45 @@
+{
+  "title": "Glacial falls over Icelandic basalt",
+  "brief": {
+    "prompt": "A cinematic low glide through an Icelandic canyon. A narrow upper ribbon falls down a mossy basalt cliff into a broad turquoise pool and rushes over a dark shelf as a wider, white curtain. Whitewater courses down the ledges and a little mist blows across the rocks under bright overcast light. The palette is blue-grey water, dark volcanic basalt, lichen and moss green.",
+    "orientation": "horizontal", "seconds": 5, "fps": 24,
+    "assets": ["polyhaven:kloofendal_48d_partly_cloudy_puresky@1k", "polyhaven:cliff_side@1k", "polyhaven:mossy_rock@1k"],
+    "budget_minutes": {"draft": 20}
+  },
+  "inputs": [
+    {"file": "waterfall-1.jpg", "role": "palette", "note": "Blue-grey glacial water, dark basalt and quiet moss greens."},
+    {"file": "waterfall-3.jpg", "role": "subject", "note": "A narrow white ribbon spilling from a high fractured mossy cliff."},
+    {"file": "basalt-marker.obj", "role": "asset", "note": "Original angular basalt block for the near bank."}
+  ],
+  "elements": ["a narrow waterfall off a high dark cliff", "an additional wider curtain of whitewater", "green moss and brown black rock layers", "a turquoise glacial stream", "rising white mist"],
+  "reviewer_notes": {
+    "probe": "A narrow central ribbon and finer companion runnel start at the upper basalt lip. The lower cataract divides into three brighter flows with a calm blue-grey pool ahead. The continuous ground rises into distant ridges.",
+    "timeline": "The camera glides low toward the falls. Animated ripples run down the divided lower apron, thinner foam streams travel across the pool, and mist shifts around the impact. Weathered green patches run between the basalt layers.",
+    "angles": "The wide view includes the basalt OBJ in the pool. The oblique view shows the connected upstream ridges, two rock ledges, side banks, and pool as one valley set. The terrain and water meshes have finite ends visible at these proof angles. The overhead view fits the pink camera track and both ledges.",
+    "references": "The palette pairing keeps the blue-grey water, pale foam, dark basalt and muted greens of the wider canyon photo. The narrow upper ribbon, high rock drop and moss patches carry over from the subject photo. The camera angle, stronger mountain relief and darker greens differ from the photograph.",
+    "clip": "Sampled the decoded clip twice per second. White streaks advect down the curtains, ripples travel away from the impact, and foreground parallax and the growing falls show the forward camera movement. The bank and shoreline remain continuous through the shot.",
+    "jev_look_items": "The pool is muted glacial blue-green and can be checked at full size. Low white spray crosses the foot of the falls and rises behind its bright front edge. The draft retains visible noise in the moving water and the small spray highlights."
+  },
+  "overrides": [
+    {
+      "item": "defect: set_unfinished",
+      "reason": "The revision connects upstream terrain, both side banks and both ledges into a continuous valley. The boundaries at the edge of the wider diagnostic board are the extent of this set. The full sequence stays inside the contiguous banks and shoreline."
+    },
+    {
+      "item": "quality: basic",
+      "reason": "Accept this grade for the mixed-input workflow test. The draft demonstrates both photo roles, an OBJ import, procedural rock and animated water. The landscape remains visibly stylized, with simpler vegetation, spray and foreground detail than the source photographs."
+    },
+    {
+      "item": "prompt match: loose",
+      "reason": "The decoded shot shows a low approaching camera, a narrow high fall, a wider broken curtain below, a glacial pool, and moving foam and mist. The review accepts the stylized appearance of the valley."
+    },
+    {
+      "item": "reference ref-bf8ce9ebc29d33db (palette)",
+      "reason": "The paired board shows the intended cool blue-grey pool and foam against dark basalt. Moss green recedes into the rock in this lighting, and the source foreground greens are stronger."
+    },
+    {
+      "item": "reference ref-caf32b733f524c49 (subject)",
+      "reason": "The high thin white fall, mossy patching and broken dark cliff carry over from the subject photograph. The acceptance shot combines that upper feature with its own lower curtain and a wider viewpoint."
+    }
+  ]
+}

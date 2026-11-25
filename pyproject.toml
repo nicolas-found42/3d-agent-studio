@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "3d-agent-studio"
-version = "0.2.0"
-description = "Agent-independent Blender and FFmpeg studio for vertical and horizontal animation"
+version = "0.3.0"
+description = "Local Blender and FFmpeg studio for prompt-driven animation"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"

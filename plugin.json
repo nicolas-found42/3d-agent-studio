@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "3d-agent-studio",
-  "version": "0.2.0",
-  "description": "Render and review editable Blender animation in portrait or landscape.",
+  "version": "0.3.0",
+  "description": "Turn prompts and references into editable Blender animation.",
   "author": {"name": "Nicolas Alexander"},
   "homepage": "https://github.com/nicolas-found42/3d-agent-studio",
   "repository": "https://github.com/nicolas-found42/3d-agent-studio",

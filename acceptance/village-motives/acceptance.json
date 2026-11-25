@@ -1,0 +1,28 @@
+{
+  "title": "Why villagers act over 90 days",
+  "brief": {
+    "prompt": "An illuminated museum exhibit of the village simulation's first 90 days. A physical stacked-area relief builds from left to right inside a bevelled metal frame. Six colored bands follow the daily action counts in the CSV. A bright scan line moves across a dark grid in step with the day counter. The camera reveals the thickness of the bands, then settles facing the chart so the title, scale and six-motive key can be read clearly.",
+    "orientation": "horizontal", "seconds": 5, "fps": 24
+  },
+  "inputs": [
+    {"file": "motives-by-day.csv", "role": "data", "note": "Daily action counts grouped by recorded motive."},
+    {"file": "village-ring.svg", "role": "logo", "note": "Original emblem of the village and its seven places."},
+    {"file": "shots.md", "role": "shotlist", "note": "Title and chart reveal beats."},
+    {"file": "archivo-black.ttf", "role": "font", "note": "Display face for the chart title."}
+  ],
+  "elements": ["a stacked chart with differently colored bands", "an exhibit frame around the chart", "a bright vertical day marker", "a six-color legend", "the title Village Motives"],
+  "expect_text": true,
+  "reviewer_notes": {
+    "probe": "The first still shows the frame depth, mint day marker and the ingested SVG emblem beside the Archivo Black title. The middle still reveals the cut ends of six thick bands. The last still shows a straight-on chart with all six motives and the day 90 label.",
+    "timeline": "The scan travels from the first day across the six stacked bands while the exhibit rotates into a head-on view. Left-axis numerals are small in the opening oblique pose. The titles, values on the axes, and six legend labels can be read in the full-size closing frame.",
+    "angles": "The wide photo shows the freestanding display and its two mounting feet. The three-quarter view shows its depth on an open gallery platform. In the overhead proof the face is edge-on and the pink path shows the lateral camera move.",
+    "clip": "Sampled every half-second from the decoded clip. Each successive scan position exposes more of the same graph and the camera settles for a complete day 90 hold. In the saved scene, all 540 cumulative band boundaries match the CSV, each frame has the expected single day label, and the imported logo measures 0.52 metres wide.",
+    "jev_look_items": "The minor enamel and floor texture stays behind the flat legends. The display platform has an intentionally simple open studio surround. The early oblique thumbnails shrink axis and legend text, which reads in the closing 640×360 frames."
+  },
+  "overrides": [
+    {
+      "item": "prompt match: loose",
+      "reason": "The decoded sequence shows the required physical relief by its visible cut ends, a six-band left-to-right reveal with a synchronized scan and counter, and a straight-on reading pose. The saved Blender scene was also checked against every band boundary in the source CSV and all 120 visible day values."
+    }
+  ]
+}
