@@ -1,0 +1,14 @@
+{
+ "title": "The society sim as a living miniature",
+ "brief": {
+  "prompt": "My society simulation (~/Documents/github/society) as a living miniature village: seven places in a ring around the parish commons, in the observer window's clockwise order (granary at the top, market, well, hut, shrine, woods, field), connected by a ring path. Twelve villagers walk between the places following the moves recorded in the sim's journal, one recorded turn per second, each with a small gem over the head colored by the motive behind the action (fear, duty, hunger, thirst, kinship, promise). Late afternoon turns into a lantern-lit dusk while the camera cranes down from a high oblique view, tilt-shift like a model village.",
+  "orientation": "horizontal", "seconds": 12, "fps": 24, "seed": 7,
+  "assets": ["fontsource:cinzel@700"]
+ },
+ "inputs": [
+  {"file": "village-observer.mp4", "role": "composition", "note": "The sim's observer window: seven places in a ring around the commons, villagers as colored dots."},
+  {"file": "village-turns.csv", "role": "data", "note": "24 recorded turns: turn, day, agent, place after the action, action, motive."}
+ ],
+ "elements": ["a ring of small village buildings around a central plaza", "a large tree on a round plaza", "small figures standing or walking around the village", "market stalls with colored awnings", "a stone well", "lanterns or glowing lights"],
+ "expect_text": false
+}

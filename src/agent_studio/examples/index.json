@@ -1,1 +1,132 @@
-[]
+[
+ {
+  "slug": "bamboo-grove-rain",
+  "title": "Bamboo Grove in Rain",
+  "category": "landscape",
+  "prompt": "A dense bamboo grove in rain: tall segmented stalks swaying, a moss-covered stone lantern on a path, fog in the depth. Rain falls; focus racks from close stalks to the lantern.",
+  "description": "How to build a dense photoreal grove from a few bmesh stalks shared by hundreds of instances, fake rain with looping streak tiles, and pull a shallow-depth-of-field rack focus through overcast haze.",
+  "brief": {
+   "prompt": "A dense bamboo grove in rain: tall segmented stalks swaying, a moss-covered stone lantern on a path, fog in the depth. Rain falls; focus racks from close stalks to the lantern.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "loop": false,
+   "fps": 30,
+   "seed": 11,
+   "assets": [
+    "polyhaven:forest_leaves_02@1k",
+    "polyhaven:rock_pitted_mossy@1k"
+   ]
+  },
+  "tags": {
+   "camera": "rack focus, near stalks to lantern",
+   "lighting": "overcast diffuse with fog",
+   "style": "photoreal",
+   "motion": "falling rain and swaying stalks"
+  },
+  "techniques": [
+   "bmesh segmented stalks with a per-vertex node attribute read by the shader",
+   "linked instances coloured by Object Info Random",
+   "kit.textured scans with moss mixed on up-facing normals",
+   "rain as stacked streak tiles on a sawtooth fall",
+   "kit.world gradient plus kit.haze for overcast depth",
+   "kit.rack_focus at f/1.4"
+  ]
+ },
+ {
+  "slug": "brutalist-courtyard-noon",
+  "title": "Brutalist Courtyard, Noon",
+  "category": "architecture",
+  "prompt": "A brutalist concrete courtyard at noon with deep window recesses, a shallow reflecting pool and a lone tree. The camera cranes up the facade as hard shadows carve the geometry.",
+  "description": "How to build real-scale brutalist architecture from batched bevelled boxes with layered concrete weathering, lit by a hard small-angle noon sun over a disc-less physical sky, shot with a crane move.",
+  "brief": {
+   "prompt": "A brutalist concrete courtyard at noon with deep window recesses, a shallow reflecting pool and a lone tree. The camera cranes up the facade as hard shadows carve the geometry.",
+   "orientation": "portrait",
+   "seconds": 5,
+   "loop": false,
+   "fps": 24,
+   "seed": 11,
+   "assets": [
+    "polyhaven:wood_textured_concrete@1k",
+    "polyhaven:square_concrete_pavers@1k"
+   ]
+  },
+  "tags": {
+   "camera": "crane rising up a facade",
+   "lighting": "hard noon sun, deep geometric shadows",
+   "style": "photoreal procedural concrete",
+   "motion": "camera only"
+  },
+  "techniques": [
+   "batched axis-aligned boxes into one mesh per material with a per-face tone attribute",
+   "kit.textured board-formed concrete scan with node-layered tone, rain streaks and damp",
+   "kit.sun with small angle plus kit.sky(sun_disc=False) as skylight fill",
+   "kit.dolly as a crane: rising camera with a rising look target",
+   "recursive bmesh tree with thousands of leaf cards for dappled shadow",
+   "transmissive water box over a dark slate basin for reflections",
+   "kit.haze at very low density for aerial depth"
+  ]
+ },
+ {
+  "slug": "headphones-exploded-view",
+  "title": "Headphones, Exploded View",
+  "category": "product",
+  "prompt": "An exploded technical view of over-ear headphones: headband, sliders, ear cups, drivers and cushions separate along their axes, hold, and reassemble in a seamless loop on a white background.",
+  "description": "How to model a product at real size from lathe, torus and swept-section recipes and drive a staggered, loop-safe exploded view from one easing curve in a high-key white studio.",
+  "brief": {
+   "prompt": "An exploded technical view of over-ear headphones: headband, sliders, ear cups, drivers and cushions separate along their axes, hold, and reassemble in a seamless loop on a white background.",
+   "orientation": "horizontal",
+   "seconds": 6,
+   "loop": true,
+   "fps": 30,
+   "seed": 11,
+   "samples": {
+    "preview": 32
+   }
+  },
+  "tags": {
+   "camera": "locked three-quarter view",
+   "lighting": "clean high-key white studio",
+   "style": "clean product render, matte plastics",
+   "motion": "parts separate and reassemble"
+  },
+  "techniques": [
+   "kit.lathe profiles stretched into oval cups and drivers",
+   "swept rounded-rectangle section built with kit.mesh and bmesh normals",
+   "staggered explode offsets keyed with kit.animate from one easing curve",
+   "dashed technical axis lines scaled with the explosion",
+   "lit cyclorama sweep with backdrop area light",
+   "black-flag negative fill planes",
+   "fine procedural bump for bead-blasted matte plastic"
+  ]
+ },
+ {
+  "slug": "paper-city-isometric",
+  "title": "Paper City, Isometric",
+  "category": "architecture",
+  "prompt": "A tiny isometric pastel city block built like a paper model: rounded buildings, trees, a park, little cars circling the streets. The orthographic camera orbits a full turn as a seamless loop.",
+  "description": "How to build a cel-shaded pastel diorama in EEVEE with an orthographic isometric turntable and arc-length car loops that close seamlessly.",
+  "brief": {
+   "prompt": "A tiny isometric pastel city block built like a paper model: rounded buildings, trees, a park, little cars circling the streets. The orthographic camera orbits a full turn as a seamless loop.",
+   "orientation": "square",
+   "seconds": 6,
+   "loop": true,
+   "fps": 24,
+   "seed": 11
+  },
+  "tags": {
+   "camera": "orthographic 360 orbit",
+   "lighting": "soft flat studio light",
+   "style": "toon low-poly pastel (EEVEE)",
+   "motion": "small cars loop around blocks"
+  },
+  "techniques": [
+   "kit.toon with per-colour tinted shadow tones",
+   "orthographic camera at true isometric elevation with kit.orbit sweep=360",
+   "inverted-hull outline with backface-culled emission material",
+   "one mesh per building for printed windows (kit.mesh)",
+   "arc-length car paths with unwrapped heading via kit.animate",
+   "layered card base from bevelled kit.box slabs",
+   "kit.scatter with avoid circles for flower dots"
+  ]
+ }
+]

@@ -1,0 +1,33 @@
+{
+  "slug": "bamboo-grove-rain",
+  "title": "Bamboo Grove in Rain",
+  "category": "landscape",
+  "prompt": "A dense bamboo grove in rain: tall segmented stalks swaying, a moss-covered stone lantern on a path, fog in the depth. Rain falls; focus racks from close stalks to the lantern.",
+  "description": "How to build a dense photoreal grove from a few bmesh stalks shared by hundreds of instances, fake rain with looping streak tiles, and pull a shallow-depth-of-field rack focus through overcast haze.",
+  "brief": {
+    "prompt": "A dense bamboo grove in rain: tall segmented stalks swaying, a moss-covered stone lantern on a path, fog in the depth. Rain falls; focus racks from close stalks to the lantern.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "loop": false,
+    "fps": 30,
+    "seed": 11,
+    "assets": [
+      "polyhaven:forest_leaves_02@1k",
+      "polyhaven:rock_pitted_mossy@1k"
+    ]
+  },
+  "tags": {
+    "camera": "rack focus, near stalks to lantern",
+    "lighting": "overcast diffuse with fog",
+    "style": "photoreal",
+    "motion": "falling rain and swaying stalks"
+  },
+  "techniques": [
+    "bmesh segmented stalks with a per-vertex node attribute read by the shader",
+    "linked instances coloured by Object Info Random",
+    "kit.textured scans with moss mixed on up-facing normals",
+    "rain as stacked streak tiles on a sawtooth fall",
+    "kit.world gradient plus kit.haze for overcast depth",
+    "kit.rack_focus at f/1.4"
+  ]
+}

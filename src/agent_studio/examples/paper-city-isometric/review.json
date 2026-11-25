@@ -1,0 +1,22 @@
+{
+  "job_id": "a844b143353740df82bc54a84b8793f3",
+  "drafts": 1,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: a park with a fountain (0.67)",
+        "defect: set_unfinished (0.62)"
+      ]
+    },
+    "quality": "polished",
+    "prompt_match": "exact"
+  },
+  "notes": {
+    "timeline": "All six frames read as the same pastel paper diorama turning a full circle under an orthographic camera: rounded bevelled blocks with printed windows, round towers with spires, roof tanks and gardens, the park with pond and fountain at the centre, and small cars on both ring lanes. Toon bands are soft rather than hard-edged, and ground shadows are faint, which suits the flat studio brief.",
+    "angles": "The three-quarter and overview views show a complete model on a layered card base sitting on a large backdrop floor; the Jev set_unfinished flag (0.62) comes from the small diorama against that floor, not from missing parts. The camera path is a clean circle at isometric elevation.",
+    "seam": "Last and first frames match: the orbit is a whole turn and every car completes exactly one lap with unwrapped headings, so there is no jump.",
+    "jev_look_items": "Park with a fountain (0.67): confirmed visible at the centre of every frame, small at preview size. set_unfinished (0.62): checked the angles board, the set is complete."
+  }
+}

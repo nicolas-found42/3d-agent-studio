@@ -1,0 +1,30 @@
+{
+  "slug": "paper-city-isometric",
+  "title": "Paper City, Isometric",
+  "category": "architecture",
+  "prompt": "A tiny isometric pastel city block built like a paper model: rounded buildings, trees, a park, little cars circling the streets. The orthographic camera orbits a full turn as a seamless loop.",
+  "description": "How to build a cel-shaded pastel diorama in EEVEE with an orthographic isometric turntable and arc-length car loops that close seamlessly.",
+  "brief": {
+    "prompt": "A tiny isometric pastel city block built like a paper model: rounded buildings, trees, a park, little cars circling the streets. The orthographic camera orbits a full turn as a seamless loop.",
+    "orientation": "square",
+    "seconds": 6,
+    "loop": true,
+    "fps": 24,
+    "seed": 11
+  },
+  "tags": {
+    "camera": "orthographic 360 orbit",
+    "lighting": "soft flat studio light",
+    "style": "toon low-poly pastel (EEVEE)",
+    "motion": "small cars loop around blocks"
+  },
+  "techniques": [
+    "kit.toon with per-colour tinted shadow tones",
+    "orthographic camera at true isometric elevation with kit.orbit sweep=360",
+    "inverted-hull outline with backface-culled emission material",
+    "one mesh per building for printed windows (kit.mesh)",
+    "arc-length car paths with unwrapped heading via kit.animate",
+    "layered card base from bevelled kit.box slabs",
+    "kit.scatter with avoid circles for flower dots"
+  ]
+}

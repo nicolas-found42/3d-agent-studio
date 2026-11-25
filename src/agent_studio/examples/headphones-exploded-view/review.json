@@ -1,0 +1,26 @@
+{
+  "job_id": "8f4c875ee73d432fa5e6b938042469d3",
+  "drafts": 3,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: driver units with cones (0.69)",
+        "defect: floating (0.37)",
+        "defect: interpenetration (0.38)",
+        "defect: blown_out (0.63)",
+        "defect: noisy (0.30)",
+        "defect: set_unfinished (0.54)"
+      ]
+    },
+    "quality": "polished",
+    "prompt_match": "exact"
+  },
+  "notes": {
+    "timeline": "Assembled at the start, the stack opens in sequence: headband and pad lift, sliders and yokes rise, the cups fan outward revealing baffle vents, copper driver frames with magnet pots, scrims and camel cushions, then everything closes back. Dark slate shells and camel leather read cleanly on the white sweep, with soft contact shadows under the cups.",
+    "angles": "The wide and three-quarter views show a complete studio set: curved white cyclorama and black flags outside the shot cone (which is what Jev flagged as set_unfinished 0.54). The top-down overview is mostly the cyclorama and is expected.",
+    "seam": "Frames 179, 180, 1 and 2 are identical assembled poses; every part returns to its home position before the loop point, so there is no jump.",
+    "jev_look_items": "driver units (0.69): confirmed copper driver rings and magnet pots in the exploded frames; floating parts are the exploded view by design; interpenetration: none seen in assembled frames; blown_out (0.63): only the intended high-key background is near white, product highlights hold; noisy (0.30): clean at 32 samples."
+  }
+}

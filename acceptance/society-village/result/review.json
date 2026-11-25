@@ -1,0 +1,105 @@
+{
+ "job_id": "38d9289c4bda457d97eaaf39858dc821",
+ "stage": "preview",
+ "brief": {
+  "prompt": "My society simulation (~/Documents/github/society) as a living miniature village: seven places in a ring around the parish commons, in the observer window's clockwise order (granary at the top, market, well, hut, shrine, woods, field), connected by a ring path. Twelve villagers walk between the places following the moves recorded in the sim's journal, one recorded turn per second, each with a small gem over the head colored by the motive behind the action (fear, duty, hunger, thirst, kinship, promise). Late afternoon turns into a lantern-lit dusk while the camera cranes down from a high oblique view, tilt-shift like a model village.",
+  "orientation": "horizontal",
+  "seconds": 12,
+  "fps": 24,
+  "seed": 7,
+  "assets": [
+   "fontsource:cinzel@700"
+  ],
+  "references": [
+   {
+    "id": "ref-3143493d6d4bb146",
+    "role": "composition",
+    "note": "The sim's observer window: seven places in a ring around the commons, villagers as colored dots."
+   },
+   {
+    "id": "ref-70cdc59da7a3fb69",
+    "role": "data",
+    "note": "24 recorded turns: turn, day, agent, place after the action, action, motive."
+   }
+  ]
+ },
+ "jev": {
+  "decision": {
+   "verdict": "fix",
+   "fix": [
+    "reference ref-3143493d6d4bb146 (composition): related",
+    "reference ref-3143493d6d4bb146 (composition): related"
+   ],
+   "look": [
+    "defect: interpenetration (0.34)",
+    "defect: noisy (0.49)",
+    "defect: set_unfinished (0.34)"
+   ]
+  },
+  "quality": "polished",
+  "prompt_match": "clear",
+  "elements": {
+   "a ring of small village buildings around a central plaza": 0.91,
+   "a large tree on a round plaza": 0.78,
+   "small figures standing or walking around the village": 0.97,
+   "market stalls with colored awnings": 0.93,
+   "a stone well": 0.86,
+   "lanterns or glowing lights": 0.94
+  },
+  "defects": {
+   "floating": 0.24,
+   "interpenetration": 0.34,
+   "too_dark": 0.22,
+   "blown_out": 0.05,
+   "noisy": 0.49,
+   "clipping": 0.28,
+   "placeholder": 0.1,
+   "empty": 0.17,
+   "set_unfinished": 0.34
+  },
+  "references": [
+   {
+    "reference": "ref-3143493d6d4bb146",
+    "role": "composition",
+    "frame": "frame-0281.png",
+    "level": "clearly_related"
+   },
+   {
+    "reference": "ref-3143493d6d4bb146",
+    "role": "composition",
+    "frame": "frame-0281.png",
+    "level": "clearly_related"
+   },
+   {
+    "reference": "ref-3143493d6d4bb146",
+    "role": "composition",
+    "frame": "frame-0281.png",
+    "level": "related"
+   },
+   {
+    "reference": "ref-3143493d6d4bb146",
+    "role": "composition",
+    "frame": "frame-0281.png",
+    "level": "clearly_related"
+   },
+   {
+    "reference": "ref-3143493d6d4bb146",
+    "role": "composition",
+    "frame": "frame-0281.png",
+    "level": "clearly_related"
+   },
+   {
+    "reference": "ref-3143493d6d4bb146",
+    "role": "composition",
+    "frame": "frame-0281.png",
+    "level": "related"
+   },
+   {
+    "reference": "ref-3143493d6d4bb146",
+    "role": "composition",
+    "frame": "frame-0281.png",
+    "level": "clearly_related"
+   }
+  ]
+ }
+}
