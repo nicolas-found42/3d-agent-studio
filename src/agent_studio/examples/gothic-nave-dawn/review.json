@@ -1,0 +1,72 @@
+{
+  "job_id": "23958d8173e84d8c97569232f9e063e9",
+  "drafts": 2,
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: high clerestory windows (0.57)",
+        "defect: interpenetration (0.35)",
+        "defect: noisy (0.59)",
+        "defect: clipping (0.53)",
+        "defect: empty (0.56)",
+        "defect: set_unfinished (0.63)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "clustered stone piers": 0.94,
+      "pointed arcades": 0.91,
+      "ribbed ceiling vaults": 0.88,
+      "high clerestory windows": 0.57,
+      "warm sun shafts in the nave": 0.95
+    },
+    "defects": {
+      "floating": 0.28,
+      "interpenetration": 0.35,
+      "too_dark": 0.04,
+      "blown_out": 0.15,
+      "noisy": 0.59,
+      "clipping": 0.53,
+      "placeholder": 0.04,
+      "empty": 0.56,
+      "set_unfinished": 0.63
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0.02,
+      "1": 0.31,
+      "2": 0.45,
+      "3": 0.22
+    }
+  },
+  "notes": {
+    "probe": "The wider shifted lens holds the floor, tall piers, ribbed ceiling and stained east rose in the same view. The updated light sends warm shafts across the aisle and exposes cooler stone detail higher up.",
+    "timeline": "The axial dolly passes clustered piers, pointed arcades and long ribs as it advances toward the crossing. The bright amber shafts sweep sideways across the frame with parallax. Blue and ruby lancets and the small rose hold the far vanishing point.",
+    "angles": "The wide panel gives a clear look at the vault ribs over the central aisle and the adjacent vaults. The three-quarter proof shows the cruciform masonry enclosure, gabled roofs with standing seams, buttresses, west belfries, and the traceried transept rose. The automatically framed exterior proof crops the spire and the west base. The overhead establishes the cruciform footprint and paired buttress rows.",
+    "jev_look_items": "The high clerestory scored 0.57. Its paired lancets and slim glints are visible near the upper side walls, especially in the wide proof. Interpenetration scored 0.35 as the masonry rings, vault ribs and shafts meet in deliberately fitted joints. Noise scored 0.59, with slight preview grain in the pale shafts and along the darker stone. Clipping scored 0.53. The close piers leave the shot through the frame edges while their geometry stays in front of the lens. The 0.56 empty-frame score reflects the open axial aisle and deep perspective. The 0.63 unfinished-set score reflects the simpler exterior surfaces at this proof scale. The revised three-quarter board clearly shows the connected wings, buttresses and enclosing roofs."
+  },
+  "qc": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 1526987
+    },
+    "warnings": [],
+    "loop_seam": null
+  }
+}

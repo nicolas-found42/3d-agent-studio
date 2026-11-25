@@ -1,0 +1,31 @@
+{
+  "slug": "alpine-lake-sunrise",
+  "title": "Alpine Lake at Sunrise",
+  "category": "landscape",
+  "prompt": "An alpine lake at sunrise: ridged snow-capped peaks, pine forest on the shoreline, still water reflecting pink light, mist on the surface. The camera skims low over the water toward the mountains.",
+  "description": "Use a shared heightfield to place shoreline and pines, then shade the rock, snow and distance haze by altitude and slope.",
+  "brief": {
+    "prompt": "An alpine lake at sunrise: ridged snow-capped peaks, pine forest on the shoreline, still water reflecting pink light, mist on the surface. The camera skims low over the water toward the mountains.",
+    "orientation": "ultrawide",
+    "seconds": 6,
+    "fps": 24,
+    "loop": false,
+    "seed": 11,
+    "budget_minutes": {
+      "draft": 20
+    }
+  },
+  "tags": {
+    "camera": "low flythrough over water toward mountains",
+    "lighting": "physical sky at sunrise with long shadows",
+    "style": "photoreal procedural terrain",
+    "motion": "camera and drifting mist"
+  },
+  "techniques": [
+    "nonuniform terrain sampling",
+    "altitude and slope terrain masks",
+    "instanced pines anchored to the heightfield",
+    "physical sunrise fill",
+    "noise-driven surface mist"
+  ]
+}

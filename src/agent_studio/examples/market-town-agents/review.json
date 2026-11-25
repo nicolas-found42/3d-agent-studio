@@ -1,0 +1,58 @@
+{
+  "job_id": "ae3cbfd581374d9f9b6d09265316eb08",
+  "drafts": 2,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: interpenetration (0.31)",
+        "defect: noisy (0.48)",
+        "defect: clipping (0.43)",
+        "defect: set_unfinished (0.42)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "a miniature market plaza": 0.97,
+      "small houses": 0.96,
+      "striped market stalls": 0.8,
+      "a well": 0.96,
+      "many human figures": 0.9
+    },
+    "defects": {
+      "floating": 0.17,
+      "interpenetration": 0.31,
+      "too_dark": 0.04,
+      "blown_out": 0.05,
+      "noisy": 0.48,
+      "clipping": 0.43,
+      "placeholder": 0.03,
+      "empty": 0.12,
+      "set_unfinished": 0.42
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.33,
+      "2": 0.59,
+      "3": 0.08
+    },
+    "prompt_match_probabilities": {
+      "0": 0,
+      "1": 0.04,
+      "2": 0.21,
+      "3": 0.75
+    }
+  },
+  "notes": {
+    "probe": "The radial lanes and terracotta house ring read from the opening crane position. As the camera lowers, the striped stalls and the open well rim become clear in the plaza.",
+    "timeline": "The cobblestone circle and clay-roof houses establish the miniature at the start. The crane-in reveals window surrounds, bunting and vendors. Near the end, brightly painted figures stand and move between the well, traders and adjacent lanes, with the foreground roofs naturally leaving the frame.",
+    "angles": "The wide and oblique plates show both house rings, paths and trees around the central set. The top view traces the camera route down a clear lane toward the well, with the whole exterior site still present.",
+    "playback": "The sampled decoded sequence shows a gradual descent, warm side shadows across the plaza and agent movement between homes, stalls and the well. The fixed gatherers turn in place while the walkers follow visibly different routes.",
+    "jev_look_items": "Interpenetration (0.31): figures occasionally overlap in projection where paths cross, but the close frames retain body outlines and the ground contact. Noise (0.48): fine cobblestone joints and tile grooves soften slightly at preview samples. Clipping (0.43): the nearest houses are intentionally framed out as the camera descends into the plaza, and the wide angle shows the clear camera lane. Set unfinished (0.42): the oblique proof shows a modeled ring of homes, trees, lanes, stalls and the decorated gathering area around the well, all sized for the miniature."
+  }
+}

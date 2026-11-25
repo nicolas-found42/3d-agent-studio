@@ -1,0 +1,575 @@
+{
+  "job_id": "073dcf99c1814919a62fd08530c81097",
+  "stage": "preview",
+  "brief": {
+    "references": [],
+    "assets": [
+      "polyhaven:sandstone_blocks_05@1k",
+      "ambientcg:PavingStones131@1K"
+    ],
+    "orientation": "horizontal",
+    "seconds": 5,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "title": "",
+    "show_title": false,
+    "quality": "standard",
+    "budget_minutes": {
+      "probe": 10,
+      "draft": 30,
+      "master": 10
+    },
+    "samples": {},
+    "extras": [],
+    "parent": "e8900fe33f6c457f9f54910d14dab95e",
+    "max_references": 40,
+    "prompt": "A tall early Gothic cathedral nave, inspired by Laon. The camera dollies east past clustered limestone piers, pointed arcades, a recessed triforium and ribbed vaults. Low warm sunlight traverses a faint haze from the south clerestory to the north arcade and broad flagstone floor."
+  },
+  "board_hashes": {
+    "timeline.jpg": "d6c05923b03cce24479597248243f8bde20c2d46f0d8002a98e107acd936a9be",
+    "angles.jpg": "5968c339276fb70b6e18603439c26afd4c3bf999b531ab25d56e6c4b56658b77"
+  },
+  "script_sha256": "5700046004f4399a8d9cd6572a788acdd863227fcae036bcf12931e1f260b6b1",
+  "render_code": {
+    "pipeline.py": "eeadcd92bd99a958cee6e906b64af6742d98cbdd30a4b0e3c797f0f5f21dfefc",
+    "worker.py": "87ad6b2ba16a235ff664842b23d68a718d15ae955ef577c98688d832ee6b6ee2",
+    "runner.py": "c57bb801dab35f5a2b0885b063fb9dcfb295c13ffa76458b6cd495be8a742ce1",
+    "kit.py": "1c541688aefcb7830967312bd12b52d5c874a7e7e1f383e0841bc74d09343ebe",
+    "formats.py": "796ff77c70997522ceef827ff58dc9ea4f23a5f8484f459bf2300ed1c948c59f",
+    "scriptcheck.py": "0172c93008c43f5988032ef58dce9ab68000d184034c28bebd299b022ee35f5c"
+  },
+  "reviewer_notes": {
+    "probe": "The closer view still keeps the vault and the stained glass in the frame. Lower haze and optical shift reveal the clustered piers and the rose rim while the south light remains visible across the interior.",
+    "timeline": "Repeated pointed bays and clustered piers pass safely on both sides of the travelling camera. The upper gallery is the recessed band of smaller arches between the main arcade and the windows. Diagonal vault ribs cross the aisle in the first half and are clearest in the wide proof. The flagstone aisle runs between the pews and becomes more exposed as they fall behind.",
+    "angles": "The wide proof reveals the vault ribs and the floor down to the foreground. The oblique proof fits the whole slate-roofed shell and both ends. The overhead view carries the full pink dolly route over the roof. The exterior is a simplified shell with an aisle roof, buttresses and exposed gables that support the interior shot.",
+    "compare": "The Laon benchmark on the right gives more visual weight to the crossing, slender triforium piers, chair rows and vault moldings. The prompt-driven draft on the left reproduces the long central aisle, three levels of arches, clustered pillars, diagonal ribs, warm side lighting and east glazing. Its stone surfaces look softer in the draft haze and its seats and exterior are more simplified.",
+    "clip": "Sampled the five-second decoded dolly twice per second. The foreground piers move outward with parallax while the distant glass stays framed. The larger piers crop progressively at the sides while their edges remain intact. No camera intersection is visible.",
+    "jev_look_items": "The gallery, ribs and flagstones are present in the wide proof. The larger pier crops at either side are framing during the dolly. Shade on the rib surfaces carries slight draft grain. The fully visible exterior in the corrected proof is intentionally simpler than the interior."
+  },
+  "qc": {
+    "passed": true,
+    "stage": "preview",
+    "orientation": "horizontal",
+    "video": {
+      "frames": 120,
+      "duration_seconds": 5.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 1338703
+    },
+    "timeline_frames": [
+      1,
+      25,
+      49,
+      73,
+      97,
+      120
+    ],
+    "cover_frame": 41,
+    "proof_frame": 40,
+    "angle_order": [
+      "wide (same camera, half focal length)",
+      "three-quarter set view",
+      "top-down overview with camera path"
+    ],
+    "reference_pairs": [],
+    "render": {
+      "device": "METAL",
+      "samples": 16,
+      "seconds": 127.4,
+      "seconds_per_frame": 1.062,
+      "frames": 120,
+      "frame_stats": [
+        {
+          "file": "frame-0001.png",
+          "mean_luminance": 0.381,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0
+        },
+        {
+          "file": "frame-0003.png",
+          "mean_luminance": 0.3812,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00421
+        },
+        {
+          "file": "frame-0005.png",
+          "mean_luminance": 0.3816,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.007
+        },
+        {
+          "file": "frame-0007.png",
+          "mean_luminance": 0.382,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01002
+        },
+        {
+          "file": "frame-0009.png",
+          "mean_luminance": 0.3833,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01323
+        },
+        {
+          "file": "frame-0011.png",
+          "mean_luminance": 0.3844,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01582
+        },
+        {
+          "file": "frame-0013.png",
+          "mean_luminance": 0.3858,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01817
+        },
+        {
+          "file": "frame-0015.png",
+          "mean_luminance": 0.3875,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02176
+        },
+        {
+          "file": "frame-0017.png",
+          "mean_luminance": 0.3898,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02273
+        },
+        {
+          "file": "frame-0019.png",
+          "mean_luminance": 0.3917,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02499
+        },
+        {
+          "file": "frame-0021.png",
+          "mean_luminance": 0.3932,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02766
+        },
+        {
+          "file": "frame-0023.png",
+          "mean_luminance": 0.3944,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02913
+        },
+        {
+          "file": "frame-0025.png",
+          "mean_luminance": 0.3983,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03002
+        },
+        {
+          "file": "frame-0027.png",
+          "mean_luminance": 0.4026,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03045
+        },
+        {
+          "file": "frame-0029.png",
+          "mean_luminance": 0.4065,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03257
+        },
+        {
+          "file": "frame-0031.png",
+          "mean_luminance": 0.4096,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03339
+        },
+        {
+          "file": "frame-0033.png",
+          "mean_luminance": 0.4133,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03493
+        },
+        {
+          "file": "frame-0035.png",
+          "mean_luminance": 0.4202,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03454
+        },
+        {
+          "file": "frame-0037.png",
+          "mean_luminance": 0.4256,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03588
+        },
+        {
+          "file": "frame-0039.png",
+          "mean_luminance": 0.4322,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03621
+        },
+        {
+          "file": "frame-0041.png",
+          "mean_luminance": 0.4408,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03912
+        },
+        {
+          "file": "frame-0043.png",
+          "mean_luminance": 0.4507,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04448
+        },
+        {
+          "file": "frame-0045.png",
+          "mean_luminance": 0.4592,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04816
+        },
+        {
+          "file": "frame-0047.png",
+          "mean_luminance": 0.4654,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04946
+        },
+        {
+          "file": "frame-0049.png",
+          "mean_luminance": 0.4655,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04863
+        },
+        {
+          "file": "frame-0051.png",
+          "mean_luminance": 0.4569,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04711
+        },
+        {
+          "file": "frame-0053.png",
+          "mean_luminance": 0.4449,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04937
+        },
+        {
+          "file": "frame-0055.png",
+          "mean_luminance": 0.43,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.05276
+        },
+        {
+          "file": "frame-0057.png",
+          "mean_luminance": 0.4155,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.05617
+        },
+        {
+          "file": "frame-0059.png",
+          "mean_luminance": 0.4099,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.05365
+        },
+        {
+          "file": "frame-0061.png",
+          "mean_luminance": 0.4161,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04943
+        },
+        {
+          "file": "frame-0063.png",
+          "mean_luminance": 0.4272,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.05112
+        },
+        {
+          "file": "frame-0065.png",
+          "mean_luminance": 0.4398,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.05452
+        },
+        {
+          "file": "frame-0067.png",
+          "mean_luminance": 0.4489,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.05522
+        },
+        {
+          "file": "frame-0069.png",
+          "mean_luminance": 0.4496,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.05125
+        },
+        {
+          "file": "frame-0071.png",
+          "mean_luminance": 0.4413,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04833
+        },
+        {
+          "file": "frame-0073.png",
+          "mean_luminance": 0.4288,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04792
+        },
+        {
+          "file": "frame-0075.png",
+          "mean_luminance": 0.4179,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04701
+        },
+        {
+          "file": "frame-0077.png",
+          "mean_luminance": 0.4066,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04632
+        },
+        {
+          "file": "frame-0079.png",
+          "mean_luminance": 0.3976,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.04332
+        },
+        {
+          "file": "frame-0081.png",
+          "mean_luminance": 0.3944,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03755
+        },
+        {
+          "file": "frame-0083.png",
+          "mean_luminance": 0.3967,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03199
+        },
+        {
+          "file": "frame-0085.png",
+          "mean_luminance": 0.4024,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03001
+        },
+        {
+          "file": "frame-0087.png",
+          "mean_luminance": 0.4075,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03076
+        },
+        {
+          "file": "frame-0089.png",
+          "mean_luminance": 0.4129,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03119
+        },
+        {
+          "file": "frame-0091.png",
+          "mean_luminance": 0.4175,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03144
+        },
+        {
+          "file": "frame-0093.png",
+          "mean_luminance": 0.4221,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03098
+        },
+        {
+          "file": "frame-0095.png",
+          "mean_luminance": 0.4256,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.03082
+        },
+        {
+          "file": "frame-0097.png",
+          "mean_luminance": 0.4275,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02923
+        },
+        {
+          "file": "frame-0099.png",
+          "mean_luminance": 0.4282,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0275
+        },
+        {
+          "file": "frame-0101.png",
+          "mean_luminance": 0.4266,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02513
+        },
+        {
+          "file": "frame-0103.png",
+          "mean_luminance": 0.424,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02345
+        },
+        {
+          "file": "frame-0105.png",
+          "mean_luminance": 0.4207,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.02148
+        },
+        {
+          "file": "frame-0107.png",
+          "mean_luminance": 0.4177,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01972
+        },
+        {
+          "file": "frame-0109.png",
+          "mean_luminance": 0.4145,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01795
+        },
+        {
+          "file": "frame-0111.png",
+          "mean_luminance": 0.4121,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.0154
+        },
+        {
+          "file": "frame-0113.png",
+          "mean_luminance": 0.4102,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01305
+        },
+        {
+          "file": "frame-0115.png",
+          "mean_luminance": 0.4089,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.01054
+        },
+        {
+          "file": "frame-0117.png",
+          "mean_luminance": 0.4078,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00785
+        },
+        {
+          "file": "frame-0119.png",
+          "mean_luminance": 0.4074,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0,
+          "change_from_previous": 0.00534
+        }
+      ],
+      "loop_seam": null
+    },
+    "loop_seam": null,
+    "warnings": [],
+    "notes": "Machine checks verify files, timing and coarse pixel statistics only. They are not a visual review.",
+    "timing": {
+      "predicted_minutes": 2.87,
+      "actual_minutes": 2.384,
+      "budget_minutes": 30.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.204
+    }
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: a gallery below the high windows (0.65)",
+        "element: diagonal ribs under the vault (0.66)",
+        "element: a flagstone floor (0.63)",
+        "defect: noisy (0.55)",
+        "defect: clipping (0.53)",
+        "defect: set_unfinished (0.69)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "pointed stone arcades": 0.88,
+      "columns with clustered shafts": 0.86,
+      "a gallery below the high windows": 0.65,
+      "diagonal ribs under the vault": 0.66,
+      "a flagstone floor": 0.63,
+      "warm light crossing the interior": 0.94
+    },
+    "defects": {
+      "floating": 0.27,
+      "interpenetration": 0.29,
+      "too_dark": 0.02,
+      "blown_out": 0.09,
+      "noisy": 0.55,
+      "clipping": 0.53,
+      "placeholder": 0.05,
+      "empty": 0.09,
+      "set_unfinished": 0.69
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.43,
+      "2": 0.48,
+      "3": 0.08
+    },
+    "prompt_match_probabilities": {
+      "0": 0.01,
+      "1": 0.24,
+      "2": 0.35,
+      "3": 0.4
+    }
+  }
+}

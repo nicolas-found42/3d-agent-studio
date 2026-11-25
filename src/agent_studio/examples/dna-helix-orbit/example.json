@@ -1,0 +1,26 @@
+{
+  "slug": "dna-helix-orbit",
+  "title": "Double Helix Orbit",
+  "category": "micro-macro",
+  "prompt": "A DNA double helix built from glossy spheres and tubes: phosphate backbone and colored base pairs rotating, the camera orbiting and rising along it in a seamless loop.",
+  "description": "Construct a double helix with phased coordinate rails, paired crosslinks, and a loop-safe orbit.",
+  "brief": {
+    "prompt": "A DNA double helix built from glossy spheres and tubes: phosphate backbone and colored base pairs rotating, the camera orbiting and rising along it in a seamless loop.",
+    "orientation": "vertical",
+    "seconds": 6,
+    "fps": 24,
+    "loop": true
+  },
+  "tags": {
+    "camera": "orbit and rise along the helix",
+    "lighting": "cool key with warm accents",
+    "style": "glossy molecular model",
+    "motion": "helix rotates"
+  },
+  "techniques": [
+    "phased trigonometric helix rails",
+    "glossy beads and paired crosslinks",
+    "animated camera track target",
+    "whole-cycle keyframes"
+  ]
+}

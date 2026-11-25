@@ -1,0 +1,29 @@
+{
+  "slug": "ringed-planet-flyby",
+  "title": "Ringed Planet Flyby",
+  "category": "space",
+  "prompt": "A flyby of a banded gas giant with wide icy rings: the camera passes close to ring particles and rocks, the planet looming with the rings' shadow across its bands; a distant sun.",
+  "description": "Use nested annuli and ring debris for scale during a close flyby under hard sunlight.",
+  "brief": {
+    "prompt": "A flyby of a banded gas giant with wide icy rings: the camera passes close to ring particles and rocks, the planet looming with the rings' shadow across its bands; a distant sun.",
+    "orientation": "ultrawide",
+    "seconds": 8,
+    "fps": 24,
+    "loop": false,
+    "budget_minutes": {
+      "draft": 25
+    }
+  },
+  "tags": {
+    "camera": "flyby past rings toward planet",
+    "lighting": "single distant sun and ring shadow",
+    "style": "photoreal space",
+    "motion": "camera passes ring particles"
+  },
+  "techniques": [
+    "latitudinal procedural cloud bands",
+    "nested annular ring meshes",
+    "near-plane ring debris scattering",
+    "spline camera flyby"
+  ]
+}

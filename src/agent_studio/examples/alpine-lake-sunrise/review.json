@@ -1,0 +1,68 @@
+{
+  "job_id": "b25d506a41b24177918015aa42ac6c08",
+  "drafts": 2,
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: noisy (0.54)",
+        "defect: set_unfinished (0.50)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "snow-covered alpine peaks": 0.97,
+      "pine trees at the waterline": 0.77,
+      "reflective alpine lake": 0.96,
+      "pink sunrise light": 0.88,
+      "low mist above the lake": 0.94
+    },
+    "defects": {
+      "floating": 0.11,
+      "interpenetration": 0.16,
+      "too_dark": 0.05,
+      "blown_out": 0.04,
+      "noisy": 0.54,
+      "clipping": 0.11,
+      "placeholder": 0.02,
+      "empty": 0.11,
+      "set_unfinished": 0.5
+    },
+    "quality": "polished",
+    "prompt_match": "clear",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.22,
+      "2": 0.54,
+      "3": 0.24
+    }
+  },
+  "notes": {
+    "probe": "After widening the view, the pink-lit summits and their full mirror reflection fit inside all three ultrawide stills. Cooler pines and haze form a middle band at the waterline.",
+    "timeline": "The camera skims toward the massif as the nearer dark slopes drift outward. Early rose light stays on the high snow, with a cooler blue mist band moving along the shore. The water keeps a recognizable reflection while small surface changes follow the forward move.",
+    "angles": "The wide view shows the lake enclosed by rising shoulders on both sides. The three-quarter and overhead proofs show the curved, tapered shoreline, a small forested island, and dense pines set into the surrounding terrain. The revised basin reads as continuous in the elevated view.",
+    "jev_look_items": "Jev scored noise at 0.54. The ridged terrain, pine canopy and thin mist have fine texture, with mild preview grain in shadow. The 0.50 unfinished-set score reflects the sparse distant terrain and the map-like overhead material. The modeled hills continue on both sides of the revised waterline."
+  },
+  "qc": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 840,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 1086725
+    },
+    "warnings": [],
+    "loop_seam": null
+  }
+}

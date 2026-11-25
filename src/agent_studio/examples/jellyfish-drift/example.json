@@ -1,0 +1,31 @@
+{
+  "slug": "jellyfish-drift",
+  "title": "Jellyfish Drift",
+  "category": "character",
+  "prompt": "A bioluminescent jellyfish drifts upward through the dark deep sea: translucent bell pulsing, long glowing tentacles trailing, plankton specks floating in volumetric blue light. Seamless loop.",
+  "description": "Animate a pulsing translucent bell and delayed tentacle waves through a vertically repeating field of plankton.",
+  "brief": {
+    "prompt": "A bioluminescent jellyfish drifts upward through the dark deep sea: translucent bell pulsing, long glowing tentacles trailing, plankton specks floating in volumetric blue light. Seamless loop.",
+    "orientation": "vertical",
+    "seconds": 6,
+    "fps": 24,
+    "loop": true,
+    "seed": 11,
+    "budget_minutes": {
+      "draft": 20
+    }
+  },
+  "tags": {
+    "camera": "slow vertical drift with the creature",
+    "lighting": "bioluminescence and blue underwater volume",
+    "style": "emissive translucent",
+    "motion": "pulsing bell and trailing tentacles"
+  },
+  "techniques": [
+    "vertically periodic world and tracking rig",
+    "asymmetric bell contraction shape key",
+    "keyframed tentacle curves",
+    "facing-dependent emission and transparency",
+    "instanced marine snow"
+  ]
+}

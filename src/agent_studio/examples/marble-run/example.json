@@ -1,0 +1,31 @@
+{
+  "slug": "marble-run",
+  "title": "Maple Marble Run",
+  "category": "physics",
+  "prompt": "A wooden marble run with spiral ramps and a lift: a glass marble rolls down the curving tracks, drops through a funnel and is lifted back to the top as a seamless loop.",
+  "description": "Build a two-rail helix with a turned wooden funnel and synchronize a glass marble, return lift and follow camera.",
+  "brief": {
+    "prompt": "A wooden marble run with spiral ramps and a lift: a glass marble rolls down the curving tracks, drops through a funnel and is lifted back to the top as a seamless loop.",
+    "orientation": "portrait",
+    "seconds": 6,
+    "loop": true,
+    "fps": 30,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "camera follows the marble on a path",
+    "lighting": "bright playroom daylight",
+    "style": "toy-like wood and glass",
+    "motion": "marble rolls down a track and loops"
+  },
+  "techniques": [
+    "swept twin spiral rails",
+    "profile-turned maple funnel",
+    "glass marble with colored inclusions",
+    "piecewise periodic route and synchronized lift"
+  ]
+}

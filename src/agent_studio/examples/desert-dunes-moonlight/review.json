@@ -1,0 +1,71 @@
+{
+  "job_id": "6ec11514338a424fa3005a90d0216d48",
+  "drafts": 2,
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: noisy (0.53)",
+        "defect: empty (0.45)",
+        "defect: set_unfinished (0.55)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "rolling sand dunes": 0.88,
+      "full moon": 0.9,
+      "dense starfield": 0.96,
+      "warm glowing tent": 0.95,
+      "campfire with flames": 0.94,
+      "blue moonlit landscape": 0.88
+    },
+    "defects": {
+      "floating": 0.22,
+      "interpenetration": 0.18,
+      "too_dark": 0.03,
+      "blown_out": 0.03,
+      "noisy": 0.53,
+      "clipping": 0.1,
+      "placeholder": 0.02,
+      "empty": 0.45,
+      "set_unfinished": 0.55
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.33,
+      "2": 0.57,
+      "3": 0.1
+    }
+  },
+  "notes": {
+    "probe": "The warm fire and canvas sit in the lower part of the vertical frame, with clear separation between the pale moon, layered dune crests, and the fine starfield.",
+    "timeline": "Gentle handheld drift shifts the moon and the low horizon as the fire flickers beside the tent. Cool dune layers and grain-scale wind ripples stay visible around the concentrated amber practicals. Shrub silhouettes sit on the distant sand. The painterly Freestyle lines appear on crests and camp edges.",
+    "angles": "The wide panel exposes the surrounding basin and wider starfield. The three-quarter proof shows the lantern-lit tent pitched on the sand and a compact camp around the fire. The overhead shows the fire stones, tent ropes, props, and scattered tufts around the camera's short move.",
+    "jev_look_items": "Jev scored noise at 0.53. The starfield and rippled sand supply fine texture across the shot. The 0.45 empty-frame score reflects the space above and around the camp in the vertical frame. The 0.55 unfinished-set score picks up the sparse terrain seen in the proof. The camp and surrounding ground read as a continuous basin.",
+    "render_retry": "The first 10-minute draft stopped during its proof renders after writing all 120 plates. This draft used a 16-minute cap and completed in 6.688 active minutes with the same 16 spp and shot duration."
+  },
+  "qc": {
+    "video": {
+      "frames": 120,
+      "duration_seconds": 5.0,
+      "fps": 24,
+      "width": 360,
+      "height": 640,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 431529
+    },
+    "warnings": [],
+    "loop_seam": null
+  }
+}

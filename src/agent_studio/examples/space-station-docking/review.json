@@ -1,0 +1,58 @@
+{
+  "job_id": "c10320cdb8d44d72a195dd31acd1a997",
+  "drafts": 3,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: interpenetration (0.33)",
+        "defect: noisy (0.42)",
+        "defect: clipping (0.30)",
+        "defect: set_unfinished (0.34)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "a ring-shaped station": 0.98,
+      "a shuttle": 0.95,
+      "Earth’s curved limb": 0.98,
+      "a docking hub": 0.9,
+      "the shuttle approaching the station": 0.92
+    },
+    "defects": {
+      "floating": 0.05,
+      "interpenetration": 0.33,
+      "too_dark": 0.04,
+      "blown_out": 0.06,
+      "noisy": 0.42,
+      "clipping": 0.3,
+      "placeholder": 0.03,
+      "empty": 0.21,
+      "set_unfinished": 0.34
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.31,
+      "2": 0.57,
+      "3": 0.12
+    },
+    "prompt_match_probabilities": {
+      "0": 0,
+      "1": 0.03,
+      "2": 0.28,
+      "3": 0.69
+    }
+  },
+  "notes": {
+    "probe": "The complete blue-banded ring and shuttle are both visible in silhouette over the curved limb. The midpoint still shows white braking puffs at the approaching shuttle's nose. The final close view resolves the amber port collar, seal, and the shuttle's fins.",
+    "timeline": "The first three panels hold the complete ring and reveal slow rotation through the changing position of the spoke trusses and blue bands. The last three tighten toward the docking interface with the steel shadow and warm sun still readable against the ocean.",
+    "angles": "The wider and three-quarter views show the aft solar wings, trussed spokes, and separate shuttle beyond the hub. The overview shows the station edge-on, with the docking path aligned to the center of the hub.",
+    "playback": "The decoded eight-second reel shows the shuttle easing toward the port and matching its roll. Braking plumes are directly visible at frames 46, 92, and 120. The seal closes flush by frame 154 and remains seated through 192. QC confirms 192 frames at 24 fps and no warnings.",
+    "jev_look_items": "The close shot gives a clear view of contact between the shuttle adapter and the receiver lip. Evaluated seal faces meet within two micrometers of each other along the approach axis. The later views crop the ring at the frame boundary as the camera approaches the hub. The three-quarter proof shows the complete ring and its rear structure. Fine grain is limited to low-light tiles and the procedural clouds, with silhouettes, ring banding, and the interface still legible."
+  }
+}

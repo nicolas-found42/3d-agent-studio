@@ -25,20 +25,26 @@ class StdioContract(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(info.serverInfo.name, '3d-agent-studio')
                     tools = await client.list_tools()
                     self.assertEqual({tool.name for tool in tools.tools}, {
-                        'studio_doctor', 'studio_brief', 'studio_draft', 'studio_status',
-                        'studio_view', 'studio_compare', 'studio_finalize',
+                        'studio_doctor', 'studio_brief', 'studio_ingest', 'studio_examples', 'studio_probe',
+                        'studio_draft', 'studio_status', 'studio_view', 'studio_compare', 'studio_finalize',
                     })
                     result = await client.call_tool('studio_brief', {
-                        'brief': {'title': 'Orbit test', 'template': 'orbit-bloom', 'accent': '#00abcd',
-                                  'orientation': 'horizontal'},
+                        'brief': {'prompt': 'A paper boat on a rainy street', 'orientation': 'ultrawide', 'fps': 60},
                     })
                     self.assertFalse(result.isError, result.content)
-                    self.assertEqual(result.structuredContent['accent'], '#00ABCD')
+                    self.assertEqual(result.structuredContent['fps'], 60)
                     self.assertEqual(result.structuredContent['seconds'], 6)
-                    self.assertEqual(result.structuredContent['orientation'], 'horizontal')
-                    invalid = await client.call_tool('studio_draft', {'brief': {'seconds': True}})
+                    self.assertEqual(result.structuredContent['orientation'], 'ultrawide')
+                    invalid = await client.call_tool('studio_draft', {'brief': {'prompt': 'x', 'seconds': True},
+                                                                      'script': 'def build(kit): pass'})
                     self.assertTrue(invalid.isError)
                     self.assertIn('seconds', invalid.content[0].text)
+                    unsafe = await client.call_tool('studio_probe', {'brief': {'prompt': 'x'},
+                                                                     'script': 'import os\ndef build(kit): pass'})
+                    self.assertTrue(unsafe.isError)
+                    self.assertIn('rejected', unsafe.content[0].text)
+                    found = await client.call_tool('studio_examples', {'query': 'architecture'})
+                    self.assertFalse(found.isError, found.content)
                     illegal = await client.call_tool('studio_status', {'job_id': '../outside'})
                     self.assertTrue(illegal.isError)
                     image = await client.call_tool('studio_view', {

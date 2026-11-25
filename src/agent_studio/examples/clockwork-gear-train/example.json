@@ -1,0 +1,31 @@
+{
+  "slug": "clockwork-gear-train",
+  "title": "Clockwork Gear Train",
+  "category": "mechanical",
+  "prompt": "A macro view of a clockwork gear train: brass gears with real teeth meshing at correct ratios, steel arbors, jewel bearings, an escapement ticking; shallow depth of field, seamless loop.",
+  "description": "Build pitch-matched involute gears, key their inverse tooth-count ratios and slide macro focus between contacts.",
+  "brief": {
+    "prompt": "A macro view of a clockwork gear train: brass gears with real teeth meshing at correct ratios, steel arbors, jewel bearings, an escapement ticking; shallow depth of field, seamless loop.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "loop": true,
+    "fps": 24,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "macro slide across gears with shallow depth of field",
+    "lighting": "warm practical lamp, dark background",
+    "style": "photoreal brass and steel",
+    "motion": "meshing gears with correct ratios"
+  },
+  "techniques": [
+    "involute tooth profile construction",
+    "inverse tooth-count rotation ratios",
+    "whole shaft turns for looping",
+    "animated macro focus target"
+  ]
+}

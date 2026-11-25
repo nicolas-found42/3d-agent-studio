@@ -1,0 +1,24 @@
+{
+  "job_id": "996762a5a9614cbda8c832f9b77c9255",
+  "drafts": 2,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: interpenetration (0.43)",
+        "defect: noisy (0.46)",
+        "defect: clipping (0.35)",
+        "defect: set_unfinished (0.51)"
+      ]
+    },
+    "quality": "polished",
+    "prompt_match": "exact"
+  },
+  "notes": {
+    "timeline": "The crane starts low at the end of the long reflecting pool with the facade mirrored in the water and the lone tree on the right, then rises to frame the deep recessed storeys and the slotted attic band against a clear sky. Fins and slab lips throw crisp shadows into each window cell, and balcony ivy adds colour accents. Motion eases in and out with no pops.",
+    "angles": "The wide and three-quarter views show a complete U-shaped courtyard of three facades with roofs, plant rooms and street-side slot windows, so the set is not unfinished; the overview shows a straight crane path along the pool axis. The small bright openings at the arcade corners are where the pilotis open to the outside, which Jev likely read as unfinished.",
+    "cover": "At 16 preview samples the shadowed lower storeys are slightly grainy but read cleanly; no clipped highlights and no objects intersect visibly (the tree sits in its gravel planter, the water sits inside the coping).",
+    "jev_look_items": "interpenetration 0.43, clipping 0.35: checked, none visible. noisy 0.46: mild preview grain in the shade only. set_unfinished 0.51: angles board shows a closed, roofed set."
+  }
+}

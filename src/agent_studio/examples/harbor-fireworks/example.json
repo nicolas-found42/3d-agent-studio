@@ -1,0 +1,31 @@
+{
+  "slug": "harbor-fireworks",
+  "title": "Harbor Fireworks",
+  "category": "physics",
+  "prompt": "Fireworks burst over a quiet harbor at night: rockets rise, explode into colored particle spheres that fall and fade, reflected in dark rippling water with moored boats silhouetted.",
+  "description": "Light harbor water and moored boats with changing bursts and key practical light intensity to spark decay.",
+  "brief": {
+    "prompt": "Fireworks burst over a quiet harbor at night: rockets rise, explode into colored particle spheres that fall and fade, reflected in dark rippling water with moored boats silhouetted.",
+    "orientation": "vertical",
+    "seconds": 6,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "static wide with slow tilt up",
+    "lighting": "night, fireworks as only light sources reflected in water",
+    "style": "cinematic night",
+    "motion": "particle bursts rise and explode"
+  },
+  "techniques": [
+    "radial particle bursts",
+    "age-driven spark emission",
+    "keyed practical flash lights",
+    "anisotropic rippling reflections"
+  ]
+}

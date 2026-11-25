@@ -1,0 +1,34 @@
+{
+  "slug": "brutalist-courtyard-noon",
+  "title": "Brutalist Courtyard, Noon",
+  "category": "architecture",
+  "prompt": "A brutalist concrete courtyard at noon with deep window recesses, a shallow reflecting pool and a lone tree. The camera cranes up the facade as hard shadows carve the geometry.",
+  "description": "How to build real-scale brutalist architecture from batched bevelled boxes with layered concrete weathering, lit by a hard small-angle noon sun over a disc-less physical sky, shot with a crane move.",
+  "brief": {
+    "prompt": "A brutalist concrete courtyard at noon with deep window recesses, a shallow reflecting pool and a lone tree. The camera cranes up the facade as hard shadows carve the geometry.",
+    "orientation": "portrait",
+    "seconds": 5,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "assets": [
+      "polyhaven:wood_textured_concrete@1k",
+      "polyhaven:square_concrete_pavers@1k"
+    ]
+  },
+  "tags": {
+    "camera": "crane rising up a facade",
+    "lighting": "hard noon sun, deep geometric shadows",
+    "style": "photoreal procedural concrete",
+    "motion": "camera only"
+  },
+  "techniques": [
+    "batched axis-aligned boxes into one mesh per material with a per-face tone attribute",
+    "kit.textured board-formed concrete scan with node-layered tone, rain streaks and damp",
+    "kit.sun with small angle plus kit.sky(sun_disc=False) as skylight fill",
+    "kit.dolly as a crane: rising camera with a rising look target",
+    "recursive bmesh tree with thousands of leaf cards for dappled shadow",
+    "transmissive water box over a dark slate basin for reflections",
+    "kit.haze at very low density for aerial depth"
+  ]
+}

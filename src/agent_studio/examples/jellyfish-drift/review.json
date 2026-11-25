@@ -1,0 +1,72 @@
+{
+  "job_id": "929351de142e46a6983bea0f048c71da",
+  "drafts": 1,
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: noisy (0.60)",
+        "defect: set_unfinished (0.49)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "translucent jellyfish bell": 0.96,
+      "long glowing tentacles": 0.96,
+      "plankton specks": 0.97,
+      "dark blue underwater haze": 0.74,
+      "pulsation across the shot": 0.74
+    },
+    "defects": {
+      "floating": 0.05,
+      "interpenetration": 0.19,
+      "too_dark": 0.03,
+      "blown_out": 0.04,
+      "noisy": 0.6,
+      "clipping": 0.07,
+      "placeholder": 0.04,
+      "empty": 0.22,
+      "set_unfinished": 0.49
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.2,
+      "2": 0.6,
+      "3": 0.2
+    }
+  },
+  "notes": {
+    "probe": "The wider revision keeps the fine tentacle tips inside the vertical shot and shows the lavender organs through the translucent cyan bell.",
+    "timeline": "The bell stretches during each contraction and settles again. Rim bulbs follow the contracting bell, long tentacles trail with a delayed wave, and the pale plankton scrolls past the rising creature. The brightest edges retain detail at preview size.",
+    "angles": "The wide and three-quarter views show the creature suspended inside the layered speck field, with translucent outer bell and warm inner structures from both views. The overhead makes the dome read as a round disc. The nearly vertical camera travel projects to a point from above.",
+    "seam": "The two final frames and two opening frames match across the boundary in bell silhouette, tentacle trajectories and the vertical speck field. The extra-frame difference is 0.00368 versus a typical sampled change of 0.02755.",
+    "jev_look_items": "Jev scored noise at 0.60. The instanced plankton and marine snow account for the bright specks, and the translucent bell keeps clean ribs and color separation. The 0.49 unfinished-set score picks up the finite extent of the particle field in the extra views. The field covers the full tracked shot."
+  },
+  "qc": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 360,
+      "height": 640,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 2094490
+    },
+    "warnings": [],
+    "loop_seam": {
+      "first_vs_extra_frame": 0.00368,
+      "typical_sampled_change": 0.02755
+    }
+  }
+}

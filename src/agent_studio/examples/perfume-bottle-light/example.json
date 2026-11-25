@@ -1,0 +1,31 @@
+{
+  "slug": "perfume-bottle-light",
+  "title": "Perfume Bottle Light Study",
+  "category": "product",
+  "prompt": "A faceted perfume bottle with amber liquid and a gold cap on a glossy plinth, against a saturated magenta backdrop. A hard light slowly sweeps across it while the camera pushes in.",
+  "description": "Use a thick faceted shell and a separate liquid volume, then move a hard key and caustic gobo across a small studio set.",
+  "brief": {
+    "prompt": "A faceted perfume bottle with amber liquid and a gold cap on a glossy plinth, against a saturated magenta backdrop. A hard light slowly sweeps across it while the camera pushes in.",
+    "orientation": "vertical",
+    "seconds": 5,
+    "fps": 24,
+    "loop": false,
+    "seed": 11,
+    "budget_minutes": {
+      "draft": 16
+    }
+  },
+  "tags": {
+    "camera": "slow push-in",
+    "lighting": "sweeping hard spot and a caustic gobo",
+    "style": "photoreal glass and liquid",
+    "motion": "light sweeps across the bottle"
+  },
+  "techniques": [
+    "lathed glass shell with an inner wall",
+    "nested amber liquid volume",
+    "single sweeping hard key",
+    "caustic gobo follows the glass shadow",
+    "small-scale studio framing"
+  ]
+}

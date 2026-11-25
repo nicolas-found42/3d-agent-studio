@@ -1,0 +1,56 @@
+{
+  "job_id": "1ab059506d4c4fa4ab5dfa243eb5a92d",
+  "drafts": 1,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: the mech taking a step with one foot (0.39)",
+        "defect: too_dark (0.70)",
+        "defect: blown_out (0.30)",
+        "defect: noisy (0.72)",
+        "defect: clipping (0.46)",
+        "defect: empty (0.44)",
+        "defect: set_unfinished (0.67)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "a dark hangar interior": 0.96,
+      "massive sliding doors": 0.89,
+      "a looming mech silhouette": 0.94,
+      "light beams and haze": 0.97,
+      "a widened door opening": 0.88,
+      "the mech taking a step with one foot": 0.39
+    },
+    "defects": {
+      "floating": 0.28,
+      "interpenetration": 0.28,
+      "too_dark": 0.7,
+      "blown_out": 0.3,
+      "noisy": 0.72,
+      "clipping": 0.46,
+      "placeholder": 0.22,
+      "empty": 0.44,
+      "set_unfinished": 0.67
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0.02,
+      "1": 0.4,
+      "2": 0.49,
+      "3": 0.09
+    }
+  },
+  "notes": {
+    "probe": "The closed door reads in blue-grey service light. Once the leaves retract, the mech outline, scale figures and raking exterior reflection appear in a warm beam.",
+    "timeline": "The opening makes a thin vertical blade of light, then widens to frame the silhouette and reveal bright visor slits. The two human figures next to the feet establish the scale, and the yellow centerline carries the eye from inside the hangar to the moving mech.",
+    "angles": "The wide interior shows the service lights, floor marking, and high roof over the door. The oblique and top views show the solid hangar enclosure with the mech and apron lights outside. The roof hides much of the set from these positions.",
+    "playback": "Decoded sequence inspection and additional enlarged plate crops at frames 73, 86, 111, 126 and 143 show the foot on screen left lift and land, then the other foot lift and land before the closing hold. Blender transform checks confirm the support foot stays planted while the opposite foot lifts over 0.9 m.",
+    "jev_look_items": "Both independent foot lifts are clear in full-width or enlarged frames 86 and 126. The opening seam and floor remain visible in the dark interior. The reflected daylight creates brief highlights, and preview denoising leaves some texture in the haze. The doorframe and partly retracted leaves mask the mech during the reveal. The camera tracks inside the clear opening. The broad apron and interior floor establish scale and give the light beam room to spread. The roof hides the interior from the higher angles, and the wider view shows the finished hangar set."
+  }
+}

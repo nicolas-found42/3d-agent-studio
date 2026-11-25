@@ -1,0 +1,58 @@
+{
+  "job_id": "0850b28bf5264725a9a371355509cacc",
+  "drafts": 2,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: bright toy-like materials (0.63)",
+        "defect: interpenetration (0.45)",
+        "defect: noisy (0.50)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "a wooden spiral track": 0.98,
+      "a glass marble with a colored core": 0.91,
+      "a wooden receiving funnel": 0.81,
+      "a mechanical return lift": 0.96,
+      "bright toy-like materials": 0.63
+    },
+    "defects": {
+      "floating": 0.19,
+      "interpenetration": 0.45,
+      "too_dark": 0.03,
+      "blown_out": 0.05,
+      "noisy": 0.5,
+      "clipping": 0.11,
+      "placeholder": 0.03,
+      "empty": 0.16,
+      "set_unfinished": 0.22
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.22,
+      "2": 0.71,
+      "3": 0.07
+    },
+    "prompt_match_probabilities": {
+      "0": 0.01,
+      "1": 0.13,
+      "2": 0.41,
+      "3": 0.45
+    }
+  },
+  "notes": {
+    "probe": "The opening and closing views share the same pose. The glass marble and cobalt insert are visible at the top and halfway down, with the whole spiral, funnel, and teal lift clearly distinguishable.",
+    "timeline": "The marble rolls along the upper and lower wooden turns, before the stills show it dropping at the bowl and resting on the platform. In the full frames it reaches the funnel lip at frame 107, drops inside at 113, emerges under it at 118, rolls along the return at 122 and 128, and rises on the lift at 153.",
+    "angles": "The alternate views show both rails, the circular base, and the mechanical guide pair separate from the spiral. The overhead proof shows the funnel and transfer path alongside the tightly spaced spiral turns.",
+    "seam": "The first frame and extra loop frame are exactly equal in the video QC comparison (0.00000 difference vs 0.01848 typical sampled change). Blender evaluation also verified equal marble, lift carrier, and camera transforms across the seam.",
+    "playback": "Both cycles in the decoded MP4 show the marble descending, passing through the open throat, crossing the low rails, and being carried up before a short handoff to the top turn. The camera follows the changing height. QC confirms 180 frames at 30 fps and no warnings.",
+    "jev_look_items": "The run uses a muted playroom palette with honey maple, teal fittings and a cobalt glass center. The marble's overlap with the rim in the timeline is the intended occlusion as it enters the open funnel. A mesh-distance check of each frame found no overlaps greater than 8 mm against the tested spiral rails, funnel, lift, motor, and base. Some soft sampling is visible on the wood, but the bowl opening, rail spacing, and marble center are legible."
+  }
+}

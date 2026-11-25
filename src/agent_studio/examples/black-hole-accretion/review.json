@@ -1,0 +1,87 @@
+{
+  "job_id": "d7b0bf0e8ae24d7a90c68674383165b1",
+  "drafts": 1,
+  "scene_sha256": "dae64377c8a3bf49fbb907acc86340385e8a73a6425ffa92479881db6ab1e973",
+  "review_hashes": {
+    "timeline.jpg": "ac7d831c74269a4352041b1f8bfa1bbca07c3fc7e26b621275d3914c681c354c",
+    "angles.jpg": "690a33af6ebe25cf0be59d5024a438e21fe8009e34e8e94d2bd78f8f95812f90",
+    "seam.jpg": "5b087d4e96d56037498e72bef09ee224e4b29043836f84ec2f29217132d6da6b"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "a black central silhouette": 0.98,
+      "an orange or white glowing accretion disk": 0.97,
+      "a thin ring surrounding the black center": 0.81,
+      "distant stars": 0.94
+    },
+    "defects": {
+      "floating": 0.05,
+      "interpenetration": 0.12,
+      "too_dark": 0.03,
+      "blown_out": 0.07,
+      "noisy": 0.42,
+      "clipping": 0.06,
+      "placeholder": 0.02,
+      "empty": 0.07,
+      "set_unfinished": 0.48
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.16,
+      "2": 0.44,
+      "3": 0.39
+    },
+    "look": [
+      "defect: noisy (0.42)",
+      "defect: set_unfinished (0.48)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "defect: noisy (0.42)": "The fine dark bands running in concentric spirals are authored turbulent accretion texture. The silhouette stays sharp and no incidental grain pattern overwhelms the outer disk.",
+      "defect: set_unfinished (0.48)": "The optical model is an intentionally stylized lensing illustration, with an unbroken physical disk, a complete spherical shadow and rendered deep field. The far alternate camera deliberately shows a large expanse of space."
+    }
+  },
+  "notes": {
+    "probe": "The dark core is legible against the thin photon ring and warm disc. The outer emission tapers to black against sparse stars, while the upper arcs read as a stylized lensing illustration. The quarter-cycle camera tilt and disc texture animation are subtle.",
+    "timeline": "The central shadow stays sharp while the bright inner edge moves around the accretion disk and the camera subtly tilts. Orange spiral filaments fade outward without a hard colored rim. The thin upper arcs sit separately against black, with independent background-star movement from camera parallax.",
+    "angles": "The closer wide proof retains the three-dimensional relationship between the illustrated arcs and disk. The three-quarter proof shows that the distant stars are an intentional deep field. In the overhead proof the full annulus and its pink arc-shaped camera path are visible.",
+    "seam": "The four bordering frames show continuous orange texture swirl and a steady central ring silhouette. The normalized first-versus-extra frame difference is zero for the metric used by the studio."
+  },
+  "render": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 708795
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 145,
+      "predicted_minutes": 2.23,
+      "budget_minutes": 10,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 2.23,
+      "actual_minutes": 1.075,
+      "budget_minutes": 10.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 1.074
+    },
+    "warnings": []
+  }
+}

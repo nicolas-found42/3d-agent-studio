@@ -1,0 +1,31 @@
+{
+  "slug": "fractured-sphere-breath",
+  "title": "Fractured Sphere, Breathing",
+  "category": "abstract",
+  "prompt": "A sphere made of Voronoi-like ceramic shards breathes: the shards drift outward revealing a glowing orange core, then close again, as a seamless loop.",
+  "description": "Bisect a shell into ceramic Voronoi shards and key a loop in which their rough faces catch light from the core.",
+  "brief": {
+    "prompt": "A sphere made of Voronoi-like ceramic shards breathes: the shards drift outward revealing a glowing orange core, then close again, as a seamless loop.",
+    "orientation": "square",
+    "seconds": 5,
+    "loop": true,
+    "fps": 30,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "static centered",
+    "lighting": "soft studio HDRI-like gradient world and rim lights",
+    "style": "matte ceramic shards with glowing core",
+    "motion": "shards breathe outward and back"
+  },
+  "techniques": [
+    "bmesh half-plane cuts",
+    "separate glaze and bisque faces",
+    "emissive core with internal practical",
+    "phase-shifted periodic expanding shards"
+  ]
+}

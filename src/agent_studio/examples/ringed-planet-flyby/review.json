@@ -1,0 +1,89 @@
+{
+  "job_id": "be5c7ddab82e49a4846a83deeab5af97",
+  "drafts": 1,
+  "scene_sha256": "be6a211692a624cd914639467f8c65e11a06d5a94113c9e49c40fe72ab15344a",
+  "review_hashes": {
+    "timeline.jpg": "605080d7ee1c7ad7b453051e29d822820d31800379eb521595e0912adf1b71e5",
+    "angles.jpg": "ef688c21e2eca22295d5591151ebbf121619355f8b2f4fa750766186f448e678"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "a striped gas giant": 0.98,
+      "planetary rings": 0.99,
+      "a shadowed side of the gas giant": 0.93,
+      "small foreground ring particles": 0.92
+    },
+    "defects": {
+      "floating": 0.2,
+      "interpenetration": 0.48,
+      "too_dark": 0.06,
+      "blown_out": 0.05,
+      "noisy": 0.53,
+      "clipping": 0.34,
+      "placeholder": 0.05,
+      "empty": 0.07,
+      "set_unfinished": 0.46
+    },
+    "quality": "polished",
+    "prompt_match": "clear",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.36,
+      "2": 0.51,
+      "3": 0.12
+    },
+    "look": [
+      "defect: interpenetration (0.48)",
+      "defect: noisy (0.53)",
+      "defect: clipping (0.34)",
+      "defect: set_unfinished (0.46)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "defect: interpenetration (0.48)": "The debris lies in a thin ring plane and overlaps the continuous, stylized density strips. It represents material in the rings. The ring system itself is separated from the planet by a visible gap in the wide and overhead views.",
+      "defect: noisy (0.53)": "The gas bands are procedural and intentionally irregular. Some near fragments blur during the fastest camera movement. The bands and planet outline remain readable in every frame.",
+      "defect: clipping (0.34)": "Near rocks and the top and bottom of the giant leave the frame as the camera flies closer. The view does not expose an inside surface or flip the planet silhouette.",
+      "defect: set_unfinished (0.46)": "The wide alternate views contain a complete spherical planet, concentric ring bands, and foreground ice against a sparse star field. Their large black margins convey astronomical scale."
+    }
+  },
+  "notes": {
+    "probe": "The opening establishes the full striped giant and tilted ring plane under hard directional light. The camera then passes close enough to crop individual foreground fragments, before lifting above the ring plane. The partial planetary disc at close range is intentional.",
+    "timeline": "The first two plates show the complete banded gas giant with a hard terminator and ring bands in silhouette below. The near pass shows different sized chunks of ring ice streak across the foreground while the giant fills the frame. The final plates rise above the rings and open a gap between the ring system and planet.",
+    "angles": "The wide view gives close debris a reference scale. The three-quarter and top-down proofs show separated orbital bands and a continuous planet sphere. The pink path curves toward the ring plane and then climbs around the lit side."
+  },
+  "render": {
+    "video": {
+      "frames": 192,
+      "duration_seconds": 8.0,
+      "fps": 24,
+      "width": 840,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 1159683
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 192,
+      "predicted_minutes": 4.52,
+      "budget_minutes": 25,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 4.52,
+      "actual_minutes": 1.791,
+      "budget_minutes": 25.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 1.524
+    },
+    "warnings": []
+  }
+}

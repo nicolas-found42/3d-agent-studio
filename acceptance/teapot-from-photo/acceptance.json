@@ -1,0 +1,23 @@
+{
+  "title": "Black ceramic teapot from one photograph",
+  "brief": {
+    "prompt": "A close product shot of the teapot in the reference: nearly spherical charcoal ceramic with a low foot, broad shallow domed lid with a glossy red lip and black knob, one short upturned spout and a generous round handle. Warm window light rakes the textured glaze. A slow rightward slide reveals the curve of the handle and keeps the entire silhouette in view.",
+    "orientation": "horizontal", "seconds": 4, "fps": 24
+  },
+  "inputs": [{"file": "teapot.jpg", "role": "subject", "note": "Match the silhouette, charcoal glaze, red rim, spout and handle."}],
+  "elements": ["a rounded black ceramic teapot", "a red ring around a shallow lidded top", "a black lid knob", "a curved upturned spout", "a large dark loop handle"],
+  "reviewer_notes": {
+    "probe": "The handle, red-rimmed lid and upward spout stay readable from both ends of the slide. The warm reflection on the dark body follows the camera angle.",
+    "timeline": "The teapot stays inside the frame throughout the rightward move. Parallax exposes more of the handle opening and moves the spout against the linen while the tabletop contact shadow remains fixed.",
+    "angles": "Wide and three-quarter views show the pot resting on limestone and the handle attaching at top and bottom. The top-down proof includes the entire body, spout, handle and pink camera track. The wide proof shows the workshop backdrop ending beyond the edges of the hero shot.",
+    "references": "The reference and final render share the charcoal spherical body, shallow lid and glossy red lip, black finial, upturned hollow spout and chunky round handle. The render stages it alone with linen and stronger controlled highlights.",
+    "clip": "Sampled the decoded four-second clip twice per second. The relative alignment of handle, lid, spout and background changes smoothly. The hero silhouette remains complete.",
+    "jev_look_items": "The glazed spout and handle meet the body where the fired clay parts join. Preview grain lives mostly on the counter and does not obscure the edges. The full subject sits on a finished tabletop, with the rear studio panel visible only in the angle proof."
+  },
+  "overrides": [
+    {
+      "item": "prompt match: loose",
+      "reason": "The full-size timeline and decoded sequence show the rightward reveal and unbroken silhouette. All five specified product features are visible, and the subject-specific comparison rated the paired photograph close. The reviewer can verify the shorter spout, matching red rim and dark ceramic against the side-by-side board."
+    }
+  ]
+}

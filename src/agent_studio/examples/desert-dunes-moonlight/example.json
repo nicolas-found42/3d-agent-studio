@@ -1,0 +1,34 @@
+{
+  "slug": "desert-dunes-moonlight",
+  "title": "Desert Dunes by Moonlight",
+  "category": "landscape",
+  "prompt": "Rolling desert dunes under a full moon and a dense starfield, a small campfire with a tent glowing warm in the cold blue night. Gentle handheld drift; the fire flickers.",
+  "description": "Teaches a sculpted dune heightfield on a variable-density grid, a procedural world-shader starfield, cool moonlight against warm flickering practicals, and painterly Freestyle ink lines with an exclusion collection.",
+  "brief": {
+    "prompt": "Rolling desert dunes under a full moon and a dense starfield, a small campfire with a tent glowing warm in the cold blue night. Gentle handheld drift; the fire flickers.",
+    "orientation": "vertical",
+    "seconds": 5,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "budget_minutes": {
+      "draft": 16
+    }
+  },
+  "tags": {
+    "camera": "locked-off with subtle handheld",
+    "lighting": "cool moonlight and starfield, warm campfire practical",
+    "style": "painterly ink lines (freestyle)",
+    "motion": "campfire flicker and drifting sand"
+  },
+  "techniques": [
+    "asymmetric dune heightfield on a non-uniform grid (kit.mesh)",
+    "world-shader starfield, moon glow and Milky Way via Voronoi and Light Path",
+    "kit.sun moonlight plus emissive moon disc on the same direction",
+    "flame tongues and point light flickering with kit.loop_noise",
+    "Freestyle linestyle modifiers: taper, distance thinning, Perlin wobble, collection exclusion",
+    "baked kit.particles grains and scrolling alpha streamer cards",
+    "translucent tent canvas lit by an interior practical",
+    "kit.handheld with a tiny sine dolly"
+  ]
+}

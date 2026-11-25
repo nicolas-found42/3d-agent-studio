@@ -11,7 +11,7 @@ STUDIO_MCP="$PWD/.venv/bin/3d-agent-studio-mcp"
 STUDIO_JOBS="$HOME/3d-agent-studio-jobs"
 ```
 
-For Windows paths, use `.venv\Scripts\3d-agent-studio-mcp.exe`, and escape backslashes inside JSON strings. Windows rendering has not been verified. Use absolute paths in host settings, even if the host supports variables. A configured job root belongs to the local server process, not the current working directory of the agent. Use separate roots for projects whose artifacts should not be visible to each other.
+The render worker uses POSIX file locking. Use absolute paths in host settings, even if the host supports variables. The job root is configured when the local server starts. Use separate roots for projects whose artifacts should stay isolated.
 
 ## Oh My Pi (OMP) and Cursor
 
@@ -90,4 +90,17 @@ For a client that can run commands but not MCP, use the standalone CLI. Give the
 
 ## Verification
 
-Use a fresh session and ask the agent to run `studio_doctor`. It should return the chosen job root, the three runtime versions, and the brief defaults. Follow up with `studio_brief` and a two-second test. If the agent can read MCP image content, `studio_view` returns the JPEG directly; otherwise open the local path in an image viewer. Review media stays local unless you or the host send it elsewhere.
+1. Call `studio_doctor` in a fresh session. Check the job root and the Blender, FFmpeg and FFprobe versions.
+2. Call `studio_examples` with `query: "product"` and `include_script: true`. Check that you get a scene script and local poster and clip paths.
+3. Call `studio_draft` with `brief: {"prompt":"A red cube turns on a grey floor","orientation":"square","seconds":2}` and this Python as `script`.
+
+   ```python
+   def build(kit):
+       kit.ground()
+       cube = kit.box("Cube", 1, (0, 0, .5), kit.material("Red", "#BD3026"))
+       kit.spin(cube)
+       kit.sun()
+       kit.camera()
+   ```
+
+4. Poll `studio_status` until `preview.state` is `ready`. Use `studio_view` for `timeline.jpg` and `angles.jpg`. If the host does not show MCP images inline, open the local paths. The six images in the timeline should show the cube turning.

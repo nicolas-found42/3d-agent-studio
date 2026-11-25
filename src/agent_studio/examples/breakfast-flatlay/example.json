@@ -1,0 +1,30 @@
+{
+  "slug": "breakfast-flatlay",
+  "title": "Breakfast Flat Lay",
+  "category": "still-life",
+  "prompt": "A top-down breakfast flat lay on linen: a coffee cup with rising steam, a croissant, berries, a jar of jam, a spoon slowly stirring the coffee, in a seamless loop.",
+  "description": "Compose a caf\u00e9 still life from above with layered pastry, clusters of fruit, and a looped stirring spoon.",
+  "brief": {
+    "prompt": "A top-down breakfast flat lay on linen: a coffee cup with rising steam, a croissant, berries, a jar of jam, a spoon slowly stirring the coffee, in a seamless loop.",
+    "orientation": "square",
+    "seconds": 5,
+    "fps": 24,
+    "loop": true,
+    "budget_minutes": {
+      "draft": 18
+    }
+  },
+  "tags": {
+    "camera": "top-down locked camera",
+    "lighting": "bright soft daylight",
+    "style": "bright editorial food photography",
+    "motion": "steam rises and spoon stirs"
+  },
+  "techniques": [
+    "layered curved pastry forms",
+    "lathed cup and wide saucer",
+    "berry drupelet clusters",
+    "turntable spoon axis",
+    "looping steam wisps"
+  ]
+}

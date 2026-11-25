@@ -1,0 +1,88 @@
+{
+  "job_id": "8fe1c622e65e4ad8b249935964d7e818",
+  "drafts": 1,
+  "scene_sha256": "f0c57bb9eba41805f37744f71e6aa23992108fee42e6d3c814bf77a9248e3d19",
+  "review_hashes": {
+    "timeline.jpg": "bd058ad98bc433d8270e9540d46bcd7f97874e4d72f0fe6e68da6cd3db42d7fd",
+    "angles.jpg": "cecc7de0f766cd17a36df704706e0070eae2a98141fe6c53809ad13f26354b49"
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "verdict": "look",
+    "elements": {
+      "a dark table with draped fabric": 0.96,
+      "a silver or pewter jug": 0.94,
+      "wine in a stemmed glass": 0.76,
+      "a lemon and grapes": 0.89,
+      "a lit candle": 0.98
+    },
+    "defects": {
+      "floating": 0.16,
+      "interpenetration": 0.51,
+      "too_dark": 0.04,
+      "blown_out": 0.04,
+      "noisy": 0.61,
+      "clipping": 0.11,
+      "placeholder": 0.02,
+      "empty": 0.05,
+      "set_unfinished": 0.43
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.09,
+      "2": 0.59,
+      "3": 0.32
+    },
+    "look": [
+      "defect: interpenetration (0.51)",
+      "defect: noisy (0.61)",
+      "defect: set_unfinished (0.43)"
+    ],
+    "fix": [],
+    "reviewed_findings": {
+      "defect: interpenetration (0.51)": "The linen conforms to the table and falls at the front edge. Its shape is continuous in the alternate view. Grapes touch within their tight bunches and the fruit sits in the salver without a visible object passing through the plate.",
+      "defect: noisy (0.61)": "A little warm draft grain remains in the brown shadowed wall. The linen edge, candle flame and rim highlights remain defined.",
+      "defect: set_unfinished (0.43)": "The wider view shows a tabletop photography set built with one drape, a background, and all of the foreground props. The camera remains tightly composed to the artwork and its outer stage edges stay out."
+    }
+  },
+  "notes": {
+    "probe": "The bright table linen now reads as a continuous fold with no table holes. The metal jug, dark amber stemmed glass and candle balance the upper scene, with the two grape clusters and fresh lemon on the lower pewter salver. The camera creeps forwards without cropping the flame.",
+    "timeline": "A narrow warm window key models the jug, raking across the fruit and leaving the brown rear wall in shadow. The wine remains visible as a dark amber stemmed glass next to the candle. The model pushes in slowly as the flame shape changes. The fly is small and remains secondary to the pottery and fruit.",
+    "angles": "The side proofs reveal the drape going continuously over the tabletop edge and the separate placement of jug, roemer and candle. The overhead shows the arrangement of the grapes and lemon on and beside the shallow pewter salver."
+  },
+  "render": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 360,
+      "height": 450,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 328546
+    },
+    "estimate": {
+      "samples": 16,
+      "frames": 144,
+      "predicted_minutes": 3.09,
+      "budget_minutes": 20,
+      "fits": true
+    },
+    "timing": {
+      "predicted_minutes": 3.09,
+      "actual_minutes": 1.342,
+      "budget_minutes": 20.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 1.303
+    },
+    "warnings": []
+  }
+}

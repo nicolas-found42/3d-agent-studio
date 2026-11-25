@@ -1,0 +1,52 @@
+{
+  "job_id": "adb64dffaef3492cbea5ca781490e0b6",
+  "drafts": 1,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: interpenetration (0.54)",
+        "defect: noisy (0.70)",
+        "defect: set_unfinished (0.39)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "meshing brass gear teeth": 0.83,
+      "steel arbors": 0.71,
+      "ruby-colored jewel bearings": 0.96,
+      "three rotating wheels": 0.72,
+      "a shallow focus macro view": 0.92
+    },
+    "defects": {
+      "floating": 0.23,
+      "interpenetration": 0.54,
+      "too_dark": 0.05,
+      "blown_out": 0.04,
+      "noisy": 0.7,
+      "clipping": 0.18,
+      "placeholder": 0.02,
+      "empty": 0.09,
+      "set_unfinished": 0.39
+    },
+    "quality": "polished",
+    "prompt_match": "clear",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.14,
+      "2": 0.59,
+      "3": 0.27
+    }
+  },
+  "notes": {
+    "probe": "The three ruby bearings are visible across the endpoints of the slide. At the midpoint the largest wheel takes focus and the opposite pair falls off gently.",
+    "timeline": "Gear teeth and sidewalls stay readable against the blue reflection on the plinth. Brass and steel read as metal, each ruby bearing stays sharp as the focal plane moves, and the small timing lever at the rear reads best in the right-focused frames.",
+    "angles": "The wide view shows three wheels on spaced arbors, the beveled black plate and its fine border. The top view exposes both tooth-contact points and the rear timing lever, while the pink line records the lateral camera travel.",
+    "seam": "The first and extra frame differ by 0.0053 against typical sampled change of 0.0573. The camera stops its outward slide smoothly and the three shafts complete whole revolutions across the loop.",
+    "playback": "Decoded samples from both cycles show the middle wheel counter-rotating as the outer pair turns, with the left-to-right focus move and its return. The two adjacent tooth-count phase sums were checked directly in Blender and remain constant.",
+    "jev_look_items": "Interpenetration (0.54): the visible contacts occur at the meshing teeth and where the wheels mount on their arbors. The top view and phase checks show both meshes aligned. Noise (0.70): the defocused base has some soft patchiness at 16 samples. The sharp teeth, arbors and bearings remain legible. Set unfinished (0.39): the wider angles show the complete demonstration plate, including the border and rear lever."
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "slug": "space-station-docking",
+  "title": "Space Station Docking",
+  "category": "mechanical",
+  "prompt": "A ring-shaped space station rotates slowly above Earth while a small shuttle aligns and docks with the hub, thrusters puffing; harsh sun, deep black space, stars.",
+  "description": "Build a detailed ring station over a procedural Earth and match a shuttle’s roll to the dock as it approaches.",
+  "brief": {
+    "prompt": "A ring-shaped space station rotates slowly above Earth while a small shuttle aligns and docks with the hub, thrusters puffing; harsh sun, deep black space, stars.",
+    "orientation": "horizontal",
+    "seconds": 8,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "budget_minutes": {
+      "probe": 8,
+      "draft": 24
+    }
+  },
+  "tags": {
+    "camera": "slow tracking alongside the shuttle",
+    "lighting": "harsh sunlight in space, earthshine fill",
+    "style": "photoreal hard-surface",
+    "motion": "station rotates, shuttle docks"
+  },
+  "techniques": [
+    "scale-separated planet and station",
+    "procedural cloud and limb shells",
+    "spin-matched docking",
+    "per-object thruster puff fades"
+  ]
+}

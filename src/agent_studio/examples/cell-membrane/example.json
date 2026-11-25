@@ -1,0 +1,29 @@
+{
+  "slug": "cell-membrane",
+  "title": "Cell Membrane",
+  "category": "micro-macro",
+  "prompt": "A microscopic view of a cell membrane: a lipid bilayer of thousands of beads with tails, embedded channel proteins and glycoproteins, gently jiggling, in a soft translucent scientific-illustration style.",
+  "description": "Batch a lipid bilayer into editable meshes, then animate it with displacement shape keys.",
+  "brief": {
+    "prompt": "A microscopic view of a cell membrane: a lipid bilayer of thousands of beads with tails, embedded channel proteins and glycoproteins, gently jiggling, in a soft translucent scientific-illustration style.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "fps": 24,
+    "loop": false,
+    "budget_minutes": {
+      "draft": 18
+    }
+  },
+  "tags": {
+    "camera": "microscopic drift past proteins",
+    "lighting": "soft translucent backlight and depth",
+    "style": "scientific illustration with subsurface",
+    "motion": "lipids jiggle and proteins drift"
+  },
+  "techniques": [
+    "batched phosphate and lipid meshes",
+    "shape-keyed thermal variation",
+    "six-subunit stylized channel proteins",
+    "sugar residues as branched surface details"
+  ]
+}

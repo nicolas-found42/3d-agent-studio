@@ -1,0 +1,123 @@
+{
+  "job_id": "db88edac90e947e894026e1bb97b6680",
+  "stage": "master",
+  "plan": {
+    "width": 1920,
+    "height": 1080,
+    "frames": 97,
+    "budget_minutes": 10.0,
+    "quality": "fast",
+    "samples": 16,
+    "requested_samples": 128,
+    "predicted_minutes": 6.49,
+    "predicted_minutes_at_64_spp": 20.7
+  },
+  "approved_preview": {
+    "timeline.jpg": "ce1a36a48d8513e95343e04989fc445dd89a927071606fd4439bfe398c546d2a",
+    "angles.jpg": "6fb7bf5f6a91ef72bf230a7211b6c383cfc6fe6c3346854ea071da8edee66113",
+    "seam.jpg": "b12a14cd8bc6ce11b5240a2478c9495acc6641667daf350ad50ca54b4bf49623"
+  },
+  "master_sha256": "3e731e8713ab3ef7cf6bfc4fcd69ff247db7764bd40b234e793589384668c596",
+  "board_hashes": {
+    "timeline.jpg": "91ae1d023610d95750cddd71bc34069c6916284f9427abf9761a36003384159c",
+    "angles.jpg": "6fb7bf5f6a91ef72bf230a7211b6c383cfc6fe6c3346854ea071da8edee66113",
+    "seam.jpg": "34a7981042e76b8251c85ae7e5421afd40e3aa7ac780a33eae19caf469f48a3f"
+  },
+  "qc": {
+    "timing": {
+      "predicted_minutes": 6.49,
+      "actual_minutes": 6.08,
+      "budget_minutes": 10.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.067
+    },
+    "video": {
+      "frames": 96,
+      "duration_seconds": 4.0,
+      "fps": 24,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 797152
+    },
+    "two_cycles": {
+      "frames": 192,
+      "duration_seconds": 8.0,
+      "fps": 24,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 1593418
+    },
+    "loop_seam": {
+      "first_vs_extra_frame": 0.0,
+      "typical_sampled_change": 0.0017
+    },
+    "warnings": []
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: interpenetration (0.33)",
+        "defect: noisy (0.46)",
+        "defect: set_unfinished (0.46)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "a curled orange fox": 0.97,
+      "two triangular fox ears": 0.97,
+      "a closed eye and black nose": 0.98,
+      "a bushy tail with a pale tip": 0.98,
+      "falling snow": 0.93,
+      "soft blue hour light": 0.91
+    },
+    "defects": {
+      "floating": 0.27,
+      "interpenetration": 0.33,
+      "too_dark": 0.03,
+      "blown_out": 0.11,
+      "noisy": 0.46,
+      "clipping": 0.13,
+      "placeholder": 0.07,
+      "empty": 0.08,
+      "set_unfinished": 0.46
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.02,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.31,
+      "2": 0.59,
+      "3": 0.1
+    }
+  },
+  "reviewer_notes": {
+    "timeline": "At master resolution the closed eye and paws stay distinct from the curled brush. The shoulder expands gently and settles. The coat volumes meet cleanly at the intended stylized seams. Snow stays readable in the forelight, with only faint grain around the shaded tree line.",
+    "angles": "The alternate angles show the grounded character and the row of dark firs behind the clearing. The set uses simplified fir silhouettes and a localized pool of light.",
+    "seam": "Contact shadows hold, flakes continue to fall, and the sleeping pose returns smoothly at the join. The rendered extra frame and the first have zero mean pixel difference in the seam sample."
+  },
+  "render_code": {
+    "pipeline.py": "a1501a47d0a21b4f188d215aaa7c919b48119d5d0b61207aeaa7562b3fc16717",
+    "worker.py": "853b4dad1b69d213eb35e7635e0188684a0352152ac6c233eb79a020e8c84bcc",
+    "runner.py": "eb7a9d61d680a0645e0cf6cb9ef812fcc37c97cdad60889ddefd832f00743aed",
+    "kit.py": "1c541688aefcb7830967312bd12b52d5c874a7e7e1f383e0841bc74d09343ebe",
+    "formats.py": "796ff77c70997522ceef827ff58dc9ea4f23a5f8484f459bf2300ed1c948c59f",
+    "scriptcheck.py": "9bcba8293decc59cc511f9243c61b1a7f54e8c3f07fddcf7a277f9a38af36ff6"
+  }
+}

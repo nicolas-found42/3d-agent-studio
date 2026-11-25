@@ -1,0 +1,70 @@
+{
+  "job_id": "db639776850840558f26506fa5004dd6",
+  "drafts": 1,
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: interpenetration (0.47)",
+        "defect: noisy (0.35)",
+        "defect: empty (0.59)",
+        "defect: set_unfinished (0.70)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "stylized clay walker": 0.93,
+      "old-town shopfronts": 0.97,
+      "lamp posts or street lanterns": 0.99,
+      "warm low golden-hour light": 0.97,
+      "figure walking along the street": 0.96
+    },
+    "defects": {
+      "floating": 0.29,
+      "interpenetration": 0.47,
+      "too_dark": 0.04,
+      "blown_out": 0.05,
+      "noisy": 0.35,
+      "clipping": 0.16,
+      "placeholder": 0.03,
+      "empty": 0.59,
+      "set_unfinished": 0.7
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.04,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.33,
+      "2": 0.58,
+      "3": 0.09
+    }
+  },
+  "notes": {
+    "probe": "The three stills keep the clay walker readable against the recessed shop windows and place the front and rear foot on the lit pavement in successive strides.",
+    "timeline": "The camera tracks parallel to the sidewalk. The walker moves past striped awnings, recessed shopfronts, and pools of warm light around the street lamps. Alternating heel contacts and arm swing read clearly across the six frames. The front of the set has a deliberate repeating rhythm of awnings and windows.",
+    "angles": "The wide view contains the upper floors with shutters, sills, flower boxes, and storefront recesses. The three-quarter and overhead views show the finite row of roofed buildings, the slab of road, and the short camera track in pink.",
+    "jev_look_items": "Jev scored interpenetration at 0.47. The foreground lamps and A-frame overlap the walker in projection at different depths. The walking line stays on the clear sidewalk. The 0.35 noise score is consistent with pavement grain, and the rendered contours stay smooth. The 0.59 empty-frame score reflects the space reserved for the walker and storefront rhythm in the ultrawide framing. The 0.70 unfinished-set score picks up the road and off-camera ends of the single street row in the three-quarter proof."
+  },
+  "qc": {
+    "video": {
+      "frames": 144,
+      "duration_seconds": 6.0,
+      "fps": 24,
+      "width": 840,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 1454562
+    },
+    "warnings": [],
+    "loop_seam": null
+  }
+}

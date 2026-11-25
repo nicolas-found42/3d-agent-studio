@@ -1,0 +1,57 @@
+{
+  "job_id": "39468ed1c6c645cbaaa50d34e8a1380b",
+  "drafts": 2,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: noisy (0.46)",
+        "defect: set_unfinished (0.33)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "a 3D bar chart": 0.98,
+      "five distinct series colors": 0.96,
+      "a large year counter": 0.98,
+      "floor grid lines": 0.9,
+      "bars that fill the chart over time": 0.88
+    },
+    "defects": {
+      "floating": 0.2,
+      "interpenetration": 0.2,
+      "too_dark": 0.04,
+      "blown_out": 0.04,
+      "noisy": 0.46,
+      "clipping": 0.09,
+      "placeholder": 0.29,
+      "empty": 0.16,
+      "set_unfinished": 0.33
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "text_readable": 0.81,
+    "quality_probabilities": {
+      "0": 0.02,
+      "1": 0.37,
+      "2": 0.54,
+      "3": 0.07
+    },
+    "prompt_match_probabilities": {
+      "0": 0.01,
+      "1": 0.23,
+      "2": 0.35,
+      "3": 0.41
+    }
+  },
+  "notes": {
+    "probe": "The chart opens with the five 2015 bars raised above the floor grid. The middle frame adds dated rows as the camera rotates, and the final frame has all ten rows. The color-coded cards stay in place while the numbers change.",
+    "timeline": "In 2015 the fox and hedgehog cards show 31k and 42k. By 2024 they show 41k and 22k. The series colors, year heading, and units stay readable. The lowest edge of the plinth occasionally sits behind the cards without obscuring them.",
+    "angles": "The three-quarter and overhead views show the beveled chart deck, actual bar depth, five columns across ten rows, and the camera's orbit. From the alternate viewpoints the camera-aligned captions and footer are seen edge-on.",
+    "playback": "The decoded six-second reel showed all ten years in sequence with growing bars and simultaneous footer updates. An evaluated Blender pass checked all 180 frames and found exactly one visible year and five values with matching year suffixes on every frame. QC confirms 180 frames at 30 fps and no warnings.",
+    "jev_look_items": "The dark floor shows mild sampling in the wide proof, while the bars, grid, and footer figures remain sharp in the intended view. The upper-left gray area in the wide proof is beyond the gallery floor, and the card surfaces are camera-aligned. The centered chart is complete in the timeline and the three-quarter view reveals the sides of the plinth."
+  }
+}

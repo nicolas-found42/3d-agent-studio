@@ -1,0 +1,26 @@
+{
+  "slug": "neon-sign-sting",
+  "title": "Neon Sign Sting",
+  "category": "typography",
+  "prompt": "A neon sign reading OPEN LATE flickers on letter by letter on a wet brick wall at night, its pink and cyan glow reflecting in puddles below.",
+  "description": "Shape letters from gas tubes and cue each emitter and its practical spill together.",
+  "brief": {
+    "prompt": "A neon sign reading OPEN LATE flickers on letter by letter on a wet brick wall at night, its pink and cyan glow reflecting in puddles below.",
+    "orientation": "horizontal",
+    "seconds": 5,
+    "fps": 24,
+    "loop": false
+  },
+  "tags": {
+    "camera": "slow push toward the sign",
+    "lighting": "neon key on wet brick",
+    "style": "photoreal night",
+    "motion": "neon tubes flicker on letter by letter"
+  },
+  "techniques": [
+    "stroke-based neon letters",
+    "emission and practical spill synchronized",
+    "staggered brick courses",
+    "puddle material with low roughness"
+  ]
+}

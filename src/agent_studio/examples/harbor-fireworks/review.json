@@ -1,0 +1,58 @@
+{
+  "job_id": "b978b438fb504626b5bc0b30be72da8a",
+  "drafts": 1,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: too_dark (0.48)",
+        "defect: noisy (0.66)",
+        "defect: empty (0.37)",
+        "defect: set_unfinished (0.56)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "colored fireworks bursts": 0.97,
+      "emissive sparks": 0.95,
+      "rippling water reflections": 0.98,
+      "a dark harbor": 0.97,
+      "silhouetted boats": 0.95
+    },
+    "defects": {
+      "floating": 0.16,
+      "interpenetration": 0.2,
+      "too_dark": 0.48,
+      "blown_out": 0.07,
+      "noisy": 0.66,
+      "clipping": 0.17,
+      "placeholder": 0.19,
+      "empty": 0.37,
+      "set_unfinished": 0.56
+    },
+    "quality": "polished",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.03,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.43,
+      "2": 0.47,
+      "3": 0.09
+    },
+    "prompt_match_probabilities": {
+      "0": 0,
+      "1": 0.13,
+      "2": 0.34,
+      "3": 0.53
+    }
+  },
+  "notes": {
+    "probe": "The wide vertical view shows a rocket lifting from a quiet harbor, then paired cyan and pink blooms and a late green shell. Each flash leaves a color-matched streak down the water.",
+    "timeline": "Gold, pink, cyan, red and green shells open in order. The clipped white centers are brief and the individual particles resolve as each shell expands. The masts and hulls stay dark, with painted boat edges and the timber quay briefly raked by the bursts.",
+    "angles": "The wide and three-quarter views place the shells beyond the moored sailboats. The overview shows their separate volumes across the channel and the foreground boardwalk as the camera's anchor.",
+    "playback": "The decoded six-second reel shows rockets lifting between blooms. Earlier shells scatter, drop slightly, and fade behind later ones. Water moves beneath the reflected streaks and the quay slips downward as the camera tilts up. QC confirms 144 frames at 24 fps and no warnings.",
+    "jev_look_items": "The quiet opening and silhouettes account for darkness and empty-space flags. From the first shell onward the upper bursts and lower reflection form two clear points of interest. Grain is most visible in low-lit haze and doesn't obscure the sparks or their reflections at the draft size. The angle board's dim top-down view flattens the set, but the intended view resolves the rocking boats, rigging, shoreline, and quay."
+  }
+}

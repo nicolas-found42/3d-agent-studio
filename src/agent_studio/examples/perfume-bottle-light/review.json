@@ -1,0 +1,69 @@
+{
+  "job_id": "1abc08465d694a8caa6d2f8302187429",
+  "drafts": 1,
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: noisy (0.36)",
+        "defect: set_unfinished (0.49)"
+      ],
+      "overridden": []
+    },
+    "elements": {
+      "faceted perfume bottle": 0.95,
+      "amber liquid inside the bottle": 0.94,
+      "gold cap": 0.97,
+      "glossy plinth": 0.96,
+      "saturated magenta backdrop": 0.94,
+      "sweeping hard light": 0.92
+    },
+    "defects": {
+      "floating": 0.15,
+      "interpenetration": 0.2,
+      "too_dark": 0.05,
+      "blown_out": 0.05,
+      "noisy": 0.36,
+      "clipping": 0.15,
+      "placeholder": 0.02,
+      "empty": 0.1,
+      "set_unfinished": 0.49
+    },
+    "quality": "cinematic",
+    "prompt_match": "exact",
+    "references": [],
+    "control": 0.04,
+    "quality_probabilities": {
+      "0": 0,
+      "1": 0.03,
+      "2": 0.45,
+      "3": 0.52
+    }
+  },
+  "notes": {
+    "probe": "Across the three stills, the push-in keeps the cap and bottle inside frame while the moving pink key reveals different glass facets.",
+    "timeline": "The camera closes in on the faceted bottle from pedestal context to a tight product shot. The amber liquid line, dip tube, gold cap, and gold plinth rim stay legible. The hard spotlight sweeps across the magenta backdrop and through the bottle's reflected shadow.",
+    "angles": "The wide view shows the bottle planted on the glossy plinth, a coherent cast shadow and the curved pink studio sweep. The three-quarter shot and overhead isolate the lit area of the full cyclorama.",
+    "jev_look_items": "Jev scored noise at 0.36. The dark reflections show faint grain at preview size. The edges and liquid boundary stay defined. The 0.49 unfinished-set score picks up the unlit area of the cyclorama in the three-quarter proof. The shot stays inside the lit studio sweep."
+  },
+  "qc": {
+    "video": {
+      "frames": 120,
+      "duration_seconds": 5.0,
+      "fps": 24,
+      "width": 360,
+      "height": 640,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 644637
+    },
+    "warnings": [],
+    "loop_seam": null
+  }
+}

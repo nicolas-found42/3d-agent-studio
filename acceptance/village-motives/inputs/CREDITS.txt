@@ -1,0 +1,3 @@
+motives-by-day.csv — daily motive counts derived from the society simulation journal
+village-ring.svg and shots.md — original assets for this acceptance scene, MIT
+archivo-black.ttf — Archivo Black, licensed under SIL OFL 1.1. See archivo-black-OFL.txt.

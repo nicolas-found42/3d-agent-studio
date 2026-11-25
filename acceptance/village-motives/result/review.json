@@ -1,0 +1,594 @@
+{
+  "job_id": "baa672d940de44a496bd1e6e4d8c8c9c",
+  "stage": "preview",
+  "brief": {
+    "references": [
+      {
+        "id": "ref-c016d0c07ad3ec87",
+        "role": "data",
+        "note": "Daily action counts grouped by recorded motive."
+      },
+      {
+        "id": "ref-30ed8508f2933b67",
+        "role": "logo",
+        "note": "Original emblem of the village and its seven places."
+      },
+      {
+        "id": "ref-0d6e3eea131e3a0c",
+        "role": "shotlist",
+        "note": "Title and chart reveal beats."
+      },
+      {
+        "id": "ref-9c72fc8fe10a927b",
+        "role": "font",
+        "note": "Display face for the chart title."
+      }
+    ],
+    "assets": [],
+    "orientation": "horizontal",
+    "seconds": 5,
+    "loop": false,
+    "fps": 24,
+    "seed": 11,
+    "title": "",
+    "show_title": false,
+    "quality": "standard",
+    "budget_minutes": {
+      "probe": 5,
+      "draft": 10,
+      "master": 10
+    },
+    "samples": {},
+    "extras": [],
+    "parent": "c7a056be48c54b57bf1d509cb10b85e3",
+    "max_references": 40,
+    "prompt": "An illuminated museum exhibit of the village simulation's first 90 days. A physical stacked-area relief builds from left to right inside a bevelled metal frame. Six colored bands follow the daily action counts in the CSV. A bright scan line moves across a dark grid in step with the day counter. The camera reveals the thickness of the bands, then settles facing the chart so the title, scale and six-motive key can be read clearly."
+  },
+  "board_hashes": {
+    "timeline.jpg": "b0abbef5bc2385dd081e426fd2c5b3493068556aabccb2dce3148b71717adb99",
+    "angles.jpg": "d883ed66e67994cc75db94cd572abe4df4b85db69e41249ed3e97a862fd7d825"
+  },
+  "script_sha256": "858bfa26afff9c5c7d6b226d255d5b79e761832f2747985e28e8adacbe16a7c4",
+  "render_code": {
+    "pipeline.py": "eeadcd92bd99a958cee6e906b64af6742d98cbdd30a4b0e3c797f0f5f21dfefc",
+    "worker.py": "87ad6b2ba16a235ff664842b23d68a718d15ae955ef577c98688d832ee6b6ee2",
+    "runner.py": "c57bb801dab35f5a2b0885b063fb9dcfb295c13ffa76458b6cd495be8a742ce1",
+    "kit.py": "6c52f5103c1af4076e9737a9d37868e559d9302b6ceef68a6c2b77b1673b0745",
+    "formats.py": "796ff77c70997522ceef827ff58dc9ea4f23a5f8484f459bf2300ed1c948c59f",
+    "scriptcheck.py": "0172c93008c43f5988032ef58dce9ab68000d184034c28bebd299b022ee35f5c"
+  },
+  "reviewer_notes": {
+    "probe": "The first still shows the frame depth, mint day marker and the ingested SVG emblem beside the Archivo Black title. The middle still reveals the cut ends of six thick bands. The last still shows a straight-on chart with all six motives and the day 90 label.",
+    "timeline": "The scan travels from the first day across the six stacked bands while the exhibit rotates into a head-on view. Left-axis numerals are small in the opening oblique pose. The titles, values on the axes, and six legend labels can be read in the full-size closing frame.",
+    "angles": "The wide photo shows the freestanding display and its two mounting feet. The three-quarter view shows its depth on an open gallery platform. In the overhead proof the face is edge-on and the pink path shows the lateral camera move.",
+    "clip": "Sampled every half-second from the decoded clip. Each successive scan position exposes more of the same graph and the camera settles for a complete day 90 hold. In the saved scene, all 540 cumulative band boundaries match the CSV, each frame has the expected single day label, and the imported logo measures 0.52 metres wide.",
+    "jev_look_items": "The minor enamel and floor texture stays behind the flat legends. The display platform has an intentionally simple open studio surround. The early oblique thumbnails shrink axis and legend text, which reads in the closing 640\u00d7360 frames."
+  },
+  "qc": {
+    "passed": true,
+    "stage": "preview",
+    "orientation": "horizontal",
+    "video": {
+      "frames": 120,
+      "duration_seconds": 5.0,
+      "fps": 24,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "profile": "High",
+      "color": "bt709/tv",
+      "pixel_format": "yuv420p",
+      "fast_start": true,
+      "silent": true,
+      "size_bytes": 560429
+    },
+    "timeline_frames": [
+      1,
+      25,
+      49,
+      73,
+      97,
+      120
+    ],
+    "cover_frame": 41,
+    "proof_frame": 40,
+    "angle_order": [
+      "wide (same camera, half focal length)",
+      "three-quarter set view",
+      "top-down overview with camera path"
+    ],
+    "reference_pairs": [],
+    "render": {
+      "device": "METAL",
+      "samples": 16,
+      "seconds": 63.5,
+      "seconds_per_frame": 0.529,
+      "frames": 120,
+      "frame_stats": [
+        {
+          "file": "frame-0001.png",
+          "mean_luminance": 0.1899,
+          "dark_fraction": 0.0049,
+          "clipped_fraction": 0.0
+        },
+        {
+          "file": "frame-0003.png",
+          "mean_luminance": 0.1938,
+          "dark_fraction": 0.0049,
+          "clipped_fraction": 0.0002,
+          "change_from_previous": 0.00555
+        },
+        {
+          "file": "frame-0005.png",
+          "mean_luminance": 0.1961,
+          "dark_fraction": 0.0049,
+          "clipped_fraction": 0.0005,
+          "change_from_previous": 0.00374
+        },
+        {
+          "file": "frame-0007.png",
+          "mean_luminance": 0.1979,
+          "dark_fraction": 0.0051,
+          "clipped_fraction": 0.0017,
+          "change_from_previous": 0.00384
+        },
+        {
+          "file": "frame-0009.png",
+          "mean_luminance": 0.1998,
+          "dark_fraction": 0.0051,
+          "clipped_fraction": 0.0029,
+          "change_from_previous": 0.00425
+        },
+        {
+          "file": "frame-0011.png",
+          "mean_luminance": 0.201,
+          "dark_fraction": 0.0051,
+          "clipped_fraction": 0.0012,
+          "change_from_previous": 0.00456
+        },
+        {
+          "file": "frame-0013.png",
+          "mean_luminance": 0.2032,
+          "dark_fraction": 0.0051,
+          "clipped_fraction": 0.002,
+          "change_from_previous": 0.00492
+        },
+        {
+          "file": "frame-0015.png",
+          "mean_luminance": 0.2059,
+          "dark_fraction": 0.0046,
+          "clipped_fraction": 0.0029,
+          "change_from_previous": 0.00579
+        },
+        {
+          "file": "frame-0017.png",
+          "mean_luminance": 0.2082,
+          "dark_fraction": 0.0049,
+          "clipped_fraction": 0.002,
+          "change_from_previous": 0.00539
+        },
+        {
+          "file": "frame-0019.png",
+          "mean_luminance": 0.2112,
+          "dark_fraction": 0.0039,
+          "clipped_fraction": 0.0022,
+          "change_from_previous": 0.0053
+        },
+        {
+          "file": "frame-0021.png",
+          "mean_luminance": 0.215,
+          "dark_fraction": 0.0032,
+          "clipped_fraction": 0.0034,
+          "change_from_previous": 0.00698
+        },
+        {
+          "file": "frame-0023.png",
+          "mean_luminance": 0.2193,
+          "dark_fraction": 0.0005,
+          "clipped_fraction": 0.0059,
+          "change_from_previous": 0.00889
+        },
+        {
+          "file": "frame-0025.png",
+          "mean_luminance": 0.2238,
+          "dark_fraction": 0.0005,
+          "clipped_fraction": 0.0078,
+          "change_from_previous": 0.00785
+        },
+        {
+          "file": "frame-0027.png",
+          "mean_luminance": 0.2286,
+          "dark_fraction": 0.0005,
+          "clipped_fraction": 0.0139,
+          "change_from_previous": 0.00823
+        },
+        {
+          "file": "frame-0029.png",
+          "mean_luminance": 0.2331,
+          "dark_fraction": 0.0005,
+          "clipped_fraction": 0.0198,
+          "change_from_previous": 0.009
+        },
+        {
+          "file": "frame-0031.png",
+          "mean_luminance": 0.2379,
+          "dark_fraction": 0.0044,
+          "clipped_fraction": 0.0198,
+          "change_from_previous": 0.00927
+        },
+        {
+          "file": "frame-0033.png",
+          "mean_luminance": 0.2422,
+          "dark_fraction": 0.0032,
+          "clipped_fraction": 0.0229,
+          "change_from_previous": 0.00922
+        },
+        {
+          "file": "frame-0035.png",
+          "mean_luminance": 0.2457,
+          "dark_fraction": 0.002,
+          "clipped_fraction": 0.0242,
+          "change_from_previous": 0.009
+        },
+        {
+          "file": "frame-0037.png",
+          "mean_luminance": 0.2488,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0254,
+          "change_from_previous": 0.00834
+        },
+        {
+          "file": "frame-0039.png",
+          "mean_luminance": 0.2528,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0271,
+          "change_from_previous": 0.0095
+        },
+        {
+          "file": "frame-0041.png",
+          "mean_luminance": 0.2567,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.03,
+          "change_from_previous": 0.01039
+        },
+        {
+          "file": "frame-0043.png",
+          "mean_luminance": 0.2604,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.031,
+          "change_from_previous": 0.01138
+        },
+        {
+          "file": "frame-0045.png",
+          "mean_luminance": 0.2645,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0334,
+          "change_from_previous": 0.01155
+        },
+        {
+          "file": "frame-0047.png",
+          "mean_luminance": 0.2684,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0366,
+          "change_from_previous": 0.01189
+        },
+        {
+          "file": "frame-0049.png",
+          "mean_luminance": 0.2721,
+          "dark_fraction": 0.0002,
+          "clipped_fraction": 0.0381,
+          "change_from_previous": 0.01214
+        },
+        {
+          "file": "frame-0051.png",
+          "mean_luminance": 0.2767,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.04,
+          "change_from_previous": 0.01267
+        },
+        {
+          "file": "frame-0053.png",
+          "mean_luminance": 0.281,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0435,
+          "change_from_previous": 0.0129
+        },
+        {
+          "file": "frame-0055.png",
+          "mean_luminance": 0.2855,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0439,
+          "change_from_previous": 0.01316
+        },
+        {
+          "file": "frame-0057.png",
+          "mean_luminance": 0.29,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0486,
+          "change_from_previous": 0.01359
+        },
+        {
+          "file": "frame-0059.png",
+          "mean_luminance": 0.2945,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0498,
+          "change_from_previous": 0.01381
+        },
+        {
+          "file": "frame-0061.png",
+          "mean_luminance": 0.2985,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0508,
+          "change_from_previous": 0.01324
+        },
+        {
+          "file": "frame-0063.png",
+          "mean_luminance": 0.3033,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0557,
+          "change_from_previous": 0.01325
+        },
+        {
+          "file": "frame-0065.png",
+          "mean_luminance": 0.3073,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0569,
+          "change_from_previous": 0.01164
+        },
+        {
+          "file": "frame-0067.png",
+          "mean_luminance": 0.3112,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0608,
+          "change_from_previous": 0.01123
+        },
+        {
+          "file": "frame-0069.png",
+          "mean_luminance": 0.3151,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0613,
+          "change_from_previous": 0.01022
+        },
+        {
+          "file": "frame-0071.png",
+          "mean_luminance": 0.3188,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.064,
+          "change_from_previous": 0.00916
+        },
+        {
+          "file": "frame-0073.png",
+          "mean_luminance": 0.322,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0667,
+          "change_from_previous": 0.00847
+        },
+        {
+          "file": "frame-0075.png",
+          "mean_luminance": 0.3253,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0696,
+          "change_from_previous": 0.00824
+        },
+        {
+          "file": "frame-0077.png",
+          "mean_luminance": 0.3284,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0735,
+          "change_from_previous": 0.00722
+        },
+        {
+          "file": "frame-0079.png",
+          "mean_luminance": 0.3314,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0737,
+          "change_from_previous": 0.00678
+        },
+        {
+          "file": "frame-0081.png",
+          "mean_luminance": 0.3344,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0771,
+          "change_from_previous": 0.00636
+        },
+        {
+          "file": "frame-0083.png",
+          "mean_luminance": 0.3372,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0798,
+          "change_from_previous": 0.00605
+        },
+        {
+          "file": "frame-0085.png",
+          "mean_luminance": 0.34,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0825,
+          "change_from_previous": 0.00571
+        },
+        {
+          "file": "frame-0087.png",
+          "mean_luminance": 0.3426,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0854,
+          "change_from_previous": 0.00543
+        },
+        {
+          "file": "frame-0089.png",
+          "mean_luminance": 0.3451,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0894,
+          "change_from_previous": 0.00503
+        },
+        {
+          "file": "frame-0091.png",
+          "mean_luminance": 0.3474,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0908,
+          "change_from_previous": 0.00482
+        },
+        {
+          "file": "frame-0093.png",
+          "mean_luminance": 0.3498,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.094,
+          "change_from_previous": 0.00468
+        },
+        {
+          "file": "frame-0095.png",
+          "mean_luminance": 0.352,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0945,
+          "change_from_previous": 0.00447
+        },
+        {
+          "file": "frame-0097.png",
+          "mean_luminance": 0.3521,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0962,
+          "change_from_previous": 0.00168
+        },
+        {
+          "file": "frame-0099.png",
+          "mean_luminance": 0.3519,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0952,
+          "change_from_previous": 0.0019
+        },
+        {
+          "file": "frame-0101.png",
+          "mean_luminance": 0.3515,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0957,
+          "change_from_previous": 0.00178
+        },
+        {
+          "file": "frame-0103.png",
+          "mean_luminance": 0.3512,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.095,
+          "change_from_previous": 0.00159
+        },
+        {
+          "file": "frame-0105.png",
+          "mean_luminance": 0.351,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0952,
+          "change_from_previous": 0.00136
+        },
+        {
+          "file": "frame-0107.png",
+          "mean_luminance": 0.3507,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0955,
+          "change_from_previous": 0.00116
+        },
+        {
+          "file": "frame-0109.png",
+          "mean_luminance": 0.3505,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0957,
+          "change_from_previous": 0.00099
+        },
+        {
+          "file": "frame-0111.png",
+          "mean_luminance": 0.3504,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0962,
+          "change_from_previous": 0.00083
+        },
+        {
+          "file": "frame-0113.png",
+          "mean_luminance": 0.3503,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0967,
+          "change_from_previous": 0.00068
+        },
+        {
+          "file": "frame-0115.png",
+          "mean_luminance": 0.3503,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0967,
+          "change_from_previous": 0.00052
+        },
+        {
+          "file": "frame-0117.png",
+          "mean_luminance": 0.3502,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0967,
+          "change_from_previous": 0.00037
+        },
+        {
+          "file": "frame-0119.png",
+          "mean_luminance": 0.3502,
+          "dark_fraction": 0.0,
+          "clipped_fraction": 0.0964,
+          "change_from_previous": 0.00021
+        }
+      ],
+      "loop_seam": null
+    },
+    "loop_seam": null,
+    "warnings": [],
+    "notes": "Machine checks verify files, timing and coarse pixel statistics only. They are not a visual review.",
+    "timing": {
+      "predicted_minutes": 1.58,
+      "actual_minutes": 1.11,
+      "budget_minutes": 10.0,
+      "excludes_gpu_queue": true,
+      "relative_error": 0.424
+    }
+  },
+  "jev": {
+    "model": "typesafe/jev-1.14",
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "defect: noisy (0.36)",
+        "defect: set_unfinished (0.55)",
+        "text legibility (0.47)"
+      ],
+      "overridden": [
+        {
+          "item": "prompt match: loose",
+          "reason": "The decoded sequence shows the required physical relief by its visible cut ends, a six-band left-to-right reveal with a synchronized scan and counter, and a straight-on reading pose. The saved Blender scene was also checked against every band boundary in the source CSV and all 120 visible day values."
+        }
+      ]
+    },
+    "elements": {
+      "a stacked chart with differently colored bands": 0.97,
+      "an exhibit frame around the chart": 0.85,
+      "a bright vertical day marker": 0.94,
+      "a six-color legend": 0.94,
+      "the title Village Motives": 0.97
+    },
+    "defects": {
+      "floating": 0.25,
+      "interpenetration": 0.21,
+      "too_dark": 0.05,
+      "blown_out": 0.05,
+      "noisy": 0.36,
+      "clipping": 0.17,
+      "placeholder": 0.05,
+      "empty": 0.13,
+      "set_unfinished": 0.55
+    },
+    "quality": "polished",
+    "prompt_match": "loose",
+    "references": [],
+    "control": 0.03,
+    "text_readable": 0.47,
+    "quality_probabilities": {
+      "0": 0.01,
+      "1": 0.28,
+      "2": 0.6,
+      "3": 0.11
+    },
+    "prompt_match_probabilities": {
+      "0": 0.01,
+      "1": 0.5,
+      "2": 0.28,
+      "3": 0.21
+    }
+  }
+}

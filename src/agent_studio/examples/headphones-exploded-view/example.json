@@ -1,0 +1,33 @@
+{
+  "slug": "headphones-exploded-view",
+  "title": "Headphones, Exploded View",
+  "category": "product",
+  "prompt": "An exploded technical view of over-ear headphones: headband, sliders, ear cups, drivers and cushions separate along their axes, hold, and reassemble in a seamless loop on a white background.",
+  "description": "How to model a product at real size from lathe, torus and swept-section recipes and drive a staggered, loop-safe exploded view from one easing curve in a high-key white studio.",
+  "brief": {
+    "prompt": "An exploded technical view of over-ear headphones: headband, sliders, ear cups, drivers and cushions separate along their axes, hold, and reassemble in a seamless loop on a white background.",
+    "orientation": "horizontal",
+    "seconds": 6,
+    "loop": true,
+    "fps": 30,
+    "seed": 11,
+    "samples": {
+      "preview": 32
+    }
+  },
+  "tags": {
+    "camera": "locked three-quarter view",
+    "lighting": "clean high-key white studio",
+    "style": "clean product render, matte plastics",
+    "motion": "parts separate and reassemble"
+  },
+  "techniques": [
+    "kit.lathe profiles stretched into oval cups and drivers",
+    "swept rounded-rectangle section built with kit.mesh and bmesh normals",
+    "staggered explode offsets keyed with kit.animate from one easing curve",
+    "dashed technical axis lines scaled with the explosion",
+    "lit cyclorama sweep with backdrop area light",
+    "black-flag negative fill planes",
+    "fine procedural bump for bead-blasted matte plastic"
+  ]
+}

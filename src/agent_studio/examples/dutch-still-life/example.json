@@ -1,0 +1,30 @@
+{
+  "slug": "dutch-still-life",
+  "title": "Dutch Still Life",
+  "category": "still-life",
+  "prompt": "A Dutch golden-age still life on a dark table: a draped cloth, a silver jug, a half-peeled lemon, grapes, a roemer glass of wine and a candle, lit by a single window in deep chiaroscuro.",
+  "description": "Dress a low-key tabletop using hollow lathed vessels, irregular folds, and a flickering practical candle.",
+  "brief": {
+    "prompt": "A Dutch golden-age still life on a dark table: a draped cloth, a silver jug, a half-peeled lemon, grapes, a roemer glass of wine and a candle, lit by a single window in deep chiaroscuro.",
+    "orientation": "portrait",
+    "seconds": 6,
+    "fps": 24,
+    "loop": false,
+    "budget_minutes": {
+      "draft": 20
+    }
+  },
+  "tags": {
+    "camera": "imperceptibly slow push",
+    "lighting": "single-window chiaroscuro",
+    "style": "painterly old-master still life",
+    "motion": "a candle flickers and a fly lands"
+  },
+  "techniques": [
+    "hollow lathed metal and glass vessels",
+    "elliptical wine meniscus and stem prunts",
+    "irregular folded linen mesh",
+    "animated candle mesh and practical",
+    "hand-placed grapes and curled lemon peel"
+  ]
+}

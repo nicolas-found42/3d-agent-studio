@@ -1,0 +1,24 @@
+{
+  "job_id": "b14755734b114aa2b74d70b95333fbf9",
+  "drafts": 3,
+  "jev": {
+    "decision": {
+      "verdict": "look",
+      "fix": [],
+      "look": [
+        "element: a stepping-stone path (0.37)",
+        "defect: floating (0.32)",
+        "defect: interpenetration (0.31)",
+        "defect: noisy (0.47)",
+        "defect: set_unfinished (0.57)"
+      ]
+    },
+    "quality": "polished",
+    "prompt_match": "exact"
+  },
+  "notes": {
+    "timeline": "Focus starts on the two wet near stalks with the lantern a soft glowing shape, then racks across the middle of the shot until the lantern and the grove behind are sharp and the near stalks melt. Stalks show node ridges and per-stalk colour variation; rain streaks read throughout and fog lifts the far grove to grey.",
+    "angles": "The wide view shows a dense, varied grove with leaf sprays and undergrowth; the three-quarter and overview show a finite grove patch on a large ground, which is what Jev's set_unfinished (0.57) reacts to. The camera itself never sees the edge.",
+    "jev_look_items": "Stepping-stone path (0.37): visible in the last frame as wet flat stones leading to the lantern, but low-contrast under the fog. Floating/interpenetration (~0.3): the lantern base and stalks sit on the ground. Noisy (0.47): the rain streaks and leaf litter, not render noise."
+  }
+}

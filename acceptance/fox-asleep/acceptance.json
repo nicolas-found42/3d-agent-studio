@@ -1,0 +1,16 @@
+{
+  "title": "Sleeping fox in falling snow",
+  "brief": {
+    "prompt": "A red fox curled up asleep in a shallow bed of snow at blue hour. Its orange brush wraps around the black paws and ends in a pale tip near its nose. Closed eyes and pointed ears read clearly. The flank rises gently with each breath while snow falls in a seamless loop, framed at the fox's height amongst dark spruce and softly lit bokeh.",
+    "orientation": "horizontal", "seconds": 4, "fps": 24, "loop": true
+  },
+  "inputs": [],
+  "elements": ["a curled orange fox", "two triangular fox ears", "a closed eye and black nose", "a bushy tail with a pale tip", "falling snow", "soft blue hour light"],
+  "reviewer_notes": {
+    "probe": "The fox stays entirely in frame at the start, middle and end. The two ears, closed eye, pale muzzle and white tail tip read against the dark spruce.",
+    "timeline": "Cool snow surrounds a warm curled silhouette. The shoulder and flank rise and settle while the closed eye and paws hold. The brush wraps in front of the dark paws. The fur volumes meet at sculpted joins, with no visible pass-through in the shot.",
+    "angles": "The wider view shows the clearing, falling flakes, grass and spruce. The oblique and top views show the fox grounded in the snow. The simplified tree row is sufficient for this locked close shot. Draft grain stays on shaded surfaces and the small bright specks are snow.",
+    "seam": "The last two and first two images preserve the same snow, light and body alignment. The extra rendered frame matches the first in the seam statistic. No body or shadow jumps across the join.",
+    "clip": "Sampled both decoded cycles in order. The back expands smoothly, snow drifts downward, and the ears and snout hold still. The second cycle begins at the same pose and flake positions as the first."
+  }
+}

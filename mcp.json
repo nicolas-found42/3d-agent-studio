@@ -4,7 +4,7 @@
     "3d-agent-studio": {
       "type": "stdio",
       "command": "uvx",
-      "args": ["--from", "3d-agent-studio[mcp] @ git+https://github.com/nicolas-found42/3d-agent-studio.git@v0.2.0", "3d-agent-studio-mcp"]
+      "args": ["--from", "3d-agent-studio[mcp] @ git+https://github.com/nicolas-found42/3d-agent-studio.git@v0.3.0", "3d-agent-studio-mcp"]
     }
   }
 }
