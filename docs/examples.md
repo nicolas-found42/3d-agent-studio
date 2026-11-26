@@ -1,6 +1,10 @@
-# Rendered examples
+# Acceptance case studies
 
-Open an example for its draft, brief, scene script, and review board.
+<a id="rendered-examples"></a>
+
+Explore all six end-to-end Studio runs. Each case includes a draft, a brief, a scene script, and review evidence.
+
+[Browse the shipped example library](example-library.md) · [Reproduce an acceptance case](../acceptance/README.md#reproduce-a-scenario)
 
 <div class="studio-samples studio-gallery-index" markdown="1">
 
@@ -44,14 +48,29 @@ A physical chart builds from 90 days of simulation data. The scene also uses an 
 
 </div>
 
+
+<div class="studio-sample" markdown="1">
+
+## [Society Village](examples/society-village.md)
+
+[![A miniature village with paths arranged around a central tree](../acceptance/society-village/result/poster.jpg)](examples/society-village.md)
+
+An animated GIF sets the layout. Twelve figures reenact the simulation journal.
+
+</div>
+
+<div class="studio-sample" markdown="1">
+
+## [Iceland Falls](examples/iceland-falls.md)
+
+[![Two waterfall tiers flowing into a glacial pool](../acceptance/iceland-falls/result/poster.jpg)](examples/iceland-falls.md)
+
+Two photographs and a basalt model shape a stylized glacial waterfall.
+
+</div>
+
 </div>
 
 ## Browse all 36 scenes
 
-Studio ships 36 examples across 12 categories, each with a scene script, poster, and clip. Search by subject or category from a checkout, or ask your agent to call `studio_examples`.
-
-```sh
-uv run --locked 3d-agent-studio examples --tag character --limit 3 --script
-```
-
-The CLI prints JSON with the scene source and local media paths. Browse the [full poster contact sheet](example-library-review.md) or open the [shipped example files](https://github.com/nicolas-found42/3d-agent-studio/tree/v0.3.0/src/agent_studio/examples). See the [six acceptance scenarios](../acceptance/README.md) for a full set of input types.
+The [example library](example-library.md) contains a playable draft, prompt, scene script, and review record for each shipped scene.

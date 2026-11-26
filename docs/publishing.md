@@ -2,6 +2,12 @@
 
 Edit the same Markdown used on GitHub. The Pages overview lives in `index.md`. The repository README introduces the project on GitHub. `zensical.toml` defines the navigation. The build stages the public guides and media under their repository-relative paths. It also groups the bundled skill and references into topics for Pages. Edit those topics in their original Markdown files under `skills/3d-agent-studio/`.
 
+## Update the example library
+
+The [example library](example-library.md) is generated from the shipped example index. After changing a scene's metadata, run `uv run --locked python tools/build_example_index.py` and include its poster, clip, script, metadata, and review record. The site build stages each entry's artifacts and creates its page and category links.
+
+The [acceptance case studies](examples.md) are written guides. Add their briefs, boards, and clips from the packaged acceptance results.
+
 ## Preview a change
 
 From the repository root, run a strict build. It checks local file destinations and heading anchors and writes the site to `build/docs-site`.

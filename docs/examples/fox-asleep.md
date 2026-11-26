@@ -14,8 +14,8 @@ A fox breathes while snow falls around it. The four-second loop was also rendere
 
 ## Scene and review
 
-[MP4 clip](../../acceptance/fox-asleep/result/clip.mp4) · [Scenario and brief](../../acceptance/fox-asleep/acceptance.json) · [Scene script](../../acceptance/fox-asleep/scene.py) · [Loop seam](../../acceptance/fox-asleep/result/seam.jpg)
+[MP4 clip](../../acceptance/fox-asleep/result/clip.mp4) · [Scenario and brief](../../acceptance/fox-asleep/acceptance.json) · [Scene script](../../acceptance/fox-asleep/scene.py) · [Loop seam](../../acceptance/fox-asleep/result/seam.jpg) · [1080p master](../../acceptance/fox-asleep/result/master.mp4) · [Review record](../../acceptance/fox-asleep/result/review.json)
 
 On GitHub, open the MP4 link and choose **View raw** or **Download raw file**.
 
-[Back to all examples](../examples.md)
+[Back to all case studies](../examples.md)
