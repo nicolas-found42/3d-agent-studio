@@ -333,44 +333,17 @@ body,
   margin-inline: 0;
 }
 
-.studio-case {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  grid-template-areas: "title media" "copy media";
-  align-items: center;
-  column-gap: 0.85rem;
-  row-gap: 0.45rem;
-  margin-block: 1.15rem;
-  padding: 0.95rem;
-  background-color: var(--studio-surface);
-  border: 1px solid var(--studio-rule);
-  border-radius: 0.65rem;
+.studio-gallery-index {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.md-typeset .studio-case h2 {
-  grid-area: title;
-  align-self: end;
-  margin: 0;
-  font-size: 1.25rem;
+.md-typeset .studio-gallery-index h2 {
+  margin: 0.3rem 0.35rem 0.55rem;
+  font-size: 1rem;
 }
 
-.studio-case__copy {
-  grid-area: copy;
-  align-self: start;
-}
-
-.studio-case__media {
-  grid-area: media;
-}
-
-.studio-case__copy p,
-.studio-case__copy blockquote {
-  margin-block: 0.45rem;
-  font-size: 0.76rem;
-}
-
-.studio-case__copy p:last-child {
-  margin-bottom: 0;
+.md-typeset .studio-gallery-index h2 a {
+  color: var(--md-default-fg-color);
 }
 
 .studio-case__media p {
@@ -420,17 +393,12 @@ body,
 }
 
 @media (max-width: 44rem) {
-  .studio-hero,
-  .studio-case {
+  .studio-hero {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .md-typeset .studio-hero h1 {
     font-size: clamp(2.05rem, 9.6vw, 3rem);
-  }
-
-  .studio-case {
-    grid-template-areas: "title" "media" "copy";
   }
 
   .studio-samples,

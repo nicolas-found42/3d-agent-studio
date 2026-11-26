@@ -7,7 +7,63 @@
 import argparse
 import os
 from pathlib import Path
+import re
 import shutil
+
+from markdown.extensions.toc import slugify
+
+
+SKILL_DIRECTORY = Path("skills/3d-agent-studio")
+REFERENCE_TOPICS = {
+    SKILL_DIRECTORY / "references/operations.md": (
+        ("commands", "CLI and MCP tools", "Commands and MCP tools"),
+        ("inputs", "Briefs and references", "Brief"),
+        ("assets", "Asset sources", "Assets"),
+        ("rendering", "Render stages and review evidence", "Stages and evidence"),
+    ),
+    SKILL_DIRECTORY / "references/kit.md": (
+        ("basics", "Scene kit basics", "Module helpers"),
+        ("motion", "Time and animation", "Time"),
+        ("materials", "Collections and materials", "Collections"),
+        ("modeling", "Geometry and modifiers", "Geometry"),
+        ("lighting-and-camera", "Lights, world, and camera", "Lights & world"),
+        ("inputs-and-figures", "Imports and figures", "Imports"),
+        ("physics-and-rendering", "Physics, render settings, and utilities", "Physics"),
+    ),
+    SKILL_DIRECTORY / "SKILL.md": (
+        ("prepare", "Understand, design, and render a draft", "1. Understand the request"),
+        ("review", "Review, revise, and deliver", "4. Review honestly"),
+    ),
+}
+
+
+def stage_reference(path: Path, target: Path, topics: tuple[tuple[str, str, str], ...]) -> None:
+    # Keep the bundled reference intact. Only the Pages build changes its reading layout.
+    introduction, *sections = re.split(r"(?m)(?=^## )", path.read_text())
+    headings = [section.splitlines()[0][3:] for section in sections]
+    boundaries = [headings.index(first_heading) for _, _, first_heading in topics]
+    if boundaries[0] != 0 or boundaries != sorted(set(boundaries)):
+        raise ValueError(f"Topic boundaries are out of order in {path}")
+    boundaries.append(len(sections))
+
+    children = target.with_suffix("")
+    children.mkdir(parents=True, exist_ok=True)
+    overview = [introduction.strip()]
+    for (slug, title, _), start, end in zip(topics, boundaries, boundaries[1:]):
+        body = "".join(sections[start:end]).strip()
+        page = f"{slug}.md"
+        (children / page).write_text(
+            f"# {title}\n\n[Back to the overview](../{target.name})\n\n{body}\n"
+        )
+        relative = f"{children.name}/{page}"
+        overview.append(f"**[{title}]({relative})**")
+        # Preserve the old full-page fragments as links to their new destinations.
+        links = []
+        for heading in re.findall(r"(?m)^#{2,3} (.+)$", body):
+            anchor = slugify(heading.replace("`", ""), "-")
+            links.append(f"- [{heading}]({relative}#{anchor}){{ #{anchor} }}")
+        overview.append("\n".join(links))
+    target.write_text("\n\n".join(overview) + "\n")
 
 
 def stage_sources(root: Path) -> None:
@@ -22,6 +78,11 @@ def stage_sources(root: Path) -> None:
         root / "acceptance/README.md",
         root / "tools/review/diversity.py",
         *root.glob("docs/*.md"),
+        *(
+            page
+            for folder in ("install", "examples", "verification", "library-review")
+            for page in (root / "docs" / folder).glob("*.md")
+        ),
         *root.glob("docs/assets/*"),
         *root.glob("skills/3d-agent-studio/**/*.md"),
         *root.glob("acceptance/*/acceptance.json"),
@@ -35,9 +96,13 @@ def stage_sources(root: Path) -> None:
     ]
     for path in paths:
         if path.is_file():
-            target = source / path.relative_to(root)
+            relative = path.relative_to(root)
+            target = source / relative
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(path, target)
+            if relative in REFERENCE_TOPICS:
+                stage_reference(path, target, REFERENCE_TOPICS[relative])
+            else:
+                shutil.copyfile(path, target)
 
 
 def main() -> None:
