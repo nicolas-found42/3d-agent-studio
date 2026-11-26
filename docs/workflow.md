@@ -11,7 +11,7 @@ uv run --locked 3d-agent-studio --output-root /absolute/jobs ingest \
   /absolute/path/photo.jpg --role style
 ```
 
-Copy the returned reference ID into the brief's `references` array. The script can use the kit to read inputs declared in the brief. See the [reference kinds and roles](../skills/3d-agent-studio/references/operations.md#references) and the [teapot example](examples.md#teapot-from-photo) for a complete photo-based scene.
+Copy the returned reference ID into the brief's `references` array. The script can use the kit to read inputs declared in the brief. See the [reference kinds and roles](../skills/3d-agent-studio/references/operations.md#references) and the [teapot example](examples/teapot-from-photo.md) for a complete photo-based scene.
 
 ## Preview and revise
 

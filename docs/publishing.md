@@ -1,6 +1,6 @@
 # Maintain the docs site
 
-Edit the same Markdown used on GitHub. The Pages overview lives in `index.md`. The repository README introduces the project on GitHub. `zensical.toml` defines the navigation. The build command stages the pages and their linked media under their repository-relative paths.
+Edit the same Markdown used on GitHub. The Pages overview lives in `index.md`. The repository README introduces the project on GitHub. `zensical.toml` defines the navigation. The build stages the public guides and media under their repository-relative paths. It also groups the bundled skill and references into topics for Pages. Edit those topics in their original Markdown files under `skills/3d-agent-studio/`.
 
 ## Preview a change
 

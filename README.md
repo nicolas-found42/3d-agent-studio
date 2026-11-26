@@ -4,9 +4,9 @@ Make editable Blender animations from prompts and reference files. Write a Pytho
 
 [Documentation](https://nicolas-found42.github.io/3d-agent-studio/) · [First render](docs/quickstart.md) · [Install for an agent](docs/marketplace.md) · [Browse examples](docs/examples.md)
 
-[![Slow camera move through a stone nave with stained glass and a shaft of morning light](docs/assets/gothic-nave.webp)](docs/examples.md#gothic-nave)
+[![Slow camera move through a stone nave with stained glass and a shaft of morning light](docs/assets/gothic-nave.webp)](docs/examples/gothic-nave.md)
 
-*Gothic Nave, a draft rendered with Studio. [See the brief, clip, and review boards](docs/examples.md#gothic-nave).*
+*Gothic Nave, a draft rendered with Studio. [See the brief, clip, and review boards](docs/examples/gothic-nave.md).*
 
 ## Get started
 

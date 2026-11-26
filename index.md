@@ -28,11 +28,11 @@ Write a Python scene or have your agent turn your prompt and references into one
 
 <figure class="studio-hero__art" markdown="1">
 
-[![Warm sunlight through the stone arches of the Gothic Nave draft](acceptance/gothic-nave/result/poster.jpg)](docs/examples.md#gothic-nave)
+[![Warm sunlight through the stone arches of the Gothic Nave draft](acceptance/gothic-nave/result/poster.jpg)](docs/examples/gothic-nave.md)
 
 <figcaption markdown="1">
 
-**Gothic Nave** [Watch the 5-second draft →](docs/examples.md#gothic-nave)
+**Gothic Nave** [Watch the 5-second draft →](docs/examples/gothic-nave.md)
 
 </figcaption>
 </figure>
@@ -53,9 +53,9 @@ Write a Python scene or have your agent turn your prompt and references into one
 
 <div class="studio-sample" markdown="1">
 
-[![Fox curled up in softly lit snow](acceptance/fox-asleep/result/poster.jpg)](docs/examples.md#fox-asleep)
+[![Fox curled up in softly lit snow](acceptance/fox-asleep/result/poster.jpg)](docs/examples/fox-asleep.md)
 
-### [Fox Asleep](docs/examples.md#fox-asleep)
+### [Fox Asleep](docs/examples/fox-asleep.md)
 
 A procedural character with breathing and falling snow in a seamless loop.
 
@@ -63,9 +63,9 @@ A procedural character with breathing and falling snow in a seamless loop.
 
 <div class="studio-sample" markdown="1">
 
-[![Charcoal teapot with red trim on a studio table](acceptance/teapot-from-photo/result/poster.jpg)](docs/examples.md#teapot-from-photo)
+[![Charcoal teapot with red trim on a studio table](acceptance/teapot-from-photo/result/poster.jpg)](docs/examples/teapot-from-photo.md)
 
-### [Teapot from Photo](docs/examples.md#teapot-from-photo)
+### [Teapot from Photo](docs/examples/teapot-from-photo.md)
 
 One reference photo guides a product shot with an editable model.
 
@@ -73,9 +73,9 @@ One reference photo guides a product shot with an editable model.
 
 <div class="studio-sample" markdown="1">
 
-[![A layered chart in a lit display case](acceptance/village-motives/result/poster.jpg)](docs/examples.md#village-motives)
+[![A layered chart in a lit display case](acceptance/village-motives/result/poster.jpg)](docs/examples/village-motives.md)
 
-### [Village Motives](docs/examples.md#village-motives)
+### [Village Motives](docs/examples/village-motives.md)
 
 A CSV becomes a physical chart with a moving scan line.
 

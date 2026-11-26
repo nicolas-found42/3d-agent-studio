@@ -1,12 +1,11 @@
 for (const poster of document.querySelectorAll(".studio-case__media a > img")) {
   const link = poster.parentElement;
-  const caseTitle = link.closest(".studio-case").querySelector("h2").textContent.trim();
   const button = document.createElement("button");
   const label = document.createElement("span");
 
   button.type = "button";
   button.className = "studio-play";
-  button.setAttribute("aria-label", `Play ${caseTitle} draft`);
+  button.setAttribute("aria-label", `Play draft: ${poster.alt}`);
   label.className = "studio-play__label";
   label.textContent = "Play draft";
   button.append(poster, label);
@@ -18,7 +17,7 @@ for (const poster of document.querySelectorAll(".studio-case__media a > img")) {
     video.playsInline = true;
     video.poster = poster.src;
     video.src = link.href;
-    video.setAttribute("aria-label", `${caseTitle} draft`);
+    video.setAttribute("aria-label", poster.alt);
     button.replaceWith(video);
     video.focus();
     video.play().catch(() => {
