@@ -1,6 +1,6 @@
 # Plan: prompt-driven scenes (v0.3.0)
 
-Agreed in the November 24, 2026 design interview. Implementation and visual verification are complete on `prompt-scenes`. Publishing v0.3.0 requires the owner's go-ahead. See [status and handoff](#status-and-handoff).
+Agreed in the November 24, 2026 design interview. Implementation and visual verification landed in [PR #11](https://github.com/nicolas-found42/3d-agent-studio/pull/11). [v0.3.0](https://github.com/nicolas-found42/3d-agent-studio/releases/tag/v0.3.0) is published. See [status and handoff](#status-and-handoff).
 
 ## Goal
 
@@ -57,7 +57,7 @@ Replace the two fixed presets with scenes made from whatever the user supplies: 
 | [#8](https://github.com/nicolas-found42/3d-agent-studio/issues/8) | Docs for v0.3.0 |
 | [#9](https://github.com/nicolas-found42/3d-agent-studio/issues/9) | Release v0.3.0 (last) |
 
-The release is prepared as one pull request. Publish the tag with the owner's go-ahead and check installation from that tag. [Migration notes](../v0.3.0.md) · [Marketplace installs](../marketplace.md)
+The release tag points to the PR's merge commit. A clean install from the tag exposed all 10 MCP tools and verified all 36 packaged example scripts, posters, and clips. [Migration notes](../v0.3.0.md) · [Marketplace installs](../marketplace.md)
 
 **Environment notes**
 - Reference machine: Apple M5 Pro (20-core GPU, 48 GB), Blender 5.2.2 at `/Applications/Blender.app`, FFmpeg with libx264. A 640×360 draft frame at 16 spp takes about 0.6–2 s; the first GPU render after a Blender update compiles kernels (~2 min).

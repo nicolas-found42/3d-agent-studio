@@ -1,12 +1,13 @@
 # Connect an agent
 
-For a tagged release installed as a plugin, start with the [marketplace guide](marketplace.md). For an editable checkout or a host without marketplace imports, install and run `3d-agent-studio doctor` first (see the [README](../README.md)). Choose one connection method. All hosts use the same local stdio server; neither this server nor the CLI requires a model account. Agent-host accounts and policies are separate.
+Connect an editable checkout to a host that can run local commands. For the tagged plugin, use the [release install guide](marketplace.md). Complete [Check the renderer](quickstart.md#check-the-renderer) before registering a local server. The host handles its model connection, and Studio runs Blender on the render machine.
 
 ## Choose paths once
 
-On macOS/Linux, from the checkout after `uv sync --locked --extra mcp`:
+Run these commands from the checkout on your render machine.
 
 ```sh
+uv sync --locked --extra mcp
 STUDIO_MCP="$PWD/.venv/bin/3d-agent-studio-mcp"
 STUDIO_JOBS="$HOME/3d-agent-studio-jobs"
 ```
@@ -86,7 +87,7 @@ Check `opencode mcp add --help` for older releases. OpenCode can read the skill 
 
 For any client with **local stdio MCP**, use the executable as the command, and pass `--output-root` and the path as separate arguments. The server's stdout is MCP transport; use `3d-agent-studio doctor` for a human-readable runtime probe from the terminal. Add `STUDIO_BLENDER`, `STUDIO_FFMPEG` and `STUDIO_FFPROBE` as server environment variables if the agent GUI starts with a limited `PATH`. These are absolute executable paths (not shell snippets). In Codex this is a server `env` table or `codex mcp add --env KEY=VALUE`; in Claude use `claude mcp add --env KEY=VALUE`; in JSON configs add an `env` object alongside `args`.
 
-For a client that can run commands but not MCP, use the standalone CLI. Give the agent the entire [skill directory](../skills/3d-agent-studio/), including `references/`. Install it in the client's skill location if supported, or explicitly tell it to read `SKILL.md` from the checkout. A remote-only host without local stdio or shell access cannot run Blender on your computer. There is no hosted renderer.
+For a client that can run commands but not MCP, use the standalone CLI. Give the agent the entire [skill directory](../skills/3d-agent-studio/SKILL.md), including `references/`. Install it in the client's skill location if supported, or explicitly tell it to read `SKILL.md` from the checkout. A remote-only host without local stdio or shell access cannot run Blender on your computer. There is no hosted renderer.
 
 ## Verification
 

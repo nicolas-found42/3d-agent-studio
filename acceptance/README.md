@@ -1,15 +1,15 @@
 # Prompt-driven acceptance scenes
 
-Each directory contains a brief, any input files, and the exact Blender Python scene script. Open the scenario's `result/` for packaged draft evidence and reviewer notes when available.
+Open a scenario for its brief and input declarations. The checkout also contains each Blender scene script and its packaged evidence in `result/`. Start with the [rendered examples](../docs/examples.md) to see clips, scripts, and review boards. The [released fixtures](https://github.com/nicolas-found42/3d-agent-studio/tree/v0.3.0/acceptance) include the source inputs.
 
 | Scene | Inputs and technique |
 |---|---|
-| [Society village](society-village/) | Simulation journal CSV and animated GIF of the observer as a layout diagram |
-| [Gothic nave](gothic-nave/) | Prompt, scanned public asset materials, and a side-by-side comparison with the Laon benchmark |
-| [Teapot from photo](teapot-from-photo/) | One subject photograph reconstructed with turned and swept geometry |
-| [Fox asleep](fox-asleep/) | Prompt, a procedural character, breathing and snowfall in a seamless loop |
-| [Iceland falls](iceland-falls/) | Subject and palette photos, imported OBJ and a moving whitewater material |
-| [Village motives](village-motives/) | A 90-day CSV, SVG, TrueType font and text shot list |
+| [Society village](society-village/acceptance.json) | Simulation journal CSV and animated GIF of the observer as a layout diagram |
+| [Gothic nave](gothic-nave/acceptance.json) | Prompt, scanned public asset materials, and a side-by-side comparison with the Laon benchmark |
+| [Teapot from photo](teapot-from-photo/acceptance.json) | One subject photograph reconstructed with turned and swept geometry |
+| [Fox asleep](fox-asleep/acceptance.json) | Prompt, a procedural character, breathing and snowfall in a seamless loop |
+| [Iceland falls](iceland-falls/acceptance.json) | Subject and palette photos, imported OBJ and a moving whitewater material |
+| [Village motives](village-motives/acceptance.json) | A 90-day CSV, SVG, TrueType font and text shot list |
 
 ## Reproduce a scenario
 

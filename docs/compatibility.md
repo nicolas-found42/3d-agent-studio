@@ -18,7 +18,7 @@ Absolute executable and job paths avoid assumptions about the working directory 
 
 ## Skill discovery (separate from MCP)
 
-The checkout's `skills/` directory is the source, not an automatic install location. Copy the entire [3d-agent-studio skill directory](../skills/3d-agent-studio/), including `references/`, into one of these parent directories. Start a fresh session if the skill does not appear.
+The checkout's `skills/` directory is the source, not an automatic install location. Copy the entire [3d-agent-studio skill directory](../skills/3d-agent-studio/SKILL.md), including `references/`, into one of these parent directories. Start a fresh session if the skill does not appear.
 
 | Host | Skill parent directory |
 |---|---|
