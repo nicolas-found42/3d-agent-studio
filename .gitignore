@@ -4,6 +4,7 @@ __pycache__/
 .DS_Store
 /dist/
 /build/
+/.cache/
 /jobs/
 /.cursor/mcp.json
 /.omp/mcp.json

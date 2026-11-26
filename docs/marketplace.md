@@ -1,37 +1,39 @@
-# Found42 Studio marketplace
+# Install Studio for your agent
 
-The public catalog is `nicolas-found42/3d-agent-studio`. The plugin is `3d-agent-studio`; the catalog name is `found42-studio`. The repository ships one Agent Plugins 1.0 package (skill and local stdio MCP) plus catalog manifests for hosts that use their own formats.
+Install the [v0.3.0 release](https://github.com/nicolas-found42/3d-agent-studio/releases/tag/v0.3.0). Studio’s plugin includes the scene-authoring skill and a local MCP server. Your agent starts that server on the machine that runs Blender.
 
 ## Install a release
 
+Choose your host. [Claude Code](#claude-code) · [Codex](#codex) · [Oh My Pi](#oh-my-pi) · [Hermes Agent](#hermes-agent) · [Cursor](#cursor) · [Other hosts](#other-hosts)
+
 Install `uv` (including `uvx`), Git, Blender, and FFmpeg with `ffprobe` and `libx264` on the machine running your agent. The agent must be able to find `uvx` on its own `PATH`, which may differ from your shell's. The MCP launcher installs the tagged Python package on first use. Rendering happens locally and does not require a Blender add-on, model credentials, or a network listener.
 
-The Codex marketplace entry selects the repository's local plugin package. The portable `plugin.json` carries the version and `mcp.json` pins the Python launcher to the release tag.
+The plugin ID is `3d-agent-studio` and the catalog is `found42-studio`. The portable manifest pins the Python launcher to the release tag.
 
-**Claude Code** — in a shell:
+### Claude Code
 
 ```sh
 claude plugin marketplace add nicolas-found42/3d-agent-studio
 claude plugin install 3d-agent-studio@found42-studio --scope user
 ```
 
-**Codex** — in a shell:
+### Codex
 
 ```sh
 codex plugin marketplace add nicolas-found42/3d-agent-studio
 codex plugin add 3d-agent-studio@found42-studio
 ```
 
-**Oh My Pi** — in a shell:
+### Oh My Pi
 
 ```sh
 omp plugin marketplace add nicolas-found42/3d-agent-studio
 omp plugin install 3d-agent-studio@found42-studio --scope user
 ```
 
-In OMP 19.1.1 the catalog install succeeded, but the released server did not appear in `/mcp list` in the clean test profile. If that happens, merge the `3d-agent-studio` entry from [the release's `mcp.json`](../mcp.json) into your OMP `mcpServers` in `~/.omp/agent/mcp.json`. Copy the entry, not the `$schema` or the entire config. That fallback was tested with `studio_doctor` and `studio_brief`. If the skill is also missing, point OMP to the [skill directory](../skills/3d-agent-studio/) from a local checkout.
+In OMP 19.1.1 the catalog install succeeded, but the released server did not appear in `/mcp list` in the clean test profile. If that happens, merge the `3d-agent-studio` entry from [the release's `mcp.json`](../mcp.json) into your OMP `mcpServers` in `~/.omp/agent/mcp.json`. Copy the entry, not the `$schema` or the entire config. That fallback was tested with `studio_doctor` and `studio_brief`. If the skill is also missing, point OMP to the [skill directory](../skills/3d-agent-studio/SKILL.md) from a local checkout.
 
-**Hermes Agent** — install the same portable package directly from GitHub and consent to enable it:
+### Hermes Agent
 
 ```sh
 hermes plugins install nicolas-found42/3d-agent-studio
@@ -39,11 +41,19 @@ hermes plugins install nicolas-found42/3d-agent-studio
 
 Approve the dependency and enable prompts after reviewing the package. Noninteractive installers that already have consent can pass `--yes-deps --enable`. Start a new session and call `studio_doctor`: `hermes mcp test` checks manually configured servers, not portable plugin registrations on Hermes v0.23.3.
 
-**Cursor** — a team admin can import the repo under **Dashboard → Plugins & MCPs → Team Marketplaces** on eligible plans. This repo is not a listing in Cursor's curated public marketplace. Personal users can use the local MCP and skill setup below without a team marketplace.
+### Cursor
 
-**OpenCode and other hosts** — use [local MCP and skill setup](agents.md). For a shell-capable host with no MCP, use the [standalone CLI](../README.md#use-from-a-terminal). A cloud-only host that cannot launch a process on the render machine cannot use this local renderer. Every host needs no more than one Studio MCP registration; remove or disable one path before switching to another.
+A team admin can import the repo under **Dashboard → Plugins & MCPs → Team Marketplaces** on eligible plans. This repo is not a listing in Cursor's curated public marketplace. Personal users can use the local MCP and skill setup below without a team marketplace.
 
-After installing, run the [host verification](agents.md#verification) from a fresh agent session. `studio_doctor` checks the runtime and `studio_draft` makes a short render. If the host cannot find a renderer executable, configure the absolute paths in [agent setup](agents.md).
+### Other hosts
+
+For OpenCode and other clients, use [local MCP and skill setup](agents.md). For a shell-capable host with no MCP, use the [standalone CLI](quickstart.md). A cloud-only host that cannot launch a process on the render machine cannot use this local renderer. Every host needs no more than one Studio MCP registration; remove or disable one path before switching to another.
+
+## Verify the install
+
+Start a fresh agent session and call `studio_doctor`. Check the reported Blender, FFmpeg, and FFprobe versions, the output root, and `libx264: true`. If an executable is missing, set its absolute path in [agent setup](agents.md).
+
+Use the [full agent verification](agents.md#verification) to run a draft and inspect its review boards.
 
 ## Develop against one checkout
 

@@ -2,19 +2,51 @@
 
 Use one local job root across all calls. In the CLI examples `3d-agent-studio` is on PATH (in a checkout, prefix with `uv run --locked`). Put `--output-root /absolute/jobs` before the subcommand, or set `STUDIO_OUTPUT_ROOT`. MCP fixes its root at startup and never takes one from a tool call. JSON arguments in the CLI may be inline or `@file.json`.
 
-| MCP tool | Arguments | CLI | Result |
-|---|---|---|---|
-| `studio_doctor` | — | `doctor` | Runtime versions (Blender 5.2+), orientations and sizes, fps, brief schema and defaults, reference kinds and roles, asset sources, example count |
-| `studio_brief` | `brief` | `brief JSON` | Normalized brief; no writes |
-| `studio_ingest` | `path` (absolute), `role`, `max_frames` | `ingest PATH [--role R] [--max-frames N]` | Reference ID (`ref-…`), kind, role, paths; videos list their extracted frames |
-| `studio_examples` | `query`, `tags`, `limit` ≤ 12, `include_script` | `examples [QUERY] [--tag T] [--script]` | Matching examples with prompt, tags, poster, clip and script |
-| — | — | `check SCRIPT` | Static script check only |
-| `studio_probe` | `brief`, `script` (source text) | `probe JSON SCRIPT.py [--wait]` | New job; resolves assets, runs the script, saves `scene.blend`, renders 3 timed stills |
-| `studio_draft` | `job_id` of a probed job, or `brief` + `script` | `draft --job ID` or `draft JSON SCRIPT.py` `[--wait]` | Full preview sequence and review boards |
-| `studio_status` | `job_id` | `status ID` | Brief, parent job, script path, references, assets, credits, `.blend`, and per-stage state, artifacts, estimates, QC, review hashes |
-| `studio_view` | `job_id`, `stage`, `board` | open the path from `status` | One board as an image plus its path |
-| `studio_compare` | `before`, `after` | `compare A B` | Matching boards stacked, before on top |
-| `studio_finalize` | `job_id`, `hashes`, `notes`, optional `budget_minutes`, `quality`, `samples` | `finalize ID REVIEW_JSON [--budget-minutes N] [--quality fast] [--samples N] [--wait]` | Queued master and its render plan |
+## Commands and MCP tools
+
+### `studio_doctor`
+
+CLI `doctor`. Call without arguments for runtime versions, available sizes and frame rates, the brief schema, reference roles, asset sources, and the shipped example count.
+
+### `studio_brief`
+
+CLI `brief JSON`. Pass `brief` for a normalized brief without writing a job.
+
+### `studio_ingest`
+
+CLI `ingest PATH [--role R] [--max-frames N]`. Pass the absolute `path`, with optional `role` and `max_frames`. Returns a reference ID, kind, and local paths. Video references include the extracted frames.
+
+### `studio_examples`
+
+CLI `examples [QUERY] [--tag T] [--script]`. Filter by `query` and `tags`, set `limit` to at most 12, and set `include_script` to include source. Returns each match's prompt, tags, poster, and clip.
+
+### `studio_probe`
+
+CLI `probe JSON SCRIPT.py [--wait]`. Pass `brief` and `script` source to start a job. The probe resolves assets, runs the script, saves `scene.blend`, and renders three timed stills.
+
+### `studio_draft`
+
+CLI `draft --job ID [--wait]` or `draft JSON SCRIPT.py [--wait]`. Pass a probed `job_id` or provide `brief` and `script`. Returns the job for the full preview sequence and its review boards.
+
+### `studio_status`
+
+CLI `status ID`. Pass `job_id` to read stage state, paths, estimates, QC, and review hashes, along with the job's brief, parent, script, references, assets, and credits.
+
+### `studio_view`
+
+Pass `job_id`, `stage`, and `board` for one review image and its path. From the CLI, open the path listed by `status ID`.
+
+### `studio_compare`
+
+CLI `compare A B`. Pass job IDs as `before` and `after`. Matching boards stack vertically with `before` on top.
+
+### `studio_finalize`
+
+CLI `finalize ID REVIEW_JSON [--budget-minutes N] [--quality fast] [--samples N] [--wait]`. Pass `job_id`, the current draft board `hashes`, and written `notes`. Set `budget_minutes`, `quality`, or `samples` to override the brief. Returns the queued master job and its render plan.
+
+### Check a script locally
+
+CLI `check SCRIPT` runs the static script check without rendering.
 
 ## Brief
 

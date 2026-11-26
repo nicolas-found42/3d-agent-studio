@@ -1,74 +1,59 @@
 # 3D Agent Studio
 
-Turn any prompt, with or without reference photos, videos, 3D models, data, logos, fonts or shot lists, into an editable Blender scene and a silent animated video. Use the same workflow from a terminal or through a local [MCP](https://modelcontextprotocol.io/) client. No agent SDK, Blender add-on, server port, or model credentials are required to render.
+Make editable Blender animations from prompts and reference files. Write a Python scene script or ask your agent to write one. Studio runs it locally and delivers a Blender project, a silent MP4, and review boards you can inspect before approving a full-resolution render.
 
-There are no presets. Your agent writes a Blender Python scene script (`def build(kit): ...`) using the studio's scene kit: geometry, procedural and scanned materials, physical sky and HDRI lighting, haze, camera rigs, easing and loop-safe motion, imported models, figures, particles and rigid bodies. The studio checks the script, resolves open-licensed assets, runs it in Blender, renders on the GPU, and gates the master on a visual review. A searchable [example library](src/agent_studio/examples/) spans architecture, nature, products, characters, data and systems, mechanics, physics, typography, still life, micro and macro scale, and space.
+[Documentation](https://nicolas-found42.github.io/3d-agent-studio/) · [First render](docs/quickstart.md) · [Install for an agent](docs/marketplace.md) · [Browse examples](docs/examples.md)
 
-| `orientation` | Aspect | Preview | Master |
-|---|---|---|---|
-| `vertical` (default) | 9:16 | 360×640 | 1080×1920 |
-| `horizontal` | 16:9 | 640×360 | 1920×1080 |
-| `square` | 1:1 | 360×360 | 1080×1080 |
-| `portrait` | 4:5 | 360×450 | 1080×1350 |
-| `ultrawide` | 21:9 | 840×360 | 2520×1080 |
+[![Slow camera move through a stone nave with stained glass and a shaft of morning light](docs/assets/gothic-nave.webp)](docs/examples.md#gothic-nave)
 
-Shots run 2–30 seconds at 24, 30, 60 or 120 fps, linear or as seamless loops, rendered with Cycles (AgX, denoised, motion blur). Each job has three stages, each with a wall-clock budget you can raise: a **probe** (three timed stills, 5 min), a **draft** (every frame at preview size, 10 min) and a **master** (full size, 10 min). The probe predicts the later stages, so an over-budget stage refuses with an estimate instead of running for hours. Review boards show a six-frame timeline, alternate angles with the camera path, each reference beside its closest frame, and the loop seam. Exports are H.264/BT.709 MP4, plus the `.blend`, the script, a cover, `CREDITS.txt`, and optionally ProRes 4444 or PNG frames.
+*Gothic Nave, a draft rendered with Studio. [See the brief, clip, and review boards](docs/examples.md#gothic-nave).*
 
-## Marketplace install
+## Get started
 
-Add the **[Found42 Studio marketplace](docs/marketplace.md)** for Claude Code, Codex, or Oh My Pi, or install the portable GitHub package in Hermes Agent. The guide also covers Cursor team imports, direct MCP setup for personal Cursor and OpenCode, and live development from one checkout.
+### Use from a terminal
 
-Claude Code also supports a single command in an agent session:
-
-```text
-/plugin install 3d-agent-studio --marketplace nicolas-found42/3d-agent-studio
-```
-
-## Quick start
-
-Install Python 3.11+, [uv](https://docs.astral.sh/uv/), Blender (tested with 5.2), and FFmpeg with `libx264` and `ffprobe`.
+Install Python 3.11+, [uv](https://docs.astral.sh/uv/), Blender 5.2+, and FFmpeg with `libx264` and `ffprobe`. Run this in a terminal on the computer that will render.
 
 ```sh
 git clone https://github.com/nicolas-found42/3d-agent-studio.git
 cd 3d-agent-studio
-uv sync --locked --extra mcp
-uv run --locked --extra mcp 3d-agent-studio doctor
+uv sync --locked
+uv run --locked 3d-agent-studio doctor
 ```
 
-Without MCP, omit `--extra mcp`. For pip, install `.` or `.[mcp]` into a Python virtual environment. If your host cannot see the renderer binaries on its `PATH`, set the absolute executable paths in `STUDIO_BLENDER`, `STUDIO_FFMPEG` and `STUDIO_FFPROBE` in that host's server environment.
+When `doctor` reports the Blender and FFmpeg versions, run the [first render](docs/quickstart.md) to produce a two-second clip and its review boards.
 
 ### Use from an agent
 
-Start with [agent setup](docs/agents.md) or the [compatibility and verification matrix](docs/compatibility.md) for **Oh My Pi, Codex, Hermes Agent, Claude Code, Cursor**, and generic local stdio clients. Give the agent the bundled [3D Agent Studio skill](skills/3d-agent-studio/SKILL.md), which explains all tools and the review gate. For agents without MCP, point them to the same skill and give them terminal access on the render machine.
+Install the [marketplace plugin](docs/marketplace.md) or start the [local Model Context Protocol (MCP) server](docs/agents.md). Give the agent the bundled [Studio skill](skills/3d-agent-studio/SKILL.md) so it can author the scene and run the review workflow.
 
-> Make an eight-second horizontal video of a fog-filled gothic nave at dawn, slow dolly toward the crossing. Use these two photos for the stonework. Show me the probe and draft boards before finalizing.
+> Make a five-second horizontal video of a fog-filled stone nave at dawn. Move slowly toward the crossing and show me the draft boards before rendering the master.
 
-### Use from a terminal
+## How a render works
 
-```sh
-uv run --locked 3d-agent-studio --output-root ./jobs examples nave --script
-uv run --locked 3d-agent-studio --output-root ./jobs ingest /absolute/path/photo.jpg --role style
-uv run --locked 3d-agent-studio --output-root ./jobs draft \
-  '{"prompt":"A red cube turning on a grey floor","orientation":"square","seconds":4,"loop":true}' scene.py --wait
-uv run --locked 3d-agent-studio --output-root ./jobs status JOB_ID
-```
+1. **Probe.** Studio builds the scene in Blender, renders three stills, and estimates the time for the draft and master.
+2. **Draft.** Play the preview MP4 and inspect its timeline, alternate angles, and applicable reference or loop boards.
+3. **Master.** Approve the current draft evidence to render at full resolution. Studio delivers the editable `.blend`, the scene script, the finished MP4, and asset credits.
 
-Use the same absolute job root for CLI and MCP to inspect or continue a job across clients. The `--output-root` flag overrides `STUDIO_OUTPUT_ROOT`; the default is `~/3d-agent-studio-jobs`. `draft` and `finalize` queue local jobs; `--wait` polls until the stage succeeds or fails. See the [command and tool reference](skills/3d-agent-studio/references/operations.md) for inputs, outputs and retry behavior.
+Blender runs locally. Give Studio a job directory you own and run only Python scene scripts you trust. See the [workflow guide](docs/workflow.md#local-files-and-script-trust) for where your files go and how script checks work.
 
-## Local boundaries
+## Documentation
 
-Use a dedicated, trusted, user-owned job directory, not a shared or untrusted mount. MCP runs as the local user. Scene scripts are agent-written Python executed in Blender as that user: a static check rejects file I/O, process and network imports, `exec`/`eval`, handlers and saving, which catches mistakes but is not a sandbox. Local files enter only through `ingest`. Assets are fetched over HTTPS only from the keyless open sources listed in the [operations reference](skills/3d-agent-studio/references/operations.md#assets), license-checked and credited. Blender runs headlessly with auto-execution of embedded scripts disabled. The MCP server has no network listener or upload tool; the agent service you use may receive any images or text you surface to that agent. Copy the `.blend` outside the managed job before editing it. To promote, use the current draft evidence; edited or missing evidence requires a fresh draft.
+- [Render workflow](docs/workflow.md), including references, revisions, and masters
+- [Command and MCP reference](skills/3d-agent-studio/references/operations.md) and [scene kit](skills/3d-agent-studio/references/kit.md)
+- [Agent compatibility](docs/compatibility.md) and [v0.3.0 migration](docs/v0.3.0.md)
 
 ## Verification
+
+Run the test suite and package checks from the repository root.
 
 ```sh
 uv run --locked --extra mcp python -m unittest discover -s tests -v
 STUDIO_RENDER_TESTS=1 uv run --locked --extra mcp python -m unittest tests.test_workflow.Render -v
-uv run --locked python tools/kit_reference.py   # after changing the kit
 uv lock --check
 uv build
 ```
 
-See the [agent verification matrix](docs/compatibility.md#verified-on-local-macos), the [example contact sheet and review](docs/example-library-review.md), the [acceptance scenes](acceptance/), and [render verification](docs/render-verification.md). Media checks validate decoded frame order, constant cadence, format, and the two-cycle repeat. See [v0.3.0 migration notes](docs/v0.3.0.md) if you have older briefs or jobs.
+After editing the scene kit, regenerate its reference with `uv run --locked python tools/kit_reference.py`. See [render verification](docs/render-verification.md) for decoded-media checks and [documentation maintenance](docs/publishing.md) for testing the docs site.
 
-[MIT license](LICENSE).
+[MIT license](LICENSE)
