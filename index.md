@@ -45,7 +45,7 @@ Write a Python scene or have your agent turn your prompt and references into one
 
 ## What Studio renders
 
-[All rendered examples →](docs/examples.md)
+[Example library →](docs/example-library.md) · [All case studies →](docs/examples.md)
 
 </div>
 

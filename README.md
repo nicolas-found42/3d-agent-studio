@@ -2,7 +2,7 @@
 
 Make editable Blender animations from prompts and reference files. Write a Python scene script or ask your agent to write one. Studio runs it locally and delivers a Blender project, a silent MP4, and review boards you can inspect before approving a full-resolution render.
 
-[Documentation](https://nicolas-found42.github.io/3d-agent-studio/) · [First render](docs/quickstart.md) · [Install for an agent](docs/marketplace.md) · [Browse examples](docs/examples.md)
+[Documentation](https://nicolas-found42.github.io/3d-agent-studio/) · [First render](docs/quickstart.md) · [Install for an agent](docs/marketplace.md) · [Example library](https://nicolas-found42.github.io/3d-agent-studio/docs/example-library/) · [Case studies](docs/examples.md)
 
 [![Slow camera move through a stone nave with stained glass and a shaft of morning light](docs/assets/gothic-nave.webp)](docs/examples/gothic-nave.md)
 

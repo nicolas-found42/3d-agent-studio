@@ -12,6 +12,8 @@ import shutil
 
 from markdown.extensions.toc import slugify
 
+from docs_catalog import stage_catalog
+
 
 SKILL_DIRECTORY = Path("skills/3d-agent-studio")
 REFERENCE_TOPICS = {
@@ -91,8 +93,6 @@ def stage_sources(root: Path) -> None:
         *root.glob("acceptance/*/result/*.jpg"),
         *root.glob("acceptance/*/result/*.mp4"),
         *root.glob("acceptance/*/result/*review.json"),
-        *root.glob("src/agent_studio/examples/*/scene.py"),
-        *root.glob("src/agent_studio/examples/*/review.json"),
     ]
     for path in paths:
         if path.is_file():
@@ -103,6 +103,7 @@ def stage_sources(root: Path) -> None:
                 stage_reference(path, target, REFERENCE_TOPICS[relative])
             else:
                 shutil.copyfile(path, target)
+    stage_catalog(root, source)
 
 
 def main() -> None:

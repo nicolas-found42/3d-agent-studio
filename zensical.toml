@@ -27,12 +27,15 @@ nav = [
         ]},
     ]},
     {"Examples" = [
-        {"Rendered examples" = "docs/examples.md"},
+        {"Example library" = "docs/example-library.md"},
+        {"Acceptance case studies" = "docs/examples.md"},
         {"Case studies" = [
             {"Gothic Nave" = "docs/examples/gothic-nave.md"},
             {"Fox Asleep" = "docs/examples/fox-asleep.md"},
             {"Teapot from Photo" = "docs/examples/teapot-from-photo.md"},
             {"Village Motives" = "docs/examples/village-motives.md"},
+            {"Society Village" = "docs/examples/society-village.md"},
+            {"Iceland Falls" = "docs/examples/iceland-falls.md"},
         ]},
         {"Acceptance scenarios" = "acceptance/README.md"},
         {"Library review" = [

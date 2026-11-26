@@ -1,6 +1,6 @@
 # Example library art direction
 
-The contact sheet uses the shipped posters in category and slug order. The individual poster notes link to the scene scripts. Open the [shipped catalog](https://github.com/nicolas-found42/3d-agent-studio/tree/v0.3.0/src/agent_studio/examples) for clips and review receipts.
+The contact sheet uses the shipped posters in category and slug order. The individual poster notes link to the scene scripts. The [example library](example-library.md) pairs every script with its draft and review record. Open the [shipped catalog](https://github.com/nicolas-found42/3d-agent-studio/tree/v0.3.0/src/agent_studio/examples) for clips and review receipts.
 
 ![Contact sheet of all 36 example posters](assets/example-contact-sheet.jpg)
 

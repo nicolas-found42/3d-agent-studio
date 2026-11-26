@@ -1,15 +1,15 @@
 # Prompt-driven acceptance scenes
 
-Open a scenario for its brief and input declarations. The checkout also contains each Blender scene script and its packaged evidence in `result/`. Start with the [rendered examples](../docs/examples.md) to see clips, scripts, and review boards. The [released fixtures](https://github.com/nicolas-found42/3d-agent-studio/tree/v0.3.0/acceptance) include the source inputs.
+Open a case study to see its draft, brief, scene script, and review boards. The checkout also contains each Blender scene script and its packaged evidence in `result/`. Start with the [acceptance case studies](../docs/examples.md) to see clips, scripts, and review boards. The [released fixtures](https://github.com/nicolas-found42/3d-agent-studio/tree/v0.3.0/acceptance) include the source inputs.
 
-| Scene | Inputs and technique |
-|---|---|
-| [Society village](society-village/acceptance.json) | Simulation journal CSV and animated GIF of the observer as a layout diagram |
-| [Gothic nave](gothic-nave/acceptance.json) | Prompt, scanned public asset materials, and a side-by-side comparison with the Laon benchmark |
-| [Teapot from photo](teapot-from-photo/acceptance.json) | One subject photograph reconstructed with turned and swept geometry |
-| [Fox asleep](fox-asleep/acceptance.json) | Prompt, a procedural character, breathing and snowfall in a seamless loop |
-| [Iceland falls](iceland-falls/acceptance.json) | Subject and palette photos, imported OBJ and a moving whitewater material |
-| [Village motives](village-motives/acceptance.json) | A 90-day CSV, SVG, TrueType font and text shot list |
+| Scene | Inputs and technique | Scenario file |
+|---|---|---|
+| [Society village](../docs/examples/society-village.md) | Simulation journal CSV and animated GIF of the observer as a layout diagram | [Brief and inputs](society-village/acceptance.json) |
+| [Gothic nave](../docs/examples/gothic-nave.md) | Prompt, scanned public asset materials, and a side-by-side comparison with the Laon benchmark | [Brief and inputs](gothic-nave/acceptance.json) |
+| [Teapot from photo](../docs/examples/teapot-from-photo.md) | One subject photograph reconstructed with turned and swept geometry | [Brief and inputs](teapot-from-photo/acceptance.json) |
+| [Fox asleep](../docs/examples/fox-asleep.md) | Prompt, a procedural character, breathing and snowfall in a seamless loop | [Brief and inputs](fox-asleep/acceptance.json) |
+| [Iceland falls](../docs/examples/iceland-falls.md) | Subject and palette photos, imported OBJ and a moving whitewater material | [Brief and inputs](iceland-falls/acceptance.json) |
+| [Village motives](../docs/examples/village-motives.md) | A 90-day CSV, SVG, TrueType font and text shot list | [Brief and inputs](village-motives/acceptance.json) |
 
 ## Reproduce a scenario
 

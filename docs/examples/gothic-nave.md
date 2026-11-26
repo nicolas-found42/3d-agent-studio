@@ -14,8 +14,8 @@ Warm daylight travels across the stone aisle as the camera moves through pointed
 
 ## Scene and review
 
-[MP4 clip](../../acceptance/gothic-nave/result/clip.mp4) · [Scenario and brief](../../acceptance/gothic-nave/acceptance.json) · [Scene script](../../acceptance/gothic-nave/scene.py) · [Timeline](../../acceptance/gothic-nave/result/timeline.jpg)
+[MP4 clip](../../acceptance/gothic-nave/result/clip.mp4) · [Scenario and brief](../../acceptance/gothic-nave/acceptance.json) · [Scene script](../../acceptance/gothic-nave/scene.py) · [Timeline](../../acceptance/gothic-nave/result/timeline.jpg) · [Laon comparison board](../../acceptance/gothic-nave/result/compare.jpg) · [Review record](../../acceptance/gothic-nave/result/review.json)
 
 On GitHub, open the MP4 link and choose **View raw** or **Download raw file**.
 
-[Back to all examples](../examples.md)
+[Back to all case studies](../examples.md)
