@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 import time
 
-from . import ingest, pipeline
+from . import ingest, observability, pipeline
 
 
 def load_json(text):
@@ -51,6 +51,13 @@ def main():
             q.add_argument('--job', help='Draft an already probed job instead')
         q.add_argument('--wait', action='store_true')
     q = sub.add_parser('status'); q.add_argument('job_id')
+    q = sub.add_parser('diagnostics', help='Retrieve a page of retained studio operation history')
+    q.add_argument('--job', dest='job_id')
+    q.add_argument('--operation', dest='operation_id')
+    q.add_argument('--since', help='Inclusive ISO 8601 timestamp with offset')
+    q.add_argument('--until', help='Exclusive ISO 8601 timestamp with offset')
+    q.add_argument('--after', type=int, default=0, help='Continue from a previous page cursor')
+    q.add_argument('--limit', type=int, default=100)
     q = sub.add_parser('finalize')
     q.add_argument('job_id'); q.add_argument('review', help='JSON object with hashes and notes, or @file')
     q.add_argument('--budget-minutes', type=int); q.add_argument('--quality', choices=['standard', 'fast'])
@@ -61,6 +68,7 @@ def main():
     q.add_argument('--limit', type=int, default=8); q.add_argument('--script', action='store_true')
     a = p.parse_args()
     root = pipeline.output_root(a.output_root)
+    observability.ORIGIN.set('cli')
     try:
         if a.mode == 'doctor':
             out = pipeline.doctor(root)
@@ -83,6 +91,9 @@ def main():
                 out = pipeline.start_draft(root, load_json(a.brief), load_script(a.script))
         elif a.mode == 'status':
             out = pipeline.status(root, a.job_id)
+        elif a.mode == 'diagnostics':
+            out = pipeline.diagnostics(root, job_id=a.job_id, operation_id=a.operation_id,
+                                       since=a.since, until=a.until, after=a.after, limit=a.limit)
         elif a.mode == 'finalize':
             out = pipeline.finalize(root, a.job_id, load_json(a.review), a.budget_minutes, a.quality, a.samples)
         elif a.mode == 'compare':

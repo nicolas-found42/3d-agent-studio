@@ -11,6 +11,7 @@ import subprocess
 import uuid
 
 from . import pipeline as p
+from . import observability as obs
 
 KINDS = {
     'image': ('.png', '.jpg', '.jpeg', '.webp', '.tif', '.tiff', '.bmp', '.gif', '.heic', '.heif', '.exr', '.hdr'),
@@ -146,6 +147,7 @@ def check_data(path, ext):
     return {'format': ext[1:], 'columns': rows[0], 'rows': len(rows) - 1}
 
 
+@obs.tracked('ingest')
 def ingest(root, raw_path, role=None, max_frames=DEFAULT_MAX_FRAMES):
     path = Path(raw_path).expanduser()
     if not path.is_absolute():
@@ -167,12 +169,15 @@ def ingest(root, raw_path, role=None, max_frames=DEFAULT_MAX_FRAMES):
     ref_id = 'ref-' + sha[:16]
     base = store(root)
     base.mkdir(parents=True, exist_ok=True, mode=0o700)
+    obs.mark('reference_identified', reference_id=ref_id, kind=kind, size_bytes=size)
     final = base / ref_id
     if (final / 'input.json').is_file():
         info = p.read(final / 'input.json')
         # Same bytes: reuse frames already extracted unless a different frame cap was asked for.
         if kind != 'video' or info.get('max_frames') == max_frames:
+            obs.mark('reference_reused', reference_id=ref_id)
             return describe(final, info, role)
+        obs.mark('reference_reextracting', reference_id=ref_id, max_frames=max_frames)
         shutil.rmtree(final)
     temp = base / ('.ingest-' + uuid.uuid4().hex)
     temp.mkdir(mode=0o700)
@@ -189,6 +194,7 @@ def ingest(root, raw_path, role=None, max_frames=DEFAULT_MAX_FRAMES):
             ffmpeg(bins, '-i', source, '-frames:v', '1', '-update', '1', temp / 'image.png')
             info['file'] = 'image.png'
         elif kind == 'video':
+            obs.mark('reference_processing', tool='ffmpeg_ffprobe', max_frames=max_frames)
             meta, frames = video_frames(bins, source, temp, max_frames)
             info.update(video=meta, frames=frames, max_frames=max_frames)
             source.unlink()  # Keep only the frames; the clip itself never reaches Blender.
@@ -201,6 +207,8 @@ def ingest(root, raw_path, role=None, max_frames=DEFAULT_MAX_FRAMES):
             source.read_text(encoding='utf-8')
         p.write(temp / 'input.json', info)
         temp.rename(final)
+        obs.mark('reference_committed', reference_id=ref_id,
+                 image_count=len(info.get('frames', [])) if kind == 'video' else int(kind == 'image'))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         shutil.rmtree(temp, ignore_errors=True)
         raise ValueError(f'Could not parse {path.name}: {exc}') from exc

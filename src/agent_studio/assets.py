@@ -20,6 +20,7 @@ import uuid
 import zipfile
 
 from . import pipeline as p
+from . import observability as obs
 
 USER_AGENT = '3d-agent-studio/0.3 (open asset resolver)'
 MAX_BYTES = 1_500_000_000
@@ -97,13 +98,21 @@ def http(url, *, max_bytes=MAX_BYTES, attempts=4):
             break
         except urllib.error.HTTPError as exc:
             if exc.code in (429, 502, 503, 504) and attempt < attempts - 1:
-                time.sleep(retry_delay(exc.headers.get('Retry-After', ''), attempt))
+                delay = retry_delay(exc.headers.get('Retry-After', ''), attempt)
+                obs.mark('asset_request_retry', attempt=attempt + 1, http_status=exc.code,
+                         delay_seconds=delay)
+                time.sleep(delay)
                 continue
+            obs.mark('asset_request_failed', attempt=attempt + 1, http_status=exc.code)
             raise ValueError(f'Download failed ({exc.code}) for {url}') from exc
         except urllib.error.URLError as exc:
             if attempt < attempts - 1:
-                time.sleep(retry_delay('', attempt))
+                delay = retry_delay('', attempt)
+                obs.mark('asset_request_retry', attempt=attempt + 1, reason='connection_error',
+                         delay_seconds=delay)
+                time.sleep(delay)
                 continue
+            obs.mark('asset_request_failed', attempt=attempt + 1, reason='connection_error')
             raise ValueError(f'Download failed for {url}: {exc.reason}') from exc
     if len(data) > max_bytes:
         raise ValueError(f'Asset exceeds {max_bytes // 1_000_000} MB: {url}')
@@ -403,11 +412,13 @@ def resolve(root, asset_id):
         for rel, digest in info['files'].items():
             if p.digest(final.joinpath(*PurePosixPath(rel).parts)) != digest:
                 raise ValueError(f'Cached asset {asset_id} changed on disk; delete {final} to refetch')
+        obs.mark('asset_cache_hit', provider=source, file_count=len(info['files']))
         return info, final
     final.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     temp = final.parent / ('.fetch-' + uuid.uuid4().hex)
     temp.mkdir(mode=0o700)
     try:
+        obs.mark('asset_fetch_started', provider=source)
         f = Fetch(temp)
         meta = RESOLVERS[source](name, f)
         # Every part of a compound license (e.g. 'CC0-1.0 AND CC-BY-4.0') must be allowed on its own.
@@ -423,7 +434,9 @@ def resolve(root, asset_id):
             if exc.errno not in (errno.EEXIST, errno.ENOTEMPTY) or not (final / 'asset.json').is_file():
                 raise
             # A concurrent job resolved this ID first. Both jobs use the same checked cache entry.
+            obs.mark('asset_cache_race', provider=source)
             return resolve(root, asset_id)
+        obs.mark('asset_cache_committed', provider=source, file_count=len(f.files))
     finally:
         shutil.rmtree(temp, ignore_errors=True)
     return info, final
