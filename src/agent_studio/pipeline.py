@@ -16,6 +16,7 @@ import sys
 import time
 import uuid
 
+from . import observability as obs
 from .formats import DEFAULT_ORIENTATION, FPS_CHOICES, MASTER_SIZES, ASPECT_LABELS, stage_size
 
 HERE = Path(__file__).resolve().parent
@@ -305,18 +306,35 @@ class GpuLock:
         self.handle.close()
 
 
-def launch(job, kind, **extra):
+def launch(job, kind, *, operation_id=None, **extra):
     stage = job / kind
-    stage.mkdir(exist_ok=False, mode=0o700)  # An immutable stage; races cannot overwrite or reuse plates.
-    initial = {'state': 'queued', 'updated_at': time.time(), **extra}
-    write(stage / 'state.json', initial)
+    parent = obs.ACTIVE.get()
+    trace = obs.Observation(job.parent, 'stage_queue', job_id=job.name,
+                            operation_id=operation_id or (parent.operation_id if parent else None),
+                            attempt_id=uuid.uuid4().hex, stage=kind)
+    try:
+        stage.mkdir(exist_ok=False, mode=0o700)  # An immutable stage; races cannot overwrite or reuse plates.
+    except OSError as exc:
+        trace.record('queue_rejected', reason='already_exists' if isinstance(exc, FileExistsError)
+                     else obs.error_kind(exc))
+        raise
+    initial = {'state': 'queued', 'updated_at': time.time(), 'operation_id': trace.operation_id,
+               'attempt_id': trace.attempt_id, **extra}
+    try:
+        write(stage / 'state.json', initial)
+    except OSError as exc:
+        trace.record('queue_state_write_failed', reason=obs.error_kind(exc))
+        raise
+    trace.record('queued', chained=extra.get('then') == 'preview')
     try:
         with (stage / 'run.log').open('ab') as log:
-            subprocess.Popen([sys.executable, '-m', 'agent_studio.worker', str(job), kind],
-                             stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
-                             cwd=HERE.parent, env={**render_env(), 'PYTHONPATH': str(HERE.parent)},
-                             start_new_session=True)
+            process = subprocess.Popen([sys.executable, '-m', 'agent_studio.worker', str(job), kind],
+                                       stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
+                                       cwd=HERE.parent, env={**render_env(), 'PYTHONPATH': str(HERE.parent)},
+                                       start_new_session=True)
+        trace.record('worker_spawned', worker_pid=process.pid)
     except OSError as exc:
+        trace.record('launch_failed', reason=obs.error_kind(exc))
         write(stage / 'state.json', {**initial, 'state': 'failed', 'error': str(exc)})
         raise
     return {'job_id': job.name, 'stage': kind, 'state': 'queued', 'directory': str(stage)}
@@ -324,39 +342,54 @@ def launch(job, kind, **extra):
 
 def create_job(root, raw, script):
     from . import assets, ingest, scriptcheck
+    obs.mark('validating', check='brief')
     brief = validate_brief(raw)
+    obs.mark('validating', check='scene_script')
     problems = scriptcheck.check(script)
     if problems:
         raise ValueError('Scene script rejected: ' + '; '.join(problems[:12]))
     if brief['parent']:
         job_path(root, brief['parent'])
+    obs.mark('validating', check='runtime_paths')
     binaries = executables()
     root.mkdir(parents=True, exist_ok=True, mode=0o700)
     job = root / uuid.uuid4().hex
     job.mkdir(mode=0o700)
+    obs.attach_job(job)
+    phase = 'reference_attachment'
     try:
+        obs.mark('preparing', phase=phase, count=len(brief['references']))
         refs = ingest.attach(root, job, brief['references'], brief['max_references'])
+        phase = 'asset_attachment'
+        obs.mark('preparing', phase=phase, count=len(brief['assets']))
         used = assets.attach(root, job, brief['assets'])
+        phase = 'manifest_commit'
         (job / 'scene.py').write_text(script, encoding='utf-8')
         write(job / 'job.json', {'format': 2, 'brief': brief, 'script_sha256': digest(job / 'scene.py'),
                                  'references': [r['id'] for r in refs], 'assets': sorted(used),
                                  'code': code_identity(), 'binaries': binaries, 'created_at': time.time()})
-    except BaseException:
+        obs.mark('job_committed', manifest_format=2, parent_job_id=brief['parent'])
+    except BaseException as exc:
         shutil.rmtree(job, ignore_errors=True)
+        obs.mark('job_creation_failed', phase=phase, reason=obs.error_kind(exc),
+                 directory_removed=not job.exists())
         raise
     return job
 
 
+@obs.tracked('probe')
 def start_probe(root, raw, script):
     return launch(create_job(root, raw, script), 'probe')
 
 
+@obs.tracked('draft')
 def start_draft(root, raw=None, script=None, job_id=None):
     """Draft = probe (if not yet run) followed by the full preview sequence."""
     if job_id:
         if raw is not None or script is not None:
             raise ValueError('Pass either a job_id of a probed job, or a brief and script for a new job')
         job = job_path(root, job_id)
+        obs.attach_job(job)
         checked_stage(job, 'probe')
         try:
             return launch(job, 'preview')
@@ -414,8 +447,11 @@ def master_plan(job, budget_minutes=None, quality=None, samples=None):
     return plan
 
 
+@obs.tracked('finalize')
 def finalize(root, job_id, review, budget_minutes=None, quality=None, samples=None):
     job = job_path(root, job_id)
+    obs.attach_job(job)
+    obs.mark('promotion_check', check='preview_integrity')
     s, _ = checked_stage(job, 'preview')
     brief = job_manifest(job)['brief']
     names = review_boards(brief, has_image_refs(job))
@@ -423,6 +459,7 @@ def finalize(root, job_id, review, budget_minutes=None, quality=None, samples=No
         raise ValueError('Review must provide hashes and notes for the current preview')
     hashes, notes = review['hashes'], review['notes']
     expected = {n: s['sha256'][n] for n in names}
+    obs.mark('promotion_check', check='review_evidence')
     if hashes != expected or not isinstance(notes, str) or not 12 <= len(notes.strip()) <= 4000:
         raise ValueError(f'Use the {len(names)} exact current board hashes ({", ".join(names)}) '
                          'and 12-4000 characters of review notes')
@@ -433,6 +470,8 @@ def finalize(root, job_id, review, budget_minutes=None, quality=None, samples=No
     if samples is not None and (type(samples) is not int or not 1 <= samples <= 4096):
         raise ValueError('samples must be an integer from 1 to 4096')
     plan = master_plan(job, budget_minutes, quality, samples)
+    obs.mark('promotion_check', check='render_budget', budget_minutes=plan['budget_minutes'],
+             predicted_minutes=plan['predicted_minutes'], fits=plan['samples'] is not None)
     if plan['samples'] is None:
         raise ValueError(
             'Master is predicted to take about {predicted_minutes} min at {requested_samples} spp. The '
@@ -497,8 +536,44 @@ def status(root, job_id):
     return info
 
 
+def diagnostics(root, *, job_id=None, **filters):
+    result = obs.history(root, job_id=job_id, **filters)
+    if job_id is None:
+        return result
+    sources = {}
+    result['job_sources'] = sources
+    job = root / job_id
+    if job.is_symlink() or not job.is_dir():
+        result['job_directory'] = 'unavailable'
+        return result
+    result['job_directory'] = 'present'
+    for kind in ('probe', 'preview', 'master'):
+        stage = job / kind
+        state_file = stage / 'state.json'
+        if stage.is_symlink() or state_file.is_symlink():
+            sources[kind] = {'state_source': 'unavailable'}
+            continue
+        try:
+            value = read(state_file)
+            if not isinstance(value, dict) or value.get('state') not in {'queued', 'running', 'ready', 'failed'}:
+                raise ValueError('Unrecognized stage state')
+            info = {field: value[field] for field in ('state', 'updated_at', 'attempt_id', 'operation_id')
+                    if field in value}
+            sources[kind] = {'state_source': 'readable', **info}
+        except FileNotFoundError:
+            sources[kind] = {'state_source': 'absent'}
+        except (ValueError, OSError, TypeError):
+            sources[kind] = {'state_source': 'unavailable'}
+        log = stage / 'run.log'
+        sources[kind]['raw_log_present'] = not log.is_symlink() and log.is_file()
+    return result
+
+
+@obs.tracked('compare')
 def compare(root, before, after):
     a, b = [job_path(root, j) for j in (before, after)]
+    obs.attach_job(a)
+    obs.mark('comparison_sources', other_job_id=b.name)
     if a == b:
         raise ValueError('Provide two different draft job IDs')
     s1, x = checked_stage(a, 'preview', require_current_code=False)
@@ -510,22 +585,26 @@ def compare(root, before, after):
     bins = executables()
     target = root / 'comparisons' / uuid.uuid4().hex
     target.mkdir(parents=True, mode=0o700)
+    obs.mark('comparison_prepared', comparison_id=target.name)
     paths = {}
     for name in sorted(set(x) & set(y)):
         if not name.endswith('.jpg'):
             continue
         out = target / name
+        obs.mark('comparison_board_started', board=name, tool='ffmpeg')
         r = subprocess.run([bins['ffmpeg'], '-nostdin', '-loglevel', 'error', '-i', x[name], '-i', y[name],
                             '-filter_complex', '[0:v]scale=1560:-2,setsar=1[a];[1:v]scale=1560:-2,setsar=1[b];'
                             '[a][b]vstack=inputs=2,scale=1560:1560:force_original_aspect_ratio=decrease,'
                             'pad=max(iw\\,280):max(ih\\,280):(ow-iw)/2:(oh-ih)/2:0x141920',
                             '-frames:v', '1', '-update', '1', str(out)],
                            capture_output=True, text=True, timeout=60, env=render_env())
+        obs.mark('comparison_board_exit', board=name, returncode=r.returncode)
         if r.returncode or not out.is_file() or not out.stat().st_size:
             raise RuntimeError(f'Comparison failed for {name}: {r.stderr[-500:]}')
         paths[name] = str(out)
     write(target / 'comparison.json', {'before': before, 'after': after, 'top': ba, 'bottom': bb,
                                        'source_hashes': [s1['sha256'], s2['sha256']]})
+    obs.mark('comparison_committed', comparison_id=target.name, boards=len(paths))
     return {'before_top': before, 'after_bottom': after, 'artifacts': paths, 'directory': str(target)}
 
 

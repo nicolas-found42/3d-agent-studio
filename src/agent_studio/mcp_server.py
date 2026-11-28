@@ -3,7 +3,7 @@ import argparse
 from pathlib import Path
 from typing import Any, Literal
 
-from . import ingest, pipeline
+from . import ingest, observability, pipeline
 
 
 INSTRUCTIONS = (
@@ -45,6 +45,7 @@ def make_server(root):
         return pipeline.validate_brief(brief)
 
     @server.tool(annotations=writes_new)
+    @observability.frontend('mcp')
     def studio_ingest(path: str, role: str | None = None, max_frames: int = ingest.DEFAULT_MAX_FRAMES) -> dict[str, Any]:
         """Copy one local file (absolute path) into the job root and return its reference ID. Images take roles
         subject/style/composition/palette/storyboard; a video is reduced to up to max_frames scene-change frames
@@ -60,6 +61,7 @@ def make_server(root):
         return pipeline.examples(query, tags, limit, include_script)
 
     @server.tool(annotations=fetches)
+    @observability.frontend('mcp')
     def studio_probe(brief: dict[str, Any], script: str) -> dict[str, Any]:
         """Create a job from a brief and scene script (Python defining build(kit)), resolve its assets, run the
         script, save the editable scene, and render three timed stills. Poll studio_status; view probe.jpg (and
@@ -67,6 +69,7 @@ def make_server(root):
         return pipeline.start_probe(root, brief, script)
 
     @server.tool(annotations=fetches)
+    @observability.frontend('mcp')
     def studio_draft(brief: dict[str, Any] | None = None, script: str | None = None,
                      job_id: str | None = None) -> dict[str, Any]:
         """Render the full preview sequence. Pass job_id to draft an already probed job, or a brief and script to
@@ -77,6 +80,15 @@ def make_server(root):
     def studio_status(job_id: str) -> dict[str, Any]:
         """Read probe, preview and master state, artifacts, estimates, QC warnings, and the review hashes for a job."""
         return pipeline.status(root, job_id)
+
+    @server.tool(annotations=read_only)
+    def studio_diagnostics(job_id: str | None = None, operation_id: str | None = None,
+                           since: str | None = None, until: str | None = None, after: int = 0,
+                           limit: int = 100) -> dict[str, Any]:
+        """Read a bounded page of retained operation and stage history. Times are ISO 8601 with an offset.
+        Pass next_after as after to continue. An absent or unavailable source leaves history unknown."""
+        return pipeline.diagnostics(root, job_id=job_id, operation_id=operation_id,
+                                    since=since, until=until, after=after, limit=limit)
 
     @server.tool(annotations=read_only, structured_output=False)
     def studio_view(job_id: str, stage: Literal['probe', 'preview', 'master'], board: Board):
@@ -93,11 +105,13 @@ def make_server(root):
         return [str(path), Image(path=path, format='png' if board.endswith('.png') else 'jpeg')]
 
     @server.tool(annotations=writes_new)
+    @observability.frontend('mcp')
     def studio_compare(before: str, after: str) -> dict[str, Any]:
         """Stack matching boards from two ready drafts (same orientation, duration, fps and loop): before on top."""
         return pipeline.compare(root, before, after)
 
     @server.tool(annotations=writes_new)
+    @observability.frontend('mcp')
     def studio_finalize(job_id: str, hashes: dict[str, str], notes: str, budget_minutes: int | None = None,
                         quality: Literal['standard', 'fast'] | None = None, samples: int | None = None) -> dict[str, Any]:
         """Queue the full-size master after visual review. Copy preview.review_hashes exactly; notes must describe

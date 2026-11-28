@@ -12,6 +12,7 @@ from tempfile import TemporaryDirectory
 import time
 
 from . import pipeline as p
+from . import observability as obs
 from .formats import stage_size
 
 BG = '0x141920'
@@ -32,16 +33,28 @@ def remaining_budget():
     return remaining
 
 
-def run(argv, *, capture=False, timeout=120):
+def run(argv, *, tool, capture=False, timeout=120):
     print('RUN', list(map(str, argv)), flush=True)
     remaining = remaining_budget()
+    started = time.monotonic()
+    limit = min(timeout, remaining)
+    obs.mark('dependency_started', tool=tool, timeout_seconds=round(limit, 3))
     try:
         r = subprocess.run(list(map(str, argv)), stdin=subprocess.DEVNULL, check=False,
-                           capture_output=capture, text=capture, timeout=min(timeout, remaining), env=p.render_env())
+                           capture_output=capture, text=capture, timeout=limit, env=p.render_env())
     except subprocess.TimeoutExpired as exc:
+        obs.mark('dependency_finished', tool=tool,
+                 outcome='stage_budget' if remaining <= timeout else 'timeout',
+                 duration_ms=round((time.monotonic() - started) * 1000))
         if remaining <= timeout:
             raise StageBudgetExceeded from exc
         raise
+    except OSError as exc:
+        obs.mark('dependency_finished', tool=tool, outcome=obs.error_kind(exc),
+                 duration_ms=round((time.monotonic() - started) * 1000))
+        raise
+    obs.mark('dependency_finished', tool=tool, outcome='exit', returncode=r.returncode,
+             duration_ms=round((time.monotonic() - started) * 1000))
     if r.returncode:
         suffix = ': ' + r.stderr[-850:].strip() if capture else '; see run.log'
         raise RuntimeError(f'{Path(argv[0]).name} exited {r.returncode}' + suffix)
@@ -49,8 +62,8 @@ def run(argv, *, capture=False, timeout=120):
 
 
 def ff(bins, *args, capture=False, timeout=600):
-    return run([bins['ffmpeg'], '-nostdin', '-hide_banner', '-v', 'error', '-xerror', *args], capture=capture,
-               timeout=timeout)
+    return run([bins['ffmpeg'], '-nostdin', '-hide_banner', '-v', 'error', '-xerror', *args], tool='ffmpeg',
+               capture=capture, timeout=timeout)
 
 
 def hashes(bins, clip):
@@ -88,7 +101,7 @@ def verify_video(bins, mp4, count, size, fps):
     cmd = [bins['ffprobe'], '-v', 'error', '-show_streams', '-show_frames', '-show_entries',
            'stream=codec_type,codec_name,profile,width,height,pix_fmt,avg_frame_rate,r_frame_rate,duration_ts,time_base,sample_aspect_ratio,color_range,color_space,color_transfer,color_primaries:stream_side_data=rotation:frame=best_effort_timestamp',
            '-of', 'json', mp4]
-    data = json.loads(run(cmd, capture=True, timeout=300))
+    data = json.loads(run(cmd, tool='ffprobe', capture=True, timeout=300))
     streams = data['streams']
     if len(streams) != 1 or streams[0]['codec_type'] != 'video':
         raise ValueError('Expected one silent video stream')
@@ -323,7 +336,12 @@ def work(job, kind):
     def state(value, **extra):
         p.write(state_file, {**original, **extra, 'state': value, 'updated_at': time.time()})
 
+    trace = obs.Observation(root, 'worker', job_id=job.name, stage=kind, origin='worker',
+                            operation_id=original.get('operation_id'), attempt_id=original.get('attempt_id'))
+    token = obs.ACTIVE.set(trace)
+    trace.record('worker_started')
     budget_token = None
+    phase = 'preflight'
     try:
         manifest_path = job / 'job.json'
         identity = p.digest(manifest_path)
@@ -337,9 +355,12 @@ def work(job, kind):
         if bins != p.executables():
             raise ValueError('Runtime executable paths changed since the job was created; start a new job')
         b = bins['blender']
-        version = run([b, '--version'], capture=True, timeout=30).splitlines()[0]
+        version = run([b, '--version'], tool='blender_version', capture=True, timeout=30).splitlines()[0]
         if p.blender_version(version) < p.MIN_BLENDER:
             raise ValueError('Blender {}.{} or newer is required'.format(*p.MIN_BLENDER))
+        major, minor = p.blender_version(version)
+        trace.record('manifest_validated', manifest_sha256=identity, manifest_format=manifest.get('format'),
+                     blender_major=major, blender_minor=minor)
         runner = ['--python-exit-code', '1', '--python', p.HERE / 'runner.py', '--']
         budget_key = 'draft' if kind == 'preview' else kind
         budget = brief['budget_minutes'][budget_key] * 60
@@ -365,23 +386,32 @@ def work(job, kind):
                 budget = original['plan']['budget_minutes'] * 60
             (stage / 'frames').mkdir()
             cmd = [b, '-b', job / 'scene.blend', '--disable-autoexec', *runner, 'render', job, kind, samples]
+        phase = 'gpu_queue'
         state('running', step='waiting for the GPU lock')
+        trace.record('waiting_for_gpu')
+        waiting = time.monotonic()
         with p.GpuLock(root):
             started = time.monotonic()
             budget_token = STAGE_DEADLINE.set(started + budget)
             deadline_at = time.time() + budget
             state('running', deadline_at=deadline_at,
                   step='running scene script and probe renders' if kind == 'probe' else 'rendering frames and proofs')
+            phase = 'blender'
+            trace.record('gpu_acquired', wait_ms=round((started - waiting) * 1000),
+                         budget_seconds=budget)
             try:
-                run(cmd, timeout=budget)
+                run(cmd, tool='blender', timeout=budget)
             except StageBudgetExceeded:
                 raise
             except RuntimeError as exc:
                 err = stage / 'script-error.txt'
                 if err.is_file():
+                    trace.record('scene_script_failed', traceback_available=True)
                     raise ValueError('Scene script failed:\n' + err.read_text()[-2500:]) from exc
                 raise
+        phase = 'review_evidence'
         state('running', step='assembling review evidence', deadline_at=deadline_at)
+        trace.record('assembling_evidence')
         if kind == 'probe':
             probe_outputs(bins, job, stage, brief)
         else:
@@ -403,17 +433,27 @@ def work(job, kind):
         checksums = {name: p.digest(stage / name) for name in names}
         remaining_budget()
         state('ready', sha256=checksums, scene_sha256=scene_hash, job_sha256=identity, blender_version=version)
+        trace.record('stage_ready', artifact_count=len(checksums))
         print('STAGE_READY', kind, job.name, flush=True)
         if kind == 'probe' and original.get('then') == 'preview':
-            p.launch(job, 'preview')
+            try:
+                p.launch(job, 'preview', operation_id=trace.operation_id)
+            except OSError as exc:
+                trace.record('chained_launch_failed', successor='preview', reason=obs.error_kind(exc))
+                print('CHAINED_STAGE_LAUNCH_FAILED', 'preview', flush=True)
     except StageBudgetExceeded as exc:
         error = f'{budget_key} exceeded its {budget / 60:g} min budget; raise budget_minutes or simplify'
+        trace.record('stage_failure_observed', phase=phase, reason='stage_budget')
         state('failed', error=error)
+        trace.record('stage_failed', phase=phase, reason='stage_budget')
         raise ValueError(error) from exc
     except (OSError, RuntimeError, ValueError, KeyError, subprocess.TimeoutExpired) as e:
+        trace.record('stage_failure_observed', phase=phase, reason=obs.error_kind(e))
         state('failed', error=str(e))
+        trace.record('stage_failed', phase=phase, reason=obs.error_kind(e))
         raise
     finally:
+        obs.ACTIVE.reset(token)
         if budget_token is not None:
             STAGE_DEADLINE.reset(budget_token)
 

@@ -26,7 +26,8 @@ class StdioContract(unittest.IsolatedAsyncioTestCase):
                     tools = await client.list_tools()
                     self.assertEqual({tool.name for tool in tools.tools}, {
                         'studio_doctor', 'studio_brief', 'studio_ingest', 'studio_examples', 'studio_probe',
-                        'studio_draft', 'studio_status', 'studio_view', 'studio_compare', 'studio_finalize',
+                        'studio_draft', 'studio_status', 'studio_diagnostics', 'studio_view', 'studio_compare',
+                        'studio_finalize',
                     })
                     result = await client.call_tool('studio_brief', {
                         'brief': {'prompt': 'A paper boat on a rainy street', 'orientation': 'ultrawide', 'fps': 60},
@@ -51,4 +52,17 @@ class StdioContract(unittest.IsolatedAsyncioTestCase):
                         'job_id': '0' * 32, 'stage': 'preview', 'board': '../../outside.jpg',
                     })
                     self.assertTrue(image.isError)
-            self.assertFalse(root.exists())
+                    diagnostics = await client.call_tool('studio_diagnostics', {'limit': 1})
+                    self.assertFalse(diagnostics.isError, diagnostics.content)
+                    self.assertEqual(diagnostics.structuredContent['source'], 'absent')
+                    self.assertFalse(root.exists())
+                    reference = Path(tmp) / 'notes.txt'
+                    reference.write_text('Test notes')
+                    ingested = await client.call_tool('studio_ingest', {'path': str(reference)})
+                    self.assertFalse(ingested.isError, ingested.content)
+                    history = await client.call_tool('studio_diagnostics', {})
+                    self.assertFalse(history.isError, history.content)
+                    events = history.structuredContent['events']
+                    self.assertEqual([e['event'] for e in events],
+                                     ['opened', 'reference_identified', 'reference_committed', 'returned'])
+                    self.assertEqual({e['origin'] for e in events}, {'mcp'})

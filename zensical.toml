@@ -73,6 +73,7 @@ nav = [
     ]},
     {"Project" = [
         {"Render verification" = "docs/render-verification.md"},
+        {"Investigate a past failure" = "docs/diagnostics.md"},
         {"Render checks and fixtures" = "docs/verification/render-checks.md"},
         {"Acceptance render evidence" = "docs/verification/acceptance.md"},
         {"Migrate to v0.3.0" = "docs/v0.3.0.md"},

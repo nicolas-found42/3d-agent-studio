@@ -41,6 +41,7 @@ Blender runs locally. Give Studio a job directory you own and run only Python sc
 
 - [Render workflow](docs/workflow.md), including references, revisions, and masters
 - [Command and MCP reference](skills/3d-agent-studio/references/operations.md) and [scene kit](skills/3d-agent-studio/references/kit.md)
+- [Investigate a past Studio failure](docs/diagnostics.md)
 - [Agent compatibility](docs/compatibility.md) and [v0.3.0 migration](docs/v0.3.0.md)
 
 ## Verification
